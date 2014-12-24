@@ -12,9 +12,7 @@ var ignoreEvents = [], //['touchmove', 'touchstart', 'touchend', 'touchcancel', 
 
     Ember.EventDispatcher.reopen({
       setup: function () {
-        var events = this.get('events'),
-          defaultOptions = {},
-          ignoreEvents = Ember.get(defaultOptions, 'ignoreEvents');
+        var events = this.get('events');
 
         Ember.$.each(ignoreEvents, function (index, value) {
           events[value] = null;
