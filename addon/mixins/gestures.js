@@ -1,5 +1,3 @@
-var defaultOptions = {};
-
 export default Ember.Mixin.create({
 
   gestures : null,
@@ -27,6 +25,7 @@ export default Ember.Mixin.create({
   setupGestures : function () {
 
     var self = this,
+      defaultOptions = {},
       gestures = this.get('gestures'),
       options,
       element = this.$()[0],
