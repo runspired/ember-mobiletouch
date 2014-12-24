@@ -41,7 +41,7 @@ export default Ember.Mixin.create({
 
       //initialize Hammer if necessary
       if (!instance) {
-        options = Ember.$.extend(
+        options = Ember.$.extend({},
           defaultOptions,
           this.get('hammerOptions') || {}
         );
