@@ -4,12 +4,12 @@ export default Ember.Mixin.create({
 
   _hammerInstance : null,
 
-  hammerFilter : null,
+  hammerAllow : null,
   hammerExclude : null,
 
   _filterTouchableElements : function (element) {
     var allowed = Ember.$(element),
-      filter = this.get('hammerFilter'),
+      filter = this.get('hammerAllow'),
       exclude = this.get('hammerExclude');
 
     if (filter) {
