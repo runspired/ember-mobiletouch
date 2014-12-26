@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default Ember.Mixin.create({
 
   gestures : null,
@@ -22,7 +23,7 @@ export default Ember.Mixin.create({
   },
 
   //only works with views / components
-  setupGestures : function () {
+  _setupGestures : function () {
 
     var self = this,
       defaultOptions = {},
@@ -77,7 +78,7 @@ export default Ember.Mixin.create({
 
   }.on('didInsertElement'),
 
-  teardownGestures : function () {
+  _teardownGestures : function () {
     var hammer = this.get('_hammerInstance');
     if (hammer && typeof hammer.dispose === "function") {
       hammer.dispose();
