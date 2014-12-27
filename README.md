@@ -2,12 +2,32 @@
 
 Ember addon for Fastclick and Hammerjs support in ember based mobile apps and websites.
 
+##Installation
+
+`npm install ember-mobiletouch`
+
+`ember g ember-mobiletouch none`
+
 ##What's Included
 
-This addon installs (ember-cli-fastclick)[https://github.com/ember-mobile/ember-cli-fastclick] for you.
+This addon installs [ember-cli-fastclick](https://github.com/ember-mobile/ember-cli-fastclick) for you.
+You will still need to run it's blueprint.
 
-It additionally installs (HammerJS 2.0.4)[https://github.com/hammerjs/hammer.js], allows for a
+`ember g ember-cli-fastclick none`.
+
+It additionally installs [HammerJS 2.0.4](https://github.com/hammerjs/hammer.js), allows for a
 gestures hash on Ember.View and Ember.Component, and modifies LinkView to utilize gestures as needed.
+
+
+##Changelog
+
+- [changelog](./CHANGELOG.md)
+
+
+##Roadmap
+
+- [roadmap](./ROADMAP.md)
+
 
 ##Usage
 
@@ -51,7 +71,9 @@ trigger the defined gestures.
 
 
 
-##This portion outlines the details of collaborating on this Ember addon.
+
+
+**This portion outlines the details of collaborating on this Ember addon.**
 
 ### Installation
 
