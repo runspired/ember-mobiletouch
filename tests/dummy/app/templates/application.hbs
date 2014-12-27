@@ -1,3 +1,44 @@
-<h2 id='title'>Welcome to Ember.js</h2>
 
 {{outlet}}
+
+<h2 id='title'>Ember-MobileTouch Test Page</h2>
+
+<h3>Defaults and Presses</h3>
+<ul>
+    <li>
+      {{#link-to 'success'}}A normal link-to{{/link-to}}
+    </li>
+    <li>
+      {{#link-to 'success' eventName="press"}}A link-to with eventName 'press'{{/link-to}}
+    </li>
+    <li>
+      <div {{action "alert"}}>A Normal Action</div>
+    </li>
+    <li>
+        <div {{action "alert" on="press"}}>An Action with target "press"</div>
+    </li>
+</ul>
+
+<h3>Pan</h3>
+<div class="actionableArea" {{action 'panning' on="pan"}}>Pan</div>
+<div class="actionableArea" {{action 'panningLeft' on="panLeft"}}>PanLeft</div>
+<div class="actionableArea" {{action 'panningRight' on="panRight"}}>PanRight</div>
+
+<h3>Swipe</h3>
+<div class="actionableArea" {{action 'swiping' on="swipe"}}>swipe</div>
+<div class="actionableArea" {{action 'swipingLeft' on="swipeLeft"}}>swipeLeft</div>
+<div class="actionableArea" {{action 'swipingRight' on="swipeRight"}}>swipeRight</div>
+<div class="actionableArea" {{action 'swipingUp' on="swipeUp"}}>swipeUp</div>
+<div class="actionableArea" {{action 'swipingDown' on="swipeDown"}}>swipeDown</div>
+
+{{#actionable-component class="actionableArea"}}Actionable Component{{/actionable-component}}
+
+{{#actionable-component class="actionableArea" hammerExclude='.noTouch'}}Actionable Component with exlcuded area<div class="notouch"></div>{{/actionable-component}}
+
+<h3>Inputs</h3>
+
+<h4>Normal</h4>
+<input type="text">
+
+<h4>Helper Based</h4>
+{{#input type="text"}}{{/input}}

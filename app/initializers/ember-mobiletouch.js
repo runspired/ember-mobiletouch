@@ -1,53 +1,23 @@
-import Ember from 'ember';
+import Ember from 'ember'; //event dispatcher
+import config from '../config/environment'; //ENV.hammer
+import HammerEvents from 'ember-mobiletouch/mixins/hammer-events';
 import GesturesMixin from 'ember-mobiletouch/mixins/gestures';
+import LinkViewMods from 'ember-mobiletouch/mixins/link-view-mods';
 
-//alter ignoreEvents as needed
-var ignoreEvents = [], //['touchmove', 'touchstart', 'touchend', 'touchcancel', 'mousedown', 'mouseup', 'click']
-
-  MobileTouchInitializer = {
+export default {
 
   name: 'mobiletouch',
 
   initialize: function() {
 
-    Ember.EventDispatcher.reopen({
-      setup: function () {
-        var events = this.get('events');
+    Ember.EventDispatcher.reopen({ _mobileTouchConfig : config.mobileTouch || {} }, HammerEvents);
 
-        Ember.$.each(ignoreEvents, function (index, value) {
-          events[value] = null;
-          delete events[value];
-        });
-        this.set('events', events);
-
-        return this._super(Array.prototype.slice.call(arguments));
-      }
+    //components extend Ember.View, so this should be all that's needed
+    Ember.View.reopen(GesturesMixin, {
+      _useGesturesHash : config.mobileTouch ? config.mobileTouch.useGesturesHash : false
     });
 
-    Ember.View.reopen(GesturesMixin);
-    Ember.Component.reopen(GesturesMixin);
-
-    Ember.LinkView.reopen({
-
-      touchStart : function (event) {
-        this._invoke(event);
-        return false; // return `false` to stop bubbling
-      },
-
-      gestures: {
-        tap : function (event) {
-          this._invoke(event);
-          return false; // return `false` to stop bubbling
-        },
-        press : function (event) {
-          this._invoke(event);
-          return false; // return `false` to stop bubbling
-        }
-      }
-
-    });
+    Ember.LinkView.reopen(LinkViewMods);
 
   }
 };
-
-export default MobileTouchInitializer;

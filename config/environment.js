@@ -2,6 +2,9 @@
 
 module.exports = function(/* environment, appConfig */) {
   return {
-    version : "1.0.5"
+    version : "1.0.6",
+    mobileTouch : {
+      useGesturesHash : false
+    }
   };
 };
