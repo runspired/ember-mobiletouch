@@ -37,14 +37,14 @@ with `target="click"` will give deprecation notices.
 - [ ] Convert handlers for "click" to tap with deprecation notice
 
 # 1.4
-- [ ] 
+- [ ] Gesture's in action helper `{{action 'myActionHandler' target='tap'}}`
 
 # 1.5
-- [ ] Global Edge Gestures (based on relative coordinates `["top", "center"]` ),
-- [ ] Multi-Touch Gestures (three finger and four finger swipes)
+- [ ] ??
 
 # 1.6
-- [ ] Gesture's in action helper `{{action 'myActionHandler' target='tap'}}`
+- [ ] Global Edge Gestures (based on relative coordinates `["top", "center"]` ),
+- [ ] Multi-Touch Gestures (three finger and four finger swipes)
 
 # 1.7
 - [ ] Trackpad gesture support?
