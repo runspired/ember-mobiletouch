@@ -1,3 +1,22 @@
 html, body {
   margin: 20px;
 }
+
+.actionableArea {
+  width : 80%;
+  min-height : 50px;
+  background-color: rgba(150, 200, 150, 1);
+  color : #fff;
+  line-height : 50px;
+  font-size : 20px;
+  font-family : sans-serif;
+  margin: 10%;
+}
+
+.noTouch {
+  width : 60%;
+  padding : 10%;
+  margin : 10%;
+  height: 50px;
+  background-color: rgba(150, 0, 150, 1);
+}
