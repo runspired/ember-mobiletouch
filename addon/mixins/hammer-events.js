@@ -16,7 +16,9 @@ var hammerEvents = {
     use : ['fastclick', 'pan', 'pinch', 'press', 'rotate', 'swipe', 'tap'],
     fastclick : false,
     options : {
-      domEvents : true
+      domEvents : true,
+      swipeVelocity : 0.3,
+      swipeThreshold : 25
     },
     events: {
       keydown     : 'keyDown',
@@ -115,7 +117,6 @@ export default Ember.Mixin.create({
     Ember.Logger.debug('Adding events', events);
     //setup rootElement and initial events
     this._super(addedEvents, rootElement);
-    rootElement = Ember.$(this.get('rootElement'));
 
 
 
@@ -124,6 +125,57 @@ export default Ember.Mixin.create({
     this._initializeHammer();
 
 
+  },
+
+
+  __executeGestureWithFilters : function (eventName, event, view, context) {
+
+    var shouldFilter = view.get('hammerAllow') || view.get('hammerExclude'),
+      element;
+
+    if (context) {
+
+      element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
+      if (shouldFilter && !element) {
+        return false;
+      }
+      return Ember.run(context, context[eventName], event, view);
+    }
+
+    if (view.has(eventName)) {
+
+      element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
+      if (shouldFilter && !element) {
+        return false;
+      }
+
+      return Ember.run.join(view, view.handleEvent, eventName, event);
+
+    }
+
+    return true; //keep bubbling
+
+  },
+
+
+  _dispatchEvent: function(object, event, eventName, view) {
+    var result = true;
+
+    var handler = object[eventName];
+    if (Ember.typeOf(handler) === 'function') {
+      result = this.__executeGestureWithFilters(eventName, event, view, object);
+      // Do not preventDefault in eventManagers.
+      event.stopPropagation();
+    }
+    else {
+      result = this._bubbleEvent(view, event, eventName);
+    }
+
+    return result;
+  },
+
+  _bubbleEvent: function(view, event, eventName) {
+    return this.__executeGestureWithFilters(eventName, event, view);
   }
 
 });

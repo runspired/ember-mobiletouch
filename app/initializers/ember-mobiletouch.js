@@ -19,5 +19,12 @@ export default {
 
     Ember.LinkView.reopen(LinkViewMods);
 
+    var oldActionHelper = Ember.Handlebars.helpers.action;
+    Ember.Handlebars.helpers.action = function (params, hash, options, env) {
+      var opts = options ? options : hash.hash;
+      opts.on = opts.on || 'tap';
+      return oldActionHelper.apply(null, arguments);
+    }
+
   }
 };

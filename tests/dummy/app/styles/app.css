@@ -13,9 +13,10 @@ html, body {
   margin: 10%;
 }
 
-.notouch {
+.noTouch {
   width : 60%;
   padding : 10%;
   margin : 10%;
   height: 50px;
+  background-color: rgba(150, 0, 150, 1);
 }
