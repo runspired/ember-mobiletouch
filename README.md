@@ -1,32 +1,21 @@
 # Ember-mobiletouch
 
-Ember addon for Fastclick and Hammerjs support in ember based mobile apps and websites.
+Ember addon for touch and gesture support in ember based mobile apps and websites.
+
 
 ##Installation
 
 `npm install ember-mobiletouch`
 
-`ember g ember-mobiletouch none`
+`ember g ember-mobiletouch`
 
 ##What's Included
 
-This addon installs [ember-cli-fastclick](https://github.com/ember-mobile/ember-cli-fastclick) for you.
-You will still need to run it's blueprint.
+This addon installs [HammerJS 2.0.4](https://github.com/hammerjs/hammer.js) and wires it into
+your app as a global (Hammer).
 
-`ember g ember-cli-fastclick none`.
-
-It additionally installs [HammerJS 2.0.4](https://github.com/hammerjs/hammer.js), allows for a
-gestures hash on Ember.View and Ember.Component, and modifies LinkView to utilize gestures as needed.
-
-
-##Changelog
-
-- [changelog](./CHANGELOG.md)
-
-
-##Roadmap
-
-- [roadmap](./ROADMAP.md)
+It then sets up a single Hammer instance to manage gestures, and pushes the gestures received
+through Ember's eventing system.
 
 
 ##Usage
@@ -34,26 +23,16 @@ gestures hash on Ember.View and Ember.Component, and modifies LinkView to utiliz
 ```
 Ember.View.extend({
   
-  hammerOptions : {},
-  
   hammerAllow : [],
   
   hammerExclude : [],
   
-  gestures : {
-    tap : function (e) {
-      ;//do something!
-    }
+  tap : function (e) {
+    ;//do something!
   }
 
 })
 ```
-
-
-###hammerOptions
-
-An options hash passed to the created hammer instance
-
 
 ###hammerAllow
 
@@ -68,6 +47,42 @@ trigger the defined gestures.
 
 **hammerAllow and hammerExclude can be used in tandem**
 
+
+
+###Action helper
+
+This triggers `myAction` on `tap`
+
+`<div {{action "myAction"}}></div>`
+
+This triggers `myAction` on `press`
+
+`<div {{action "myAction" on="press"}}></div>`
+
+###Link-to helper
+
+Links trigger on `tap`.
+
+`{{#link-to 'dashboard'}}Dashboard{{/link-to}}`
+
+But this would trigger on `press`
+
+`{{#link-to 'dashboard' eventName="press"}}Dashboard{{/link-to}}`
+
+And this would trigger on `swipeRight`
+
+`{{#link-to 'dashboard' eventName="swipeRight"}}Dashboard{{/link-to}}`
+
+
+
+##Changelog
+
+- [changelog](./CHANGELOG.md)
+
+
+##Roadmap
+
+- [roadmap](./ROADMAP.md)
 
 
 
