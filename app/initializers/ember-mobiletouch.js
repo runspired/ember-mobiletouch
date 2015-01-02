@@ -14,7 +14,7 @@ export default {
 
     //components extend Ember.View, so this should be all that's needed
     Ember.View.reopen(GesturesMixin, {
-      _useGesturesHash : config.mobileTouch ? config.mobileTouch.useGesturesHash : false
+      __useGesturesHash : config.mobileTouch ? config.mobileTouch.useGesturesHash : false
     });
 
     Ember.LinkView.reopen(LinkViewMods);
