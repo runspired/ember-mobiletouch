@@ -146,7 +146,7 @@ export default Ember.Mixin.create({
       }
       ret = Ember.run(context, context[eventName], event, view);
       Ember.Logger.debug('(eventManager) Run Event Result: ' + eventName, ret);
-      return ret;
+      return false;
     }
 
     if (view.has(eventName)) {
@@ -159,7 +159,7 @@ export default Ember.Mixin.create({
 
       ret = Ember.run.join(view, view.handleEvent, eventName, event);
       Ember.Logger.debug('Run Event Result: ' + eventName, ret);
-      return ret;
+      return false;
 
     }
 
