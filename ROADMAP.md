@@ -37,6 +37,8 @@ with `target="click"` will give deprecation notices.
 - [ ] Fast focus on inputs on Cordova apps (`.focus()` available)
 - [ ] Fast focus on inputs on mobile apps (`.focus()` broken in Safari)
 - [ ] Add "fastClick" event (touchstart based implementation)
+- [ ] FEAT: Add "alwaysTapOnPress" option (default: false).  When true, press events will trigger taps instead.
+- [ ] FEAT: Add "defaultTapOnPress" option (default: true).  When true, press events on linkView and actions will trigger taps instead.
 
 # 1.3
 - [ ] Global Edge Gestures (based on relative coordinates `["top", "center"]` ),
