@@ -102,7 +102,8 @@ export default Ember.Mixin.create({
     //set up events hash
     var mobileSettings = this.get('_mobileTouchConfig') || {},
       events = mobileSettings.events || defaultConfig.events,
-      gestures = mobileSettings.use || defaultConfig.use;
+      gestures = mobileSettings.use || defaultConfig.use,
+      alwaysTapOnPress = mobileSettings.alwaysTapOnPress || false;
 
     Ember.Logger.debug('use gestures', gestures);
     gestures.forEach(function (category) {
@@ -125,10 +126,12 @@ export default Ember.Mixin.create({
     this._initializeHammer();
 
 
-  },
+  },  
 
 
   __executeGestureWithFilters : function (eventName, event, view, context) {
+
+    Ember.Logger.debug('Checking Filters: ' + eventName);
 
     var shouldFilter = view.get('hammerAllow') || view.get('hammerExclude'),
       element;
@@ -159,6 +162,7 @@ export default Ember.Mixin.create({
 
 
   _dispatchEvent: function(object, event, eventName, view) {
+    Ember.Logger.debug('Dispatching Event: ' + eventName);
     var result = true;
 
     var handler = object[eventName];
@@ -175,6 +179,7 @@ export default Ember.Mixin.create({
   },
 
   _bubbleEvent: function(view, event, eventName) {
+    Ember.Logger.debug('Bubbling Event: ' + eventName);
     return this.__executeGestureWithFilters(eventName, event, view);
   }
 
