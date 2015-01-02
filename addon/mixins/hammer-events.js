@@ -134,28 +134,36 @@ export default Ember.Mixin.create({
     Ember.Logger.debug('Checking Filters for Event: ' + eventName + ' on ' + view.get('elementId'));
 
     var shouldFilter = view.get('hammerAllow') || view.get('hammerExclude'),
-      element;
+      element,
+      ret;
 
     if (context) {
 
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
       if (shouldFilter && !element) {
+        Ember.Logger.debug('(eventManager) Event Found but element filtered.');
         return false;
       }
-      return Ember.run(context, context[eventName], event, view);
+      ret = Ember.run(context, context[eventName], event, view);
+      Ember.Logger.debug('(eventManager) Run Event Result: ' + eventName, ret);
+      return ret;
     }
 
     if (view.has(eventName)) {
 
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
       if (shouldFilter && !element) {
+        Ember.Logger.debug('Event Found but element filtered.');
         return false;
       }
 
-      return Ember.run.join(view, view.handleEvent, eventName, event);
+      ret = Ember.run.join(view, view.handleEvent, eventName, event);
+      Ember.Logger.debug('Run Event Result: ' + eventName, ret);
+      return ret;
 
     }
 
+    Ember.Logger.debug('No Filter or Function, Bubbling Event: ' + eventName);
     return true; //keep bubbling
 
   },
