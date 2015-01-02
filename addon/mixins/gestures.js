@@ -12,17 +12,24 @@ export default Ember.Mixin.create({
 
 
   _filterTouchableElements : function (element) {
+
+    Ember.Logger.debug('Filtering Touchable Elements');
+
     var allowed = Ember.$(element),
       filter = this.get('hammerAllow'),
-      exclude = this.get('hammerExclude');
+      exclude = this.get('hammerExclude'),
+      viewEl = this.$()[0];
 
+    if (element === viewEl) {
+      return element;
+    }
     if (filter) {
       allowed = allowed.filter(filter);
     }
     if (exclude) {
       allowed = allowed.not(exclude);
     }
-    return allowed.length ? allowed[0] : false;
+    return allowed.length ? element : false;
   },
 
 
@@ -81,5 +88,6 @@ export default Ember.Mixin.create({
     }
 
   }.on('init')
+
 
 });
