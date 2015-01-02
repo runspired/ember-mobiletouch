@@ -38,6 +38,8 @@ export default Ember.Mixin.create({
 
   __setupGestures : function () {
 
+    Ember.Logger.debug('Setting Up Gesture Events for View: ' + this.get('elementId'));
+
     var self = this,
       eventManager = self.get('eventManager') || self,
       gestures = this.get('gestures'),
@@ -61,10 +63,8 @@ export default Ember.Mixin.create({
     //warn if click is present
     if (eventManager.get('click')) {
       Ember.Logger.warn(
-        '[DEPRECATED] Use of click is deprecated in favor of `tap`. Mobile will only trigger Tap.' +
-        ' Desktop browsers will trigger both. Use click only to preventDefault() on HTML Elements' +
-        ' that have an undesired default behavior.  If tagName for this view is not `a` `button` ' +
-        'or `input` the click handler will overwrite `tap` and be removed.');
+        '[DEPRECATED] Use of click is deprecated in favor of `tap`, Only Tap will trigger and' +
+        ' the click handler will overwrite `tap` and then be removed.');
 
       eventManager.set('tap', eventManager.get('click'));
       delete eventManager['click'];
