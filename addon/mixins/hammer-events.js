@@ -105,33 +105,22 @@ export default Ember.Mixin.create({
       gestures = mobileSettings.use || defaultConfig.use,
       alwaysTapOnPress = mobileSettings.alwaysTapOnPress || false;
 
-    Ember.Logger.debug('use gestures', gestures);
     gestures.forEach(function (category) {
-      Ember.Logger.debug('merging', hammerEvents[category]);
       Ember.merge(events, hammerEvents[category] || {});
       defaultConfig.options[category] = true;
     });
     this.set('events', events);
 
-
-
-    Ember.Logger.debug('Adding events', events);
     //setup rootElement and initial events
     this._super(addedEvents, rootElement);
-
-
 
     //setup hammer
     this.set('_hammerOptions', Ember.$.extend({}, defaultConfig.options, mobileSettings.options || {}));
     this._initializeHammer();
-
-
   },
 
 
   __executeGestureWithFilters : function (eventName, event, view, context) {
-
-    Ember.Logger.debug('Checking Filters for Event: ' + eventName + ' on ' + view.get('elementId'));
 
     var shouldFilter = view.get('hammerAllow') || view.get('hammerExclude'),
       element,
@@ -140,37 +129,29 @@ export default Ember.Mixin.create({
     if (context) {
 
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
-      if (shouldFilter && !element) {
-        Ember.Logger.debug('(eventManager) Event Found but element filtered.');
-        return false;
-      }
+
+      if (shouldFilter && !element) { return false; }
+
       ret = Ember.run(context, context[eventName], event, view);
-      Ember.Logger.debug('(eventManager) Run Event Result: ' + eventName, ret);
       return false;
     }
 
     if (view.has(eventName)) {
 
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
-      if (shouldFilter && !element) {
-        Ember.Logger.debug('Event Found but element filtered.');
-        return false;
-      }
+      if (shouldFilter && !element) { return false; }
 
       ret = Ember.run.join(view, view.handleEvent, eventName, event);
-      Ember.Logger.debug('Run Event Result: ' + eventName, ret);
       return false;
 
     }
 
-    Ember.Logger.debug('No Filter or Function, Bubbling Event: ' + eventName);
     return true; //keep bubbling
 
   },
 
 
   _dispatchEvent: function(object, event, eventName, view) {
-    Ember.Logger.debug('Dispatching Event: ' + eventName);
     var result = true;
 
     var handler = object[eventName];
@@ -187,7 +168,6 @@ export default Ember.Mixin.create({
   },
 
   _bubbleEvent: function(view, event, eventName) {
-    Ember.Logger.debug('Bubbling Event: ' + eventName);
     return this.__executeGestureWithFilters(eventName, event, view);
   }
 

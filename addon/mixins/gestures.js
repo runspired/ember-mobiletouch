@@ -38,8 +38,6 @@ export default Ember.Mixin.create({
 
   __setupGestures : function () {
 
-    Ember.Logger.debug('Setting Up Gesture Events for View: ' + this.get('elementId'));
-
     var self = this,
       eventManager = self.get('eventManager') || self,
       gestures = this.get('gestures'),
@@ -69,11 +67,6 @@ export default Ember.Mixin.create({
       eventManager.set('tap', eventManager.get('click'));
       delete eventManager['click'];
     }
-
-    //setup our own click to hack the default action
-    eventManager.set('click', function () {
-      Ember.Logger.debug('click happened');
-    });
 
     if (gestures) {
 
