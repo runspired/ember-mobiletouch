@@ -127,8 +127,7 @@ export default Ember.Mixin.create({
   __executeGestureWithFilters : function (eventName, event, view, context) {
 
     var shouldFilter = isGesture(eventName) ? (view.get('hammerAllow') || view.get('hammerExclude')) : false,
-      element,
-      ret;
+      element;
 
     if (context) {
 
@@ -136,7 +135,7 @@ export default Ember.Mixin.create({
 
       if (shouldFilter && !element) { return false; }
 
-      ret = Ember.run(context, context[eventName], event, view);
+      Ember.run(context, context[eventName], event, view);
       return false;
     }
 
@@ -145,7 +144,7 @@ export default Ember.Mixin.create({
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
       if (shouldFilter && !element) { return false; }
 
-      ret = Ember.run.join(view, view.handleEvent, eventName, event);
+      Ember.run.join(view, view.handleEvent, eventName, event);
       return false;
 
     }
