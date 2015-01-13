@@ -9,6 +9,10 @@ Ember addon for touch and gesture support in ember based mobile apps and website
 
 `ember g ember-mobiletouch`
 
+(or, as of recent changes)
+
+`ember install:addon ember-mobiletouch`
+
 ##What's Included
 
 This addon installs [HammerJS 2.0.4](https://github.com/hammerjs/hammer.js) and wires it into
