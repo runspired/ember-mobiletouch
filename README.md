@@ -23,9 +23,9 @@ through Ember's eventing system.
 ```
 Ember.View.extend({
   
-  hammerAllow : [],
+  gestureAllow : [],
   
-  hammerExclude : [],
+  gestureExclude : [],
   
   tap : function (e) {
     ;//do something!
@@ -34,19 +34,19 @@ Ember.View.extend({
 })
 ```
 
-###hammerAllow
+###gestureAllow
 
 Optionally specify jQuery selectors for children of the View that can
 trigger the defined gestures.
 
 
-###hammerExclude
+###gestureExclude
 
 Optionally specify child elements of the View which should never
 trigger the defined gestures.
 
-**hammerAllow and hammerExclude can be used in tandem**
-
+**gestureAllow and gestureExclude can be used in tandem and will never filter the View itself**
+**filters are not applied to non-gestures (e.g. events defined in defaultConfig.events)**
 
 
 ###Action helper

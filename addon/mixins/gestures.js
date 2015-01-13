@@ -16,8 +16,8 @@ export default Ember.Mixin.create({
     Ember.Logger.debug('Filtering Touchable Elements');
 
     var allowed = Ember.$(element),
-      filter = this.get('hammerAllow'),
-      exclude = this.get('hammerExclude'),
+      filter = this.get('gestureAllow'),
+      exclude = this.get('gestureExclude'),
       viewEl = this.$()[0];
 
     if (element === viewEl) {
@@ -41,7 +41,9 @@ export default Ember.Mixin.create({
     var self = this,
       eventManager = self.get('eventManager') || self,
       gestures = this.get('gestures'),
-      events;
+      events,
+      allow,
+      exclude;
 
     //warn about gestures
     Ember.assert(
@@ -66,6 +68,20 @@ export default Ember.Mixin.create({
 
       eventManager.set('tap', eventManager.get('click'));
       delete eventManager['click'];
+    }
+
+    //warn if hammerAllow is present
+    allow = this.get('hammerAllow');
+    if (allow) {
+      Ember.Logger.warn('[DEPRECATED] Use of hammerAllow on views and components will be removed in 2.0.  Use gestureAllow instead.');
+      this.gestureAllow = allow;
+    }
+
+    //warn if hammerExclude is present
+    exclude = this.get('hammerExclude');
+    if (exclude) {
+      Ember.Logger.warn('[DEPRECATED] Use of hammerExclude on views and components will be removed in 2.0.  Use gestureExclude instead.');
+      this.gestureExclude = exclude;
     }
 
     if (gestures) {

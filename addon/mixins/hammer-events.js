@@ -126,7 +126,7 @@ export default Ember.Mixin.create({
 
   __executeGestureWithFilters : function (eventName, event, view, context) {
 
-    var shouldFilter = isGesture(eventName) ? (view.get('hammerAllow') || view.get('hammerExclude')) : false,
+    var shouldFilter = isGesture(eventName) ? (view.get('gestureAllow') || view.get('gestureExclude')) : false,
       element;
 
     if (context) {
