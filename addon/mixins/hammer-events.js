@@ -43,6 +43,10 @@ var hammerEvents = {
     }
   };
 
+function isGesture(name) {
+  return !defaultConfig.events.hasOwnProperty(name.toLowerCase());
+}
+
 export default Ember.Mixin.create({
 
   /**
@@ -122,7 +126,7 @@ export default Ember.Mixin.create({
 
   __executeGestureWithFilters : function (eventName, event, view, context) {
 
-    var shouldFilter = view.get('hammerAllow') || view.get('hammerExclude'),
+    var shouldFilter = isGesture(eventName) ? (view.get('hammerAllow') || view.get('hammerExclude')) : false,
       element,
       ret;
 
