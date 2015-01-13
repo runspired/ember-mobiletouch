@@ -17,7 +17,7 @@ export default {
       __useGesturesHash : config.mobileTouch ? config.mobileTouch.useGesturesHash : false
     });
 
-    Ember.LinkView.reopen(LinkViewMods);
+    Ember.LinkView.reopen({ __alwaysTapOnPress : config.mobileTouch.alwaysTapOnPress || false }, LinkViewMods);
 
     var oldActionHelper = Ember.Handlebars.helpers.action;
     Ember.Handlebars.helpers.action = function (params, hash, options, env) {
