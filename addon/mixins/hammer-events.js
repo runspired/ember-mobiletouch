@@ -123,7 +123,7 @@ export default Ember.Mixin.create({
       alwaysTapOnPress = mobileSettings.alwaysTapOnPress || false;
 
     gestures.forEach(function (category) {
-      Ember.merge(events, hammerEvents[category] || {});
+      Ember.merge({}, events, hammerEvents[category] || {});
       defaultConfig.options[category] = true;
     });
     this.set('events', events);
