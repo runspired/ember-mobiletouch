@@ -76,6 +76,7 @@ export default Ember.Mixin.create({
     document.body.addEventListener('click', function (e) {
       e = e || window.event;
       var cancelOn = Ember.$(e.target).filter('a[href], button, input[type="submit"], input[type="button"]');
+      Ember.Logger.debug('Click Canceller:', e.target, cancelOn, !!cancelOn.length);
       if (cancelOn.length) {
         e.preventDefault();
         e.stopPropagation();
@@ -143,8 +144,6 @@ export default Ember.Mixin.create({
 
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
 
-      if (isInput) { debugger; }
-
       if (shouldFilter && !element) {
         return false;
       }
@@ -156,7 +155,10 @@ export default Ember.Mixin.create({
 
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
 
-      if (isInput) { debugger; }
+      if (isInput) {
+        Ember.Logger.debug('View has input event?', view.has(eventName));
+        Ember.Logger.debug('Dump:', event.target, view, event);
+      }
 
       if (shouldFilter && !element) {
         return false;
