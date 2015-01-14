@@ -153,20 +153,7 @@ export default Ember.Mixin.create({
 
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
 
-      if (eventName === 'tap') {
-        Ember.Logger.debug('View ' + view.elementId + (view.has(eventName) ? ' has ' : ' does not have ') + 'a handler for ' + eventName);
-        Ember.Logger.debug('View has the following filters', {
-          allow: view.get('gestureAllow'),
-          exclude: view.get('gestureExclude')
-        });
-        Ember.Logger.debug('View should ' + (shouldFilter ? '' : 'not ') + 'filter the event.');
-        if (shouldFilter) {
-          Ember.Logger.debug('Filtered Target is: ', element);
-        }
-      }
-
       if (shouldFilter && !element) {
-        Ember.Logger.debug('Filter Discarded Event');
         result = false;
       } else {
         result = Ember.run.join(view, view.handleEvent, eventName, event);
@@ -174,7 +161,6 @@ export default Ember.Mixin.create({
 
     }
 
-    Ember.Logger.debug('Event Run Result: ', result);
     if (result === false) {
       if (event.stopPropagation) {
         Ember.Logger.debug('stopping propagation');
