@@ -66,12 +66,15 @@ export default Ember.Mixin.create({
 
     this.set('_hammerInstance', new Hammer(element, options));
 
-    //prevent default behavior on links
+    //prevent default behavior on links and buttons
     document.body.addEventListener('click', function (e) {
       e = e || window.event;
-      e.preventDefault();
-      e.stopPropagation();
-      return false;
+      var cancelOn = Ember.$(e.target).filter('a[href], button, input[type="submit"], input[type="button"]');
+      if (cancelOn.length) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
     });
 
     PreventGhostClicks.add(element);
