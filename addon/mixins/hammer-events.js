@@ -44,7 +44,10 @@ var hammerEvents = {
   };
 
 function isGesture(name) {
-  return !defaultConfig.events.hasOwnProperty(name.toLowerCase());
+  Ember.Logger.debug('Checking if ' + name + ' is a gesture');
+  var ret = !defaultConfig.events.hasOwnProperty(name.toLowerCase());
+  Ember.Logger.debug('event isGesture?', ret);
+  return ret;
 }
 
 function isInputEvent(name) {
