@@ -8,9 +8,9 @@ export default {
 
   name: 'mobiletouch',
 
-  initialize: function() {
+  initialize: function(container) {
 
-    Ember.EventDispatcher.reopen({ _mobileTouchConfig : config.mobileTouch || {} }, HammerEvents);
+    var dispatcher = Ember.EventDispatcher.extend({ _mobileTouchConfig : config.mobileTouch || {} }, HammerEvents);
 
     //components extend Ember.View, so this should be all that's needed
     Ember.View.reopen(GesturesMixin, {
@@ -24,7 +24,9 @@ export default {
       var opts = options ? options : hash.hash;
       opts.on = opts.on || 'tap';
       return oldActionHelper.apply(null, arguments);
-    }
+    };
+
+    container.register('event_dispatcher:main', dispatcher);
 
   }
 };

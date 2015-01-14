@@ -47,6 +47,12 @@ function isGesture(name) {
   return !defaultConfig.events.hasOwnProperty(name.toLowerCase());
 }
 
+function isInputEvent(name) {
+  var isKey = name.toLowerCase().indexOf('key') !== -1,
+    isInput = name.toLowerCase() === 'input';
+  return isKey || isInput;
+}
+
 export default Ember.Mixin.create({
 
   /**
@@ -130,11 +136,14 @@ export default Ember.Mixin.create({
   __executeGestureWithFilters : function (eventName, event, view, context) {
 
     var shouldFilter = isGesture(eventName) ? (view.get('gestureAllow') || view.get('gestureExclude')) : false,
-      element;
+      element,
+      isInput = isInputEvent(eventName);
 
     if (context) {
 
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
+
+      if (isInput) { debugger; }
 
       if (shouldFilter && !element) { return false; }
 
@@ -145,6 +154,9 @@ export default Ember.Mixin.create({
     if (view.has(eventName)) {
 
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
+
+      if (isInput) { debugger; }
+
       if (shouldFilter && !element) { return false; }
 
       Ember.run.join(view, view.handleEvent, eventName, event);
