@@ -44,10 +44,7 @@ var hammerEvents = {
   };
 
 function isGesture(name) {
-  Ember.Logger.debug('Checking if ' + name + ' is a gesture');
-  var ret = !defaultConfig.events.hasOwnProperty(name.toLowerCase());
-  Ember.Logger.debug('event isGesture?', ret);
-  return ret;
+  return !defaultConfig.events.hasOwnProperty(name.toLowerCase());
 }
 
 function isInputEvent(name) {
@@ -156,14 +153,16 @@ export default Ember.Mixin.create({
 
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
 
-      Ember.Logger.debug('View ' + view.elementId + (view.has(eventName) ? ' has ' : ' does not have ') + 'a handler for ' + eventName);
-      Ember.Logger.debug('View has the following filters', {
-        allow : view.get('gestureAllow'),
-        exclude : view.get('gestureExclude')
-      });
-      Ember.Logger.debug('View should ' + (shouldFilter ? '' : 'not ') + 'filter the event.');
-      if (shouldFilter) {
-        Ember.Logger.debug('Filtered Target is: ', element);
+      if (eventName === 'tap') {
+        Ember.Logger.debug('View ' + view.elementId + (view.has(eventName) ? ' has ' : ' does not have ') + 'a handler for ' + eventName);
+        Ember.Logger.debug('View has the following filters', {
+          allow: view.get('gestureAllow'),
+          exclude: view.get('gestureExclude')
+        });
+        Ember.Logger.debug('View should ' + (shouldFilter ? '' : 'not ') + 'filter the event.');
+        if (shouldFilter) {
+          Ember.Logger.debug('Filtered Target is: ', element);
+        }
       }
 
       if (shouldFilter && !element) {
