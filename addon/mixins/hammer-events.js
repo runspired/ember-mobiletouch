@@ -156,11 +156,11 @@ export default Ember.Mixin.create({
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
 
       if (isInput) {
-        Ember.Logger.debug('View has input event?', view.has(eventName));
-        Ember.Logger.debug('Dump:', event.target, view, event);
+        Ember.Logger.debug('View ' + view.elementId + (view.has(eventName) ? ' has ' : ' does not have ') + 'a handler for ' + eventName);
       }
 
       if (shouldFilter && !element) {
+        Ember.Logger.debug('filtering event');
         return false;
       }
 
