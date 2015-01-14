@@ -120,7 +120,7 @@ export default Ember.Mixin.create({
       alwaysTapOnPress = mobileSettings.alwaysTapOnPress || false;
 
     gestures.forEach(function (category) {
-      Ember.merge(events, hammerEvents[category] || {});
+      Ember.merge({}, events, hammerEvents[category] || {});
       defaultConfig.options[category] = true;
     });
     this.set('events', events);
@@ -137,38 +137,45 @@ export default Ember.Mixin.create({
   __executeGestureWithFilters : function (eventName, event, view, context) {
 
     var shouldFilter = isGesture(eventName) ? (view.get('gestureAllow') || view.get('gestureExclude')) : false,
-      element, result,
-      isInput = isInputEvent(eventName);
+      element, result;
 
     if (context) {
 
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
 
       if (shouldFilter && !element) {
-        return false;
+        result = false;
+      } else {
+        result = Ember.run(context, context[eventName], event, view);
       }
-
-      result = Ember.run(context, context[eventName], event, view);
-      return result;
 
     } else {
 
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
 
-      if (isInput) {
-        Ember.Logger.debug('View ' + view.elementId + (view.has(eventName) ? ' has ' : ' does not have ') + 'a handler for ' + eventName);
-      }
-
       if (shouldFilter && !element) {
-        Ember.Logger.debug('filtering event');
-        return false;
+        result = false;
+      } else {
+        result = Ember.run.join(view, view.handleEvent, eventName, event);
       }
-
-      result = Ember.run.join(view, view.handleEvent, eventName, event);
-      Ember.Logger.debug('Event Run Result: ', result);
-      return result;
 
     }
+
+    if (result === false) {
+      if (event.stopPropagation) {
+        Ember.Logger.debug('stopping propagation');
+        event.stopPropagation();
+      }
+      if (event.preventDefault) {
+        Ember.Logger.debug('preventing default');
+        event.preventDefault();
+      }
+      if (event.preventDefaults) {
+        Ember.Logger.debug('preventing defaults');
+        event.preventDefaults();
+      }
+    }
+    return result;
 
   },
 
