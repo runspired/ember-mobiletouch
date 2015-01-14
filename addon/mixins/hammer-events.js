@@ -165,6 +165,7 @@ export default Ember.Mixin.create({
       }
 
       result = Ember.run.join(view, view.handleEvent, eventName, event);
+      Ember.Logger.debug('Event Run Result: ', result);
       return result;
 
     }
