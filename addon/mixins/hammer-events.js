@@ -136,7 +136,7 @@ export default Ember.Mixin.create({
   __executeGestureWithFilters : function (eventName, event, view, context) {
 
     var shouldFilter = isGesture(eventName) ? (view.get('gestureAllow') || view.get('gestureExclude')) : false,
-      element,
+      element, result,
       isInput = isInputEvent(eventName);
 
     if (context) {
@@ -145,26 +145,27 @@ export default Ember.Mixin.create({
 
       if (isInput) { debugger; }
 
-      if (shouldFilter && !element) { return false; }
+      if (shouldFilter && !element) {
+        return false;
+      }
 
-      Ember.run(context, context[eventName], event, view);
-      return false;
-    }
+      result = Ember.run(context, context[eventName], event, view);
+      return result;
 
-    if (view.has(eventName)) {
+    } else {
 
       element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
 
       if (isInput) { debugger; }
 
-      if (shouldFilter && !element) { return false; }
+      if (shouldFilter && !element) {
+        return false;
+      }
 
-      Ember.run.join(view, view.handleEvent, eventName, event);
-      return false;
+      result = Ember.run.join(view, view.handleEvent, eventName, event);
+      return result;
 
     }
-
-    return true; //keep bubbling
 
   },
 
@@ -177,8 +178,7 @@ export default Ember.Mixin.create({
       result = this.__executeGestureWithFilters(eventName, event, view, object);
       // Do not preventDefault in eventManagers.
       event.stopPropagation();
-    }
-    else {
+    } else if (view) {
       result = this._bubbleEvent(view, event, eventName);
     }
 
