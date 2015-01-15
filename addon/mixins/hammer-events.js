@@ -3,13 +3,13 @@ import PreventGhostClicks from "ember-mobiletouch/utils/prevent-ghost-clicks";
 
 //These settings can be overwritten by adding ENV.hammer in environment.js
 var hammerEvents = {
-  fastclick : {fastclick : 'fastClick' },
-  pan : { pan : 'pan', panstart : 'panStart', panmove : 'panMove', panend : 'panEnd', pancancel : 'panCancel', panleft : 'panLeft', panright : 'panRight', panup : 'panUp', pandown : 'panDown' },
-  pinch : { pinch : 'pinch', pinchstart : 'pinchStart', pinchmove : 'pinchMove', pinchend : 'pinchEnd', pinchcancel : 'pinchCancel', pinchin : 'pinchIn', pinchout : 'pinchOut' },
-  press : { press : 'press', pressup : 'pressUp' },
-  rotate : { rotate : 'rotate', rotatestart : 'rotateStart', rotatemove : 'rotateMove', rotateend : 'rotateEnd', rotatecancel : 'rotateCancel' },
-  swipe : { swipe : 'swipe', swipeleft : 'swipeLeft', swiperight : 'swipeRight', swipeup : 'swipeUp', swipedown : 'swipeDown' },
-  tap : { tap : 'tap' }
+    fastclick : {fastclick : 'fastClick' },
+    pan : { pan : 'pan', panstart : 'panStart', panmove : 'panMove', panend : 'panEnd', pancancel : 'panCancel', panleft : 'panLeft', panright : 'panRight', panup : 'panUp', pandown : 'panDown' },
+    pinch : { pinch : 'pinch', pinchstart : 'pinchStart', pinchmove : 'pinchMove', pinchend : 'pinchEnd', pinchcancel : 'pinchCancel', pinchin : 'pinchIn', pinchout : 'pinchOut' },
+    press : { press : 'press', pressup : 'pressUp' },
+    rotate : { rotate : 'rotate', rotatestart : 'rotateStart', rotatemove : 'rotateMove', rotateend : 'rotateEnd', rotatecancel : 'rotateCancel' },
+    swipe : { swipe : 'swipe', swipeleft : 'swipeLeft', swiperight : 'swipeRight', swipeup : 'swipeUp', swipedown : 'swipeDown' },
+    tap : { tap : 'tap' }
   },
 
   defaultConfig = {
@@ -76,6 +76,7 @@ export default Ember.Mixin.create({
     document.body.addEventListener('click', function (e) {
       e = e || window.event;
       var cancelOn = Ember.$(e.target).filter('a[href], button, input[type="submit"], input[type="button"]');
+      Ember.Logger.debug('Click Canceller:', e.target, cancelOn, !!cancelOn.length);
       if (cancelOn.length) {
         e.preventDefault();
         e.stopPropagation();
@@ -89,7 +90,7 @@ export default Ember.Mixin.create({
 
   destroy : function () {
     var hammer = this.get('_hammerInstance'),
-        element = Ember.$(this.get('rootElement'))[0];
+      element = Ember.$(this.get('rootElement'))[0];
 
     if (hammer) {
       hammer.destroy();
@@ -122,6 +123,7 @@ export default Ember.Mixin.create({
       Ember.merge(events, hammerEvents[category] || {});
       defaultConfig.options[category] = true;
     });
+    Ember.Logger.debug('Available Events In Ember', events);
     this.set('events', events);
 
     //setup rootElement and initial events
@@ -160,14 +162,29 @@ export default Ember.Mixin.create({
 
     }
 
+    if (['mouseMove', 'mouseEnter', 'mouseLeave'].indexOf(eventName) === -1) {
+      Ember.Logger.debug('View ' + view.elementId + (view.has(eventName) ? ' has ' : ' does not have ') + 'a handler for ' + eventName);
+      Ember.Logger.debug('View has the following filters', {
+        allow: view.get('gestureAllow'),
+        exclude: view.get('gestureExclude')
+      });
+      Ember.Logger.debug('View should ' + (shouldFilter ? '' : 'not ') + 'filter the event.');
+      if (shouldFilter) {
+        Ember.Logger.debug('Filtered Target is: ', element);
+      }
+    }
+
     if (result === false) {
       if (event.stopPropagation) {
+        Ember.Logger.debug('stopping propagation');
         event.stopPropagation();
       }
       if (event.preventDefault) {
+        Ember.Logger.debug('preventing default');
         event.preventDefault();
       }
       if (event.preventDefaults) {
+        Ember.Logger.debug('preventing defaults');
         event.preventDefaults();
       }
     }
