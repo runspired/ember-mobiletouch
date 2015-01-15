@@ -31,3 +31,9 @@
 - [FIX] fixes bug where `View.__useGesturesHash` was always null 
 - [FIX] `__executeGestureWithFilters` returns false after it runs a handler
 - [FIX] non gesture events are not sent through `__filterTouchableElements`
+
+## 1.2.1 - BAD RELEASE, DO NOT USE THIS VERSION
+- [FIX] bubble events correctly, cancel events correctly, don't merge final events into the defaultConfig object
+
+## 1.2.2
+- [FIX] fix issue from 1.2.1 which removed gestures from eventing
