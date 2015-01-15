@@ -76,7 +76,6 @@ export default Ember.Mixin.create({
     document.body.addEventListener('click', function (e) {
       e = e || window.event;
       var cancelOn = Ember.$(e.target).filter('a[href], button, input[type="submit"], input[type="button"]');
-      Ember.Logger.debug('Click Canceller:', e.target, cancelOn, !!cancelOn.length);
       if (cancelOn.length) {
         e.preventDefault();
         e.stopPropagation();
@@ -123,7 +122,6 @@ export default Ember.Mixin.create({
       Ember.merge(events, hammerEvents[category] || {});
       defaultConfig.options[category] = true;
     });
-    Ember.Logger.debug('Available Events In Ember', events);
     this.set('events', events);
 
     //setup rootElement and initial events
@@ -162,29 +160,14 @@ export default Ember.Mixin.create({
 
     }
 
-    if (['mouseMove', 'mouseEnter', 'mouseLeave'].indexOf(eventName) === -1) {
-      Ember.Logger.debug('View ' + view.elementId + (view.has(eventName) ? ' has ' : ' does not have ') + 'a handler for ' + eventName);
-      Ember.Logger.debug('View has the following filters', {
-        allow: view.get('gestureAllow'),
-        exclude: view.get('gestureExclude')
-      });
-      Ember.Logger.debug('View should ' + (shouldFilter ? '' : 'not ') + 'filter the event.');
-      if (shouldFilter) {
-        Ember.Logger.debug('Filtered Target is: ', element);
-      }
-    }
-
     if (result === false) {
       if (event.stopPropagation) {
-        Ember.Logger.debug('stopping propagation');
         event.stopPropagation();
       }
       if (event.preventDefault) {
-        Ember.Logger.debug('preventing default');
         event.preventDefault();
       }
       if (event.preventDefaults) {
-        Ember.Logger.debug('preventing defaults');
         event.preventDefaults();
       }
     }
