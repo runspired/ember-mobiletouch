@@ -20,10 +20,11 @@ export default {
     Ember.LinkView.reopen({ __alwaysTapOnPress : config.mobileTouch.alwaysTapOnPress || false }, LinkViewMods);
 
     var oldActionHelper = Ember.Handlebars.helpers.action;
-    Ember.Handlebars.helpers.action = function (params, hash, options, env) {
-      var opts = options ? options : hash.hash;
-      opts.on = opts.on || 'tap';
-      return oldActionHelper.apply(null, arguments);
+    Ember.Handlebars.helpers.action = function (/*actionName*/) {
+      var options = arguments[arguments.length - 1];
+      var hash = options.hash;
+      hash.on = hash.on || 'tap';
+      return oldActionHelper.apply(this, arguments);
     };
 
     container.register('event_dispatcher:main', dispatcher);
