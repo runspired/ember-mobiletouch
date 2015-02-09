@@ -78,6 +78,22 @@ And this would trigger on `swipeRight`
 `{{#link-to 'dashboard' eventName="swipeRight"}}Dashboard{{/link-to}}`
 
 
+##Configuration
+
+The following settings can be configured in `config/environment.js`.  They are shown below with their defaults.
+
+```
+ENV.mobileTouch = {
+    use : ['tap', 'press'],
+    alwaysTapOnPress : true,
+    defaultTapOnPress : true
+};
+```
+
+##touchZone
+
+Increase the area that recognizes touch events for a specific button
+https://gist.github.com/runspired/506f39a4abb2be48d63f
 
 ##Changelog
 
