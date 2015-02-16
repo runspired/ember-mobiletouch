@@ -128,8 +128,8 @@ export default Ember.Mixin.create({
       recognizers = mobileSettings.use || defaultConfig.use;
 
     Ember.assert('Application has no rootElement', element);
-    Ember.assert('hammer.options.domEvents MUST be true!', options.domEvents);
-    Ember.assert('hammer.options.tap MUST be true!', options.tap);
+    Ember.assert('mobileTouch.options.domEvents MUST be true!', options.domEvents);
+    Ember.assert('mobileTouch.use MUST contain `tap`!', (recognizers.indexOf('tap') !== -1));
 
     var instance = new Hammer.Manager(element, options);
 
