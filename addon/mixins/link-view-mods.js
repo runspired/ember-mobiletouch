@@ -6,10 +6,10 @@ export default Ember.Mixin.create({
     this._super.apply(this, arguments);
 
     // Map desired event name to invoke function
-    var alwaysTapOnPress = this.get('__alwaysTapOnPress'),
+    var defaultTapOnPress = this.get('__defaultTapOnPress'),
       eventName = this.get('eventName');
 
-    if (alwaysTapOnPress && eventName === 'tap') {
+    if (defaultTapOnPress && eventName === 'tap') {
       this.on('press', this, this._invoke);
     }
   }
