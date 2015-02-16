@@ -122,6 +122,7 @@ export default Ember.Mixin.create({
 
   _initializeHammer: function () {
     var element = Ember.$(this.get('rootElement'))[0],
+      mobileSettings = this.get('_mobileTouchConfig') || {},
       options = this.get('_hammerManagerOptions'),
       recognizerOptions = this.get('_hammerRecognizerOptions'),
       recognizers = mobileSettings.use || defaultConfig.use;
@@ -191,7 +192,7 @@ export default Ember.Mixin.create({
       recognizerOptions = mobileSettings.tune || {},
       alwaysTapOnPress = mobileSettings.alwaysTapOnPress || false;
 
-    this.set('_hammerRecognizerOptions', Ember.merge({}, defaultConfig.tune, recognizerOptions);
+    this.set('_hammerRecognizerOptions', Ember.$.extend({}, defaultConfig.tune, recognizerOptions));
 
     gestures.forEach(function (category) {
       Ember.merge(events, hammerEvents[category] || {});
