@@ -84,15 +84,43 @@ The following settings can be configured in `config/environment.js`.  They are s
 
 ```
 ENV.mobileTouch = {
-    use : ['tap', 'press'],
-    alwaysTapOnPress : true,
-    defaultTapOnPress : true
+
+    //which gesture families to allow, will create a recognizer for each
+    //a minimum of tap must be present, turning off unused gestures can help performance
+    use : ['tap', 'press', 'pan', 'swipe'],
+
+    //whether to alias "press" to tap within Ember's eventing
+    // very useful if you don't need to distinguish and don't want to lose
+    // taps from people who tap longer
+    alwaysTapOnPress : false,
+    
+    //whether links and actions should trigger tap behavior on press as well
+    // if eventName or "on" has not been explicitly defined
+    // currently does not work with actions
+    defaultTapOnPress : true,
+
+    //passed to new Hammer.Manager(element, options)
+    options : {
+       domEvents : true
+    }
+    
+    //passed to the respective recognizer
+    tune : {
+      tap : { time : 250, threshold : 9 }, //Hammer default is 250 / 2
+      press : { time : 251, threshold : 9 }, //Hammer default is 500 / 5
+      swipe : { velocity : .3, threshold : 25 },
+      pan : {},
+      pinch : {},
+      rotate : {}
+    }
+
 };
 ```
 
 ##touchZone
 
-Increase the area that recognizes touch events for a specific button
+Sometimes smaller buttons or critical buttons need a larger capture area than their visible area.
+You can increase the area that recognizes touch events for a specific button
 https://gist.github.com/runspired/506f39a4abb2be48d63f
 
 ##Changelog

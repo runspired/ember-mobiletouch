@@ -1,5 +1,7 @@
 import Ember from "ember";
-import PreventGhostClicks from "ember-mobiletouch/utils/prevent-ghost-clicks";
+import PreventGhostClicks from "../utils/prevent-ghost-clicks";
+import capitalizeWord from "../utils/capitalize-word";
+
 
 //These settings can be overwritten by adding ENV.hammer in environment.js
 var hammerEvents = {
@@ -43,13 +45,38 @@ var hammerEvents = {
   },
 
   defaultConfig = {
-    use:       ['fastclick', 'pan', 'pinch', 'press', 'rotate', 'swipe', 'tap'],
-    fastclick: false,
+
+    //which gesture families to utilize
+    use: ['tap', 'press', 'pan', 'swipe'], // 'pan', 'pinch', 'press', 'rotate', 'swipe', 'tap'
+
+    //whether to use fast click (not implemented)
+    useFastClick: false,
+
+    //whether to use fast focus (not implemented)
+    useFastFocus: false,
+
+    //whether to alwaysTapOnPress
+    alwaysTapOnPress: false,
+
+    //whether to defaultTapOnPress
+    defaultTapOnPress: true,
+
+    //hammer manager default options
     options:   {
-      domEvents:      true,
-      swipeVelocity:  0.3,
-      swipeThreshold: 25
+      domEvents: true
     },
+
+    //hammer recognizer options
+    tune: {
+      tap: { time : 250, threshold : 9 }, //Hammer default is 250 / 2
+      press: { time : 251, threshold : 9 }, //Hammer default is 500 / 5
+      swipe: { velocity : .3, threshold : 25 },
+      pan: {},
+      pinch: {},
+      rotate: {}
+    },
+
+    //non hammer events for Ember to know about
     events:    {
       keydown:     'keyDown',
       keyup:       'keyUp',
@@ -90,17 +117,27 @@ export default Ember.Mixin.create({
    *
    */
   _hammerInstance: null,
-  _hammerOptions:  null,
+  _hammerManagerOptions:  null,
+  _hammerRecognizerOptions : null,
 
   _initializeHammer: function () {
     var element = Ember.$(this.get('rootElement'))[0],
-      options = this.get('_hammerOptions');
+      options = this.get('_hammerManagerOptions'),
+      recognizerOptions = this.get('_hammerRecognizerOptions'),
+      recognizers = mobileSettings.use || defaultConfig.use;
 
     Ember.assert('Application has no rootElement', element);
     Ember.assert('hammer.options.domEvents MUST be true!', options.domEvents);
     Ember.assert('hammer.options.tap MUST be true!', options.tap);
 
-    this.set('_hammerInstance', new Hammer(element, options));
+    var instance = new Hammer.Manager(element, options);
+
+    recognizers.forEach(function (name) {
+      var key = capitalizeWord(name);
+      instance.add(new Hammer[key](recognizerOptions[name]));
+    });
+
+    this.set('_hammerInstance', instance);
 
     //prevent default behavior on links and buttons
     document.body.addEventListener('click', function (e) {
@@ -151,19 +188,30 @@ export default Ember.Mixin.create({
     var mobileSettings = this.get('_mobileTouchConfig') || {},
       events = Ember.merge({}, mobileSettings.events || defaultConfig.events),
       gestures = mobileSettings.use || defaultConfig.use,
+      recognizerOptions = mobileSettings.tune || {},
       alwaysTapOnPress = mobileSettings.alwaysTapOnPress || false;
+
+    this.set('_hammerRecognizerOptions', Ember.merge({}, defaultConfig.tune, recognizerOptions);
 
     gestures.forEach(function (category) {
       Ember.merge(events, hammerEvents[category] || {});
-      defaultConfig.options[category] = true;
     });
+
+
+    //allow press events to be easily aliased to tap events
+    if (gestures.indexOf('press') !== -1 && alwaysTapOnPress) {
+      events.press = 'tap';
+      delete events.pressUp;
+    }
+
+
     this.set('events', events);
 
     //setup rootElement and initial events
     this._super(addedEvents, rootElement);
 
     //setup hammer
-    this.set('_hammerOptions', Ember.$.extend({}, defaultConfig.options, mobileSettings.options || {}));
+    this.set('_hammerManagerOptions', Ember.$.extend({}, defaultConfig.options, mobileSettings.options || {}));
     this._initializeHammer();
   },
 
