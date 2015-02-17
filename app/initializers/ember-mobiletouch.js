@@ -13,6 +13,7 @@ export default {
   initialize: function(container) {
 
     var dispatcher = Ember.EventDispatcher.extend({ _mobileTouchConfig : config.mobileTouch || {} }, HammerEvents),
+      defaultTapOnPress = config.mobileTouch.defaultTapOnPress || true,
       oldActionHelper;
 
     //components extend Ember.View, so this should be all that's needed
@@ -20,16 +21,18 @@ export default {
       __useGesturesHash : config.mobileTouch ? config.mobileTouch.useGesturesHash : false
     });
 
-    Ember.LinkView.reopen({ __defaultTapOnPress : config.mobileTouch.defaultTapOnPress || false }, LinkViewMods);
+    Ember.LinkView.reopen({ __defaultTapOnPress : defaultTapOnPress }, LinkViewMods);
 
     if (USE_HTMLBARS) {
-      //do nothing for a moment
-      oldActionHelper = Ember.Handlebars.helpers.action.helperFunc;
-      Ember.Handlebars.helpers.action.helperFunc = function (/*actionName*/) {
-        var options = arguments[arguments.length - 1];
-        var hash = options.hash;
+
+      //cache the old handler
+      oldActionHelper = Ember.Handlebars.helpers.action.helperFunction;
+
+      Ember.Handlebars.helpers.action.helperFunction = function (params, hash, options, env) {
+
         hash.on = hash.on || 'tap';
-        return oldActionHelper.apply(this, arguments);
+        oldActionHelper.apply(this, arguments);
+
       };
 
     } else {
