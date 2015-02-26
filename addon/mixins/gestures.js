@@ -13,8 +13,6 @@ export default Ember.Mixin.create({
 
   _filterTouchableElements : function (element) {
 
-    Ember.Logger.debug('Filtering Touchable Elements');
-
     var allowed = Ember.$(element),
       filter = this.get('gestureAllow'),
       exclude = this.get('gestureExclude'),
