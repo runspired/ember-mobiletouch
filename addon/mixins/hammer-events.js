@@ -70,7 +70,7 @@ var hammerEvents = {
     tune: {
       tap: { time : 250, threshold : 9 }, //Hammer default is 250 / 2
       press: { time : 251, threshold : 9 }, //Hammer default is 500 / 5
-      swipe: { velocity : .3, threshold : 25 },
+      swipe: { velocity : 0.3, threshold : 25 },
       pan: {},
       pinch: {},
       rotate: {}
@@ -146,9 +146,9 @@ export default Ember.Mixin.create({
       var $element = Ember.$(e.target);
       // cancel the click only if there is an ember action defined on the input or button of type submit
       var cancelIf =
-        ($element.is('a[href]') && !/^mailto:/.test($element.attr('href')))
-        || $element.is('button[type!="submit"], input[type="button"]')
-        || ($element.is('input[type="submit"], button[type="submit"]') && $element.attr('data-ember-action'));
+        ($element.is('a[href]') && !/^mailto:/.test($element.attr('href'))) ||
+          $element.is('button[type!="submit"], input[type="button"]') ||
+          ($element.is('input[type="submit"], button[type="submit"]') && $element.attr('data-ember-action'));
       if (cancelIf) {
         e.preventDefault();
         e.stopPropagation();
