@@ -1,3 +1,5 @@
+import Ember from "ember"; // Ember.run.bind
+
 /**
  * Prevent click events after a touchend.
  *
