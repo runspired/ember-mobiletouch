@@ -1,7 +1,14 @@
 import Ember from "ember";
 import PreventGhostClicks from "../utils/prevent-ghost-clicks";
 import capitalizeWord from "../utils/capitalize-word";
+import getProtocol from "../utils/get-protocol";
 
+var IS_MOBILE = !!("ontouchstart" in window);
+
+function isCustomProtocol(str) {
+  var protocol = getProtocol(str);
+  return !!protocol && protocol.indexOf('http') !== -1;
+}
 
 //These settings can be overwritten by adding ENV.hammer in environment.js
 var hammerEvents = {
@@ -146,9 +153,12 @@ export default Ember.Mixin.create({
       var $element = Ember.$(e.target);
       // cancel the click only if there is an ember action defined on the input or button of type submit
       var cancelIf =
-        ($element.is('a[href]') && !/^mailto:/.test($element.attr('href')))
-        || $element.is('button[type!="submit"], input[type="button"]')
-        || ($element.is('input[type="submit"], button[type="submit"]') && $element.attr('data-ember-action'));
+        !$element.hasClass('allow-click') &&
+        (
+          ($element.is('a[href]') && !isCustomProtocol($element.attr('href'))) ||
+          $element.is('button[type!="submit"], input[type="button"]') ||
+          ($element.is('input[type="submit"], button[type="submit"]') && $element.attr('data-ember-action'))
+        );
       if (cancelIf) {
         e.preventDefault();
         e.stopPropagation();
@@ -205,6 +215,12 @@ export default Ember.Mixin.create({
       delete events.pressUp;
     }
 
+    //on mobile browsers, we don't want to prevent form submissions via the keyboard
+    // mobile browser trigger the form submission by sending 'click' to the very first
+    // input button in the form.  Hammer uses mouse events, not click, for tap detection.
+    if (IS_MOBILE) {
+      events.click = 'submit';
+    }
 
     this.set('events', events);
 
