@@ -1,51 +1,24 @@
-import Ember from 'ember'; //event dispatcher
-import config from '../config/environment'; //ENV.hammer
-import HammerEvents from 'ember-mobiletouch/mixins/hammer-events';
-import GesturesMixin from 'ember-mobiletouch/mixins/gestures';
-import LinkViewMods from 'ember-mobiletouch/mixins/link-view-mods';
+import config from '../config/environment'; //get ENV.mobileTouch
+import defaultConfig from 'ember-mobiletouch/default-config';
 
-var USE_HTMLBARS = !!Ember.HTMLBars;
+//activate overrides
+import ModifiedView from 'ember-mobiletouch/overrides/view';
+import ModifiedLinkView from 'ember-mobiletouch/overrides/link-view';
+import ModifiedEventManager from '../overrides/ember-mobiletouch';
+import ModifiedActionHelper from 'ember-mobiletouch/overrides/action-helper';
+
 
 export default {
 
   name: 'mobiletouch',
 
-  initialize: function(container) {
+  initialize: function() {
 
-    var dispatcher = Ember.EventDispatcher.extend({ _mobileTouchConfig : config.mobileTouch || {} }, HammerEvents),
-      defaultTapOnPress = config.mobileTouch.defaultTapOnPress || true,
-      oldActionHelper;
+    var mergedConfig = Ember.merge({}, defaultConfig, config);
 
-    //components extend Ember.View, so this should be all that's needed
-    Ember.View.reopen(GesturesMixin, {
-      __useGesturesHash : config.mobileTouch ? config.mobileTouch.useGesturesHash : false
-    });
-
-    Ember.LinkView.reopen({ __defaultTapOnPress : defaultTapOnPress }, LinkViewMods);
-
-    if (USE_HTMLBARS) {
-
-      //cache the old handler
-      oldActionHelper = Ember.Handlebars.helpers.action.helperFunction;
-
-      Ember.Handlebars.helpers.action.helperFunction = function (params, hash, options, env) {
-
-        hash.on = hash.on || 'tap';
-        oldActionHelper.apply(this, arguments);
-
-      };
-
-    } else {
-      oldActionHelper = Ember.Handlebars.helpers.action;
-      Ember.Handlebars.helpers.action = function (/*actionName*/) {
-        var options = arguments[arguments.length - 1];
-        var hash = options.hash;
-        hash.on = hash.on || 'tap';
-        return oldActionHelper.apply(this, arguments);
-      };
-    }
-
-    container.register('event_dispatcher:main', dispatcher);
+    //add config settings to overrides
+    ModifiedView.reopen({ __useGesturesHash : mergedConfig.useGesturesHash });
+    ModifiedLinkView.reopen({ __defaultTapOnPress : mergedConfig.defaultTapOnPress });
 
   }
 };
