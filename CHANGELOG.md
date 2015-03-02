@@ -1,5 +1,27 @@
 #Changelog
 
+## 1.4.0-beta.1
+Primarily an internal refactor that improves testability and maintainability.  One major change in `config`
+settings.
+
+- [FIX] submit buttons on mobile keyboards will now work correctly.
+- [FIX] clicks are not busted on links with custom protocols (e.g. mailto: tel:)
+- [FEAT] adding the `allow-click` class to a link or button will prevent click busting.
+- [FEAT] mixins are now available for enabling vertical pan/swipe without breaking scrolling.
+- [BREAKING] if you are using the `ENV.mobileTouch.events`, this version will break your setup, read more below.
+- [BREAKING] the default config for swipe and pan will now prevent vertical panning/swiping so as to not break scroll.
+
+In order to make testing easier, we now reopen the EventManager instead of extending it.  This means we subtract events
+from Ember's existing events instead of merely defining all our own.  `ENV.mobileTouch.events` should now be an
+array containing only those events you wish to remove.  This has the added benefit of making configuration in this
+area easier.
+
+## 1.3.2
+- [FIX] HTMLBars support
+
+## 1.3.1
+- [FIX] brings in `defaultTapOnPress` (meant to be included in 1.3.0)
+
 ## 1.3.0
 - [FIX] Thanks to @huafu who identified and fixed an issue preventing action params from being sent with the action
 - [DOC] Better documentation of configuration (more coming)

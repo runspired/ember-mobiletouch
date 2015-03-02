@@ -19,27 +19,23 @@ eventing along with other "platform specific" (mostly mouse) handlers.  `click` 
 with `on="click"` will give deprecation notices.
 
 
-## 1.3
-- [ ] FEAT: Add "defaultTapOnPress" option for actions as well.
 
-## 1.3.1
-- HTMLBars support
+# 1.5
+
 - [ ] Fast focus on inputs on Cordova apps (`.focus()` available)
 - [ ] Fast focus on inputs on mobile apps (`.focus()` broken in Safari)
 
-# 1.4
-- [ ] Add "fastClick" event (touchstart based implementation)
-- [ ] Global Edge Gestures (based on relative coordinates `["top", "center"]` ),
-- [ ] Multi-Touch Gestures (three finger and four finger swipes)
+- [ ] Consider adding a super fast "fastClick" event (touchstart based implementation)
 
-# 1.5
-- [ ] FEAT: Trackpad gesture support?
+- [ ] Enable Multi-Touch Gestures (e.g. 2/3/4 finger swipes) and doubleTap via custom recognizers added in recognizers.js
+
 
 # 1.6
-- [-] PERF: Can we send events from hammer to Ember's delegator directly, or do we have to trigger the DOM events?
-
-# 1.7
 - [ ] Automated Tests
 
+# 1.7
+- [ ] ??? FEAT: Trackpad gesture support ???
+- [ ] ??? Global Edge Gestures (based on relative coordinates `["top", "center"]` ) ???
+
 ## 2.0
-- [ ] Remove Deprecated support for `gestures : {}` hash
+- [ ] Remove Deprecations
