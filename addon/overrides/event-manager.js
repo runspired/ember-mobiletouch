@@ -160,13 +160,6 @@ export default Ember.EventDispatcher.reopen({
       delete events.pressUp;
     }
 
-    //on mobile browsers, we don't want to prevent form submissions via the keyboard
-    // mobile browser trigger the form submission by sending 'click' to the very first
-    // input button in the form.  Hammer uses mouse events, not click, for tap detection.
-    if (IS_MOBILE) {
-      events.click = 'submit';
-    }
-
 
     //probably unnecessary? events should be a reference already
     this.set('events', events);
