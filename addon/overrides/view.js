@@ -32,6 +32,35 @@ export default Ember.View.reopen({
 
   /**!
    *
+   * Called when an event is bubbling to determine whether to discard
+   * a gesture from firing.
+   *
+   * @param element
+   * @returns {*}
+   * @private
+   */
+  _filterTouchableElements : function (element) {
+
+    var allowed = Ember.$(element),
+      filter = this.get('gestureAllow'),
+      exclude = this.get('gestureExclude'),
+      viewEl = this.$()[0];
+
+    if (element === viewEl) {
+      return element;
+    }
+    if (filter) {
+      allowed = allowed.filter(filter);
+    }
+    if (exclude) {
+      allowed = allowed.not(exclude);
+    }
+    return allowed.length ? element : false;
+  },
+
+
+  /**!
+   *
    */
   __setupGestures : function () {
 

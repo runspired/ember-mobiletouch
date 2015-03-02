@@ -5,6 +5,7 @@ import isCustomProtocol from "../utils/is-custom-protocol";
 import isGesture from "../utils/is-gesture";
 import defaultConfiguration from "../default-config";
 import hammerEvents from "../utils/hammer-events";
+import RecognizerInterface from "../recognizers";
 
 var IS_MOBILE = !!("ontouchstart" in window);
 
@@ -34,21 +35,19 @@ export default Ember.EventDispatcher.reopen({
    *
    * @private
    */
-  _initializeHammer: function () {
+  _initializeHammer: function (rootElement) {
 
-    var element = Ember.$(this.get('rootElement'))[0];
+    Ember.Logger.debug('rootElement', Ember.$(rootElement)[0]);
+
+    var element = Ember.$(rootElement)[0];
     Ember.assert('Application has no rootElement', element);
 
     //setup the Manager instance
     var config = this.get('_mobileTouchConfig');
     this.set('_hammerInstance', new Hammer.Manager(element, config.options));
 
-
-    //add initial recognizers (recognizers defined in app/recognizers.js are added later)
-    var EventManager = this;
-    config.use.forEach(function (name) {
-      EventManager._addRecognizer(name, config.tune[name]);
-    });
+    //add recognizers
+    this._initializeRecognizers();
 
 
     /*
@@ -106,13 +105,37 @@ export default Ember.EventDispatcher.reopen({
 
   },
 
+  _customRecognizers : null,
+
+  /**!
+   * Initializes any custom recognizers added in app/recognizers.js
+   */
+  _initializeRecognizers : function () {
+
+    var Manager = this.get('_hammerInstance');
+    var config = this.get('_mobileTouchConfig');
+    var EventManager = this;
+    var Interface = new RecognizerInterface(this, this.get('_hammerInstance'));
+
+    //add initial recognizers (recognizers defined in app/recognizers.js are added later)
+    config.use.forEach(function (name) {
+      Interface.Recognizers[capitalizeWord(name)] = EventManager._addRecognizer(name, config.tune[name]);
+    });
+
+    //add custom recognizers
+    var CustomRecognizers = this.get('_customRecognizers');
+    if (CustomRecognizers) { CustomRecognizers.call(Interface); }
+
+  },
 
   /**!
    * Adds a recognizer to the Hammer instance
    */
   _addRecognizer: function(type, options) {
     var Manager = this.get('_hammerInstance');
-    Manager.add(new Hammer[capitalizeWord(type)](options));
+    var recognizer = new Hammer[capitalizeWord(type)](options)
+    Manager.add(recognizer);
+    return recognizer;
   },
 
 
@@ -164,13 +187,11 @@ export default Ember.EventDispatcher.reopen({
     //probably unnecessary? events should be a reference already
     this.set('events', events);
 
-
-    //setup rootElement and initial events
-    this._super(addedEvents, rootElement);
-
-
     //setup hammer
-    this._initializeHammer();
+    this._initializeHammer(rootElement);
+
+    //setup rootElement and  event listeners
+    this._super(addedEvents, rootElement);
 
   },
 
