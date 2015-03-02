@@ -1,7 +1,7 @@
 import Ember from "ember";
 
 //Ember.Component extends Ember.View so this reopen will affect both
-Ember.View.reopen({
+export default Ember.View.reopen({
 
   /**!
    * Set gestureAllow to a jQuery selector string to optionally specify
