@@ -93,6 +93,34 @@ export default Ember.EventDispatcher.reopen({
     });
 
 
+
+    /*
+        Implements a fast focus mechanism on mobile web/Cordova
+     */
+    if (IS_MOBILE) {
+
+      document.body.addEventListener('tap press', function (e) {
+        e = e || window.event;
+        var $element = Ember.$(e.target);
+
+        /*
+         If the click was on an input element that needs to be able to focus, recast
+         the click as a "focus" event.
+
+         This fixes tap events on mobile where keyboardShrinksView or similar is true.
+         Such devices depend on the ghost click to trigger focus, but the ghost click
+         will never reach the element.
+         */
+        var notFocusableTypes = ['submit', 'button', 'hidden', 'reset', 'range', 'radio', 'image', 'checkbox'];
+        Ember.Logger.debug('type', $element, $element.attr('type'));
+        if ($element.is('input') && notFocusableTypes.indexOf($element.attr('type')) === -1) {
+          $element.focus();
+        }
+
+      });
+
+    }
+
     /*
       Mobile devices trigger a click after a delay
 
