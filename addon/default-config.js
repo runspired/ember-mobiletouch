@@ -30,18 +30,6 @@ export default {
    */
   useFastClick: false,
 
-  /**!
-   * @planned
-   * (not implemented)
-   *
-   * Whether to use fastfocus.  On mobile browsers, it's often
-   * necessary to trigger a second focus event to properly activate
-   * the keyboard and place the cursor.  There's also conditions in
-   * which it's necessary to trigger focus from within a user generated
-   * action.  Known workarounds for these cases will be implemented
-   * behind this feature flag.
-   */
-  useFastFocus: false,
 
   /**!
    * Whether to always trigger a 'tap' when the user presses.
