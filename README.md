@@ -240,3 +240,16 @@ https://gist.github.com/runspired/506f39a4abb2be48d63f
 ##Roadmap
 
 - [roadmap](./ROADMAP.md)
+
+##Testing
+
+When using ember-mobiletouch, actions etc. are no longer triggered by clicks, but by taps.
+This can break some of your apps existing tests.
+
+In `test-helper.js` you will need to import the `Ember.EventDispatcher` changes.
+
+`import mobileTouchOverrides from 'yourapp/overrides/ember-mobiletouch';`
+
+In your tests on actions, you will need to use `triggerEvent('#some-selector', 'tap')` instead
+of `click('#some-selector')`
+
