@@ -37,8 +37,6 @@ export default Ember.EventDispatcher.reopen({
    */
   _initializeHammer: function (rootElement) {
 
-    Ember.Logger.debug('rootElement', Ember.$(rootElement)[0]);
-
     var element = Ember.$(rootElement)[0];
     Ember.assert('Application has no rootElement', element);
 
@@ -112,7 +110,6 @@ export default Ember.EventDispatcher.reopen({
          will never reach the element.
          */
         var notFocusableTypes = ['submit', 'button', 'hidden', 'reset', 'range', 'radio', 'image', 'checkbox'];
-        Ember.Logger.debug('type', $element, $element.attr('type'));
         if ($element.is('input') && notFocusableTypes.indexOf($element.attr('type')) === -1) {
           $element.focus();
         }
@@ -140,7 +137,6 @@ export default Ember.EventDispatcher.reopen({
    */
   _initializeRecognizers : function () {
 
-    var Manager = this.get('_hammerInstance');
     var config = this.get('_mobileTouchConfig');
     var EventManager = this;
     var Interface = new RecognizerInterface(this, this.get('_hammerInstance'));

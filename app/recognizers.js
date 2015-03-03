@@ -25,9 +25,9 @@ export default function () {
       taps : 2
     },
 
-    with : ['tap'], //an array of recognizers to recognize with.
+    'with' : ['tap'], //an array of recognizers to recognize with.
 
-    without : [], //an array of recognizers that must first fail
+    without : [] //an array of recognizers that must first fail
   });
   */
 

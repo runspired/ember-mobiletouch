@@ -1,5 +1,5 @@
 import capitalizeWord from "./utils/capitalize-word";
-import Ember from "Ember";
+import Ember from "ember";
 
 export default function (EventManager, instance) {
 
@@ -28,7 +28,7 @@ export default function (EventManager, instance) {
 
     //recognizeFailure
     if (recognizer.without) {
-      Recognizer.requireFailure(recognizer.with.map(function(name) {
+      Recognizer.requireFailure(recognizer.without.map(function(name) {
         return self.Recognizers[capitalizeWord(name)];
       }));
     }
@@ -47,7 +47,7 @@ export default function (EventManager, instance) {
   this._setupEvent = function (name) {
     var events = EventManager.get('events');
     events[name.toLowerCase()] = name;
-    EventManager.reopen({ events : events });
+    EventManager.set('events', events);
   }
 
 }
