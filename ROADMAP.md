@@ -19,21 +19,11 @@ eventing along with other "platform specific" (mostly mouse) handlers.  `click` 
 with `on="click"` will give deprecation notices.
 
 
-
 # 1.5
-
-- [ ] Fast focus on inputs on Cordova apps (`.focus()` available)
-- [ ] Fast focus on inputs on mobile apps (`.focus()` broken in Safari)
-
-- [ ] Consider adding a super fast "fastClick" event (touchstart based implementation)
-
-- [ ] Enable Multi-Touch Gestures (e.g. 2/3/4 finger swipes) and doubleTap via custom recognizers added in recognizers.js
-
-
-# 1.6
 - [ ] Automated Tests
 
-# 1.7
+# 1.6
+- [ ] Consider adding a super fast "fastClick" event (touchstart based implementation)
 - [ ] ??? FEAT: Trackpad gesture support ???
 - [ ] ??? Global Edge Gestures (based on relative coordinates `["top", "center"]` ) ???
 

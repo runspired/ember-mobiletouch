@@ -1,20 +1,30 @@
 #Changelog
 
-## 1.4.0-beta.1
-Primarily an internal refactor that improves testability and maintainability.  One major change in `config`
-settings.
+## 1.4.0
 
+While loaded with some great new features, the main attraction is an internal refactor that improves
+testability and maintainability.  This refactor produces one major change in `config` settings.
+A shim has been put into place to continue to support user's using the original way the config worked.
+
+- [FEAT] Fast focus on inputs on mobile web / Cordova apps.
+- [FEAT] Custom recognizers: Multi-Touch Gestures (e.g. 2/3/4 finger swipes) and doubleTap can be achieved via custom recognizers added in recognizers.js
 - [FIX] submit buttons on mobile keyboards will now work correctly.
 - [FIX] clicks are not busted on links with custom protocols (e.g. mailto: tel:)
 - [FEAT] adding the `allow-click` class to a link or button will prevent click busting.
 - [FEAT] mixins are now available for enabling vertical pan/swipe without breaking scrolling.
-- [BREAKING] if you are using the `ENV.mobileTouch.events`, this version will break your setup, read more below.
+- [FEAT] if you are using `ENV.mobileTouch.events`, this property is now an array of default ember events to disable.
 - [BREAKING] the default config for swipe and pan will now prevent vertical panning/swiping so as to not break scroll.
 
 In order to make testing easier, we now reopen the EventManager instead of extending it.  This means we subtract events
 from Ember's existing events instead of merely defining all our own.  `ENV.mobileTouch.events` should now be an
-array containing only those events you wish to remove.  This has the added benefit of making configuration in this
-area easier.
+array containing only those events you wish to remove from Ember's defauly eventing.  This has the added benefit of
+making configuration in this area easier.
+
+In order to be backwards compatible, a shim has been included.  When `ENV.mobileTouch.events` is defined as an
+object, the events in that object are diffed with Ember's default events and the difference is used to determine
+which default events are ignored.
+
+
 
 ## 1.3.2
 - [FIX] HTMLBars support

@@ -6,6 +6,7 @@ import isGesture from "../utils/is-gesture";
 import defaultConfiguration from "../default-config";
 import hammerEvents from "../utils/hammer-events";
 import RecognizerInterface from "../recognizers";
+import removeEventsPatch from "../utils/determine-remove-events-patch";
 
 var IS_MOBILE = !!("ontouchstart" in window);
 
@@ -188,8 +189,8 @@ export default Ember.EventDispatcher.reopen({
 
 
     //remove undesirable events from Ember's Eventing
-    var eventsToRemove = config.events;
     var events = this.get('events');
+    var eventsToRemove = removeEventsPatch(config.events, events);
     eventsToRemove.forEach(function (name) {
       delete events[name];
     });
