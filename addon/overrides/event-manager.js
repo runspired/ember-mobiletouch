@@ -146,6 +146,7 @@ export default Ember.EventDispatcher.reopen({
     config.use.forEach(function (name) {
       Interface.Recognizers[capitalizeWord(name)] = EventManager._addRecognizer(name, config.tune[name]);
     });
+    Interface.Recognizers.Swipe.recognizeWith(Interface.Recognizers.Pan);
 
     //add custom recognizers
     var CustomRecognizers = this.get('_customRecognizers');
