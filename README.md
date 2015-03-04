@@ -175,6 +175,8 @@ properties respectively.
 The following settings can be configured in `config/environment.js`.  They are shown below with their defaults.
 You can read more by reading the documentation comments in [addon/default-config.js](https://github.com/runspired/ember-mobiletouch/blob/master/addon/default-config.js)
 
+The default configuration can be examined here: http://codepen.io/anon/pen/bNLJbN?editors=001
+
 ```
 ENV.mobileTouch = {
 

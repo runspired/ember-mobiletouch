@@ -1,5 +1,9 @@
 #Changelog
 
+##1.4.1
+
+- [FIX] fixes the ability for swipe to be recognized along with pan (#8)
+
 ## 1.4.0
 
 While loaded with some great new features, the main attraction is an internal refactor that improves
