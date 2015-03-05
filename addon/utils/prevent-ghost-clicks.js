@@ -1,3 +1,5 @@
+import Ember from "ember"; // Ember.run.bind
+
 /**
  * Prevent click events after a touchend.
  *
@@ -82,14 +84,14 @@ function makeGhostBuster(window, document) {
    * @param {EventTarget} el
    */
   return {
-    add : function (el) {
+    add : Ember.run.bind(this, function (el) {
       el.addEventListener("touchstart", resetCoordinates, true);
       el.addEventListener("touchend", registerCoordinates, true);
-    }.bind(this),
-    remove : function (el) {
+    }),
+    remove : Ember.run.bind(this, function (el) {
       el.removeEventListener("touchstart", resetCoordinates);
       el.removeEventListener("touchend", registerCoordinates);
-    }.bind(this)
+    })
   };
 
 }
