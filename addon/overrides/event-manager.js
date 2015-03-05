@@ -59,6 +59,7 @@ export default Ember.EventDispatcher.reopen({
       var $element = Ember.$(e.target);
 
       // cancel the click only if there is an ember action defined on the input or button of type submit
+      // or if the click is on a link and no href attribute is present
       var cancelIf =
 
         //allow overriding click busting by adding the `allow-click` class
@@ -146,7 +147,11 @@ export default Ember.EventDispatcher.reopen({
     config.use.forEach(function (name) {
       Interface.Recognizers[capitalizeWord(name)] = EventManager._addRecognizer(name, config.tune[name]);
     });
-    Interface.Recognizers.Swipe.recognizeWith(Interface.Recognizers.Pan);
+
+    //if swipe and pan are present, recognize together
+    if (Interface.Recognizers.Swipe && Interface.Recognizers.Pan) {
+      Interface.Recognizers.Swipe.recognizeWith(Interface.Recognizers.Pan);
+    }
 
     //add custom recognizers
     var CustomRecognizers = this.get('_customRecognizers');
