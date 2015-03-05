@@ -6,6 +6,10 @@ export default Ember.LinkView.reopen({
 
   __defaultTapOnPress : true,
 
+  click: function(event) {
+    event.preventDefault();
+  },
+
   init: function() {
 
     //run normal linkView setup
