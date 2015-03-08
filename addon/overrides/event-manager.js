@@ -201,6 +201,9 @@ export default Ember.EventDispatcher.reopen({
       delete events[name];
     });
 
+    //change click to internalClick
+    events.click = 'internalClick';
+
 
     //add gesture events
     config.use.forEach(function (category) {

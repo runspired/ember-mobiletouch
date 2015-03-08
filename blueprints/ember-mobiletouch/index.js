@@ -1,15 +1,25 @@
 module.exports = {
 
-  name: 'ember-cli-mobiletouch',
+  name: 'ember-mobiletouch',
 
   normalizeEntityName: function() {},
 
   afterInstall: function() {
-    var bowerPackages = [
+    var success = true,
+      bowerPackages = [
         { name : 'hammerjs', version : '2.0.4' }
+      ],
+      npmPackages = [
+        {name : 'ember-cli-fastclick', version : '1.0.3'}
       ];
 
-    return this.addBowerPackagesToProject(bowerPackages);
+    success = this.addBowerPackagesToProject(bowerPackages);
+
+    if (success) {
+      success = this.addPackagesToProject(npmPackages);
+    }
+
+    return success;
 
   }
 

@@ -154,7 +154,6 @@ export default {
     'touchcancel',
     'mousedown',
     'mouseup',
-    'click',
     'dblclick',
     'mousemove',
     'mouseenter',

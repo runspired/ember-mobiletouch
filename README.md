@@ -3,6 +3,12 @@
 Ember addon for touch and gesture support in ember based mobile apps and websites.
 
 
+###[Changelog](./CHANGELOG.md)
+
+###[Roadmap](./ROADMAP.md)
+
+
+
 ##Installation
 
 `npm install ember-mobiletouch`
@@ -83,35 +89,15 @@ And this would trigger on `swipeRight`
 ##Mobile FastFocus
 
 text/password and similar input types on Mobile and Cordova are focused
-on tap or press.  Focus's dependency on `click` and the keyboard opening
+on tap, press.  Focus's dependency on `click` and the keyboard opening
 on mobile devices otherwise leads to the focus getting lost.
+
 
 ##Mobile Keyboard based submit
 
 On mobile / cordova, the iOS keyboard triggers a 'click' on a form's submit input/button.
 `ember-mobiletouch` captures this click, and triggers a `submit` event, allowing action handlers
 to work.
-
-
-
-##Preventing Click Busting on links and buttons
-
-`ember-mobiletouch` prevents the default behavior of most clicks.
-
-If you find that `ember-mobiletouch` is busting a click that you need to allow,
-the `.allow-click` class will prevent the click busting.
-
-By default, the click buster uses the following rules on the target element to
-determine if it should prevent the default behavior.
-
-- it does not have the `.allow-click` class
-
-AND
-
-- it is `a[href]` and the href does not have a custom protocol (such as `mailto:` or `tel:`)
-- (OR) it is `button[type!="submit"]` or  `input[type="button"]`
-- (OR) it is `input[type="submit"]` or `button[type="submit"]` AND does not have the attribute `data-ember-action`
-
 
 
 ##Custom Recognizers
@@ -217,7 +203,7 @@ ENV.mobileTouch = {
       'touchcancel',
       'mousedown',
       'mouseup',
-      'click',
+      'click', //not removed, re-aliased to internalClick.  Use cautiously.
       'dblclick',
       'mousemove',
       'mouseenter',
@@ -234,14 +220,6 @@ You can increase the area that recognizes touch events for a specific button
 https://gist.github.com/runspired/506f39a4abb2be48d63f
 
 
-##Changelog
-
-- [changelog](./CHANGELOG.md)
-
-
-##Roadmap
-
-- [roadmap](./ROADMAP.md)
 
 ##Testing
 
@@ -254,4 +232,43 @@ In `test-helper.js` you will need to import the `Ember.EventDispatcher` changes.
 
 In your tests on actions, you will need to use `triggerEvent('#some-selector', 'tap')` instead
 of `click('#some-selector')`
+
+
+
+#Click
+==================================================
+
+**Q:** Where did click go?  Why not just alias tap/touchStart/touchEnd to click?
+
+**A:** Aliasing other events to click has unintended results.  You can't preventDefault()
+a tap the same way as a click, and a tap could have been triggered by many varying event
+conditions.  Aliasing other events to click would force all of your click handlers to need
+to examine the event object to determine what type of event it originated as.
+
+Removing click from eventing has it's own complications.  It then becomes necessary to determine
+what click events to prevent default behavior on.  Global handlers to catch clicks on links are
+error prone because `event.target` may be an element within the link and not the link itself, but
+adding a click handler to all views that need to prevent clicks would also introduce complications.
+
+To provide a great gesture API while also addressing these challenges, Mobile Touch uses an
+cautious cancelling approach while still providing the ability to custom tailor the behavior where
+necessary.
+
+As of 1.4.3, click is aliased to `internalClick`, and used to prevent default behavior on clicks on
+link-tos.  Adding `.allow-click` or `.needsclick` to a view, link, or button that would otherwise cancel the
+click will allow the click to pass through.  Synthetic clicks are also triggered on tap (not press),
+and used as a "fastclick" mechanism on links not within Ember's view ecosystem.  "fastclick" clicks
+do not enter Ember's eventing as `internalClick`s but are instead filtered out when they reach the body.
+
+The rules for whether mobile touch will prevent the default behavior of a click are as follows:
+
+
+- it does not have the `.allow-click` or `.needsclick` (added as a convenience for those coming from fastclick.js) class
+
+AND
+
+- it was on or has bubbled to an `Ember.linkView`
+- (OR) it is `button[type!="submit"]` or  `input[type="button"]`
+- (OR) it is `input[type="submit"]` or `button[type="submit"]` AND does not have the attribute `data-ember-action`
+
 
