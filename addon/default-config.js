@@ -118,7 +118,7 @@ export default {
   tune: {
     tap: { time : 250, threshold : 9 }, //Hammer default is 250 / 2
     press: { time : 251, threshold : 9 }, //Hammer default is 500 / 5
-    swipe: { direction : 6, velocity : .3, threshold : 25 },
+    swipe: { direction : 6, velocity : 0.3, threshold : 25 },
     pan: { direction: 6 },
     pinch: {}, //pinch is disabled by default
     rotate: {} //rotate is disabled by default
@@ -160,4 +160,4 @@ export default {
     'mouseleave'
   ]
 
-}
+};
