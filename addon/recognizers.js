@@ -48,6 +48,6 @@ export default function (EventManager, instance) {
     var events = EventManager.get('events');
     events[name.toLowerCase()] = name;
     EventManager.set('events', events);
-  }
+  };
 
 }

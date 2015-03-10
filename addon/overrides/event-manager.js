@@ -164,7 +164,7 @@ export default Ember.EventDispatcher.reopen({
    */
   _addRecognizer: function(type, options) {
     var Manager = this.get('_hammerInstance');
-    var recognizer = new Hammer[capitalizeWord(type)](options)
+    var recognizer = new Hammer[capitalizeWord(type)](options);
     Manager.add(recognizer);
     return recognizer;
   },
