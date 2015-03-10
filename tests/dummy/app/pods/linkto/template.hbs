@@ -5,49 +5,23 @@
 </header>
 
 <div class="row">
-    <div class="col-md-12">
-        <h3>link-to helper (anchor)</h3>
-    </div>
+    {{#link-to 'success' class="col-md-12 link" id="genericLinkTo"}}Generic Link-To{{/link-to}}
 </div>
 
 <div class="row">
-    <div class="col-md-12">
-        <h3>link-to helper (anchor) with internal elements</h3>
-    </div>
+  {{#link-to 'success' class="col-md-12 link" id="genericLinkTo"}}
+      <i class="glyphicon glyphicon-link"></i>
+      <div class="internal-content">Generic Link-To with internal elements</div>
+  {{/link-to}}
 </div>
 
 <div class="row">
-    <div class="col-md-12">
-        <h3>link-to helper (div)</h3>
-    </div>
+  {{#link-to 'success' tagName="div" class="col-md-12 link" id="genericLinkTo"}}Link-To (div){{/link-to}}
 </div>
 
 <div class="row">
-    <div class="col-md-12">
-        <h3>link-to helper (div) with internal elements</h3>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <h3>relative link</h3>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <h3>relative link with internal elements</h3>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <h3>protocol link</h3>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <h3>protocol link with internal elements</h3>
-    </div>
+  {{#link-to 'success' tagName="div" class="col-md-12 link" id="genericLinkTo"}}
+      <i class="glyphicon glyphicon-link"></i>
+      <div class="internal-content">Link-To (div) with internal elements</div>
+  {{/link-to}}
 </div>
