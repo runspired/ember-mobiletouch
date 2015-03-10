@@ -9,7 +9,7 @@ if (!!Ember.HTMLBars) {
   //cache the old handler
   oldActionHelper = Ember.Handlebars.helpers.action.helperFunction;
 
-  newActionHelper = Ember.Handlebars.helpers.action.helperFunction = function (params, hash, options, env) {
+  newActionHelper = Ember.Handlebars.helpers.action.helperFunction = function (params, hash /*, options, env*/) {
 
     //set on to 'tap' if it hasn't been explicitly set
     hash.on = hash.on || 'tap';
