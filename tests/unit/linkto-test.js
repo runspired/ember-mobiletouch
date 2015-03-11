@@ -16,7 +16,7 @@ module('LinkTo Integration Tests', {
  });
 
 
-test("LinkTo Triggers on Tap", function(assert) {
+test("LinkTo Triggers on Tap by default", function(assert) {
   assert.expect(1);
   visit('/linkto');
 
@@ -41,13 +41,13 @@ test("Click on LinkTo is silenced", function(assert) {
 
 });
 
-test("LinkTo Triggers on Internal Tap", function(assert) {
+test("LinkTo Triggers after gesture on child element.", function(assert) {
   assert.expect(1);
   visit('/linkto');
 
   andThen(function () {
 
-    triggerEvent('#genericLinkToInternal .internal-content', 'tap');
+    triggerEvent('#genericLinkTo .internal-content', 'tap');
     andThen(function() {
       assert.equal(currentRouteName(), 'test-successful');
     });
@@ -55,14 +55,28 @@ test("LinkTo Triggers on Internal Tap", function(assert) {
 
 });
 
-test("Clicks on LinkTo Internals are silenced", function(assert) {
+test("Clicks on child elements of a LinkTo are silenced", function(assert) {
 
   assert.expect(1);
   visit('/linkto');
-  click('#genericLinkToInternal .internal-content');
+  click('#genericLinkTo .internal-content');
   andThen(function() {
     assert.equal(currentRouteName(), 'linkto');
   });
 
 });
 
+
+test("LinkTo eventName can be changed", function(assert) {
+  assert.expect(1);
+  visit('/linkto');
+
+  andThen(function () {
+
+    triggerEvent('#customGesture', 'swipeRight');
+    andThen(function() {
+      assert.equal(currentRouteName(), 'test-successful');
+    });
+  });
+
+});

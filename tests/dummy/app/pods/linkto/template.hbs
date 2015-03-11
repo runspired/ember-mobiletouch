@@ -1,27 +1,4 @@
-<header class="row">
-    <div class="col-md-6">
-        <h2 id="title">Link-To Helper</h2>
-    </div>
-</header>
+<h2 id="title">Link-To Helper</h2>
 
-<div class="row">
-    {{#link-to 'test-successful' class="col-md-12 link generic-link-to" id="genericLinkTo"}}Generic Link-To{{/link-to}}
-</div>
-
-<div class="row">
-  {{#link-to 'test-successful' class="col-md-12 link" id="genericLinkToInternal"}}
-      <i class="glyphicon glyphicon-link"></i>
-      <div class="internal-content">Generic Link-To with internal elements</div>
-  {{/link-to}}
-</div>
-
-<div class="row">
-  {{#link-to 'test-successful' tagName="div" class="col-md-12 link" id="linkToDiv"}}Link-To (div){{/link-to}}
-</div>
-
-<div class="row">
-  {{#link-to 'test-successful' tagName="div" class="col-md-12 link" id="linkToDivInternal"}}
-      <i class="glyphicon glyphicon-link"></i>
-      <div class="internal-content">Link-To (div) with internal elements</div>
-  {{/link-to}}
-</div>
+{{#link-to 'test-successful' id="genericLinkTo"}}<div class="internal-content"></div>{{/link-to}}
+{{#link-to 'test-successful' eventName="swipeRight" id="customGesture"}}{{/link-to}}

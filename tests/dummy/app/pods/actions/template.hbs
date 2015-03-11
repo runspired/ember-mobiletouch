@@ -1,0 +1,11 @@
+<h2 id="title">Action Helper</h2>
+
+<div {{action "genericAction"}} id="genericAction">
+    <div class="internal-content"></div>
+</div>
+<div {{action "genericAction" on="swipeRight"}} id="specificActionGesture"></div>
+
+<div {{action "actionWithParams" foo}} id="actionWithParams"></div>
+<div {{action "actionWithParams" foo on="swipeRight"}} id="specificGestureWithParams"></div>
+
+<a href="http://example.com/failure" {{action "genericAction"}} id="actionOnLink"><div class="internal-content"></div></a>
