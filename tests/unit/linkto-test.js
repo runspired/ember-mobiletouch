@@ -33,19 +33,20 @@ test("Click on LinkTo is silenced", function(assert) {
 
   assert.expect(1);
   visit('/linkto');
-  click('#genericLinkTo');
   andThen(function() {
-    assert.equal(currentRouteName(), 'linkto');
+    click('#genericLinkTo');
+    andThen(function() {
+      assert.equal(currentRouteName(), 'linkto');
+    });
   });
 
 });
 
 test("LinkTo Triggers after gesture on child element.", function(assert) {
+
   assert.expect(1);
   visit('/linkto');
-
   andThen(function () {
-
     triggerEvent('#genericLinkTo .internal-content', 'tap');
     andThen(function() {
       assert.equal(currentRouteName(), 'test-successful');
@@ -58,20 +59,20 @@ test("Clicks on child elements of a LinkTo are silenced", function(assert) {
 
   assert.expect(1);
   visit('/linkto');
-  click('#genericLinkTo .internal-content');
   andThen(function() {
-    assert.equal(currentRouteName(), 'linkto');
+    click('#genericLinkTo .internal-content');
+    andThen(function() {
+      assert.equal(currentRouteName(), 'linkto');
+    });
   });
 
 });
 
-/*
 test("LinkTo eventName can be changed", function(assert) {
+
   assert.expect(1);
   visit('/linkto');
-
   andThen(function () {
-
     triggerEvent('#customGesture', 'swipeRight');
     andThen(function() {
       assert.equal(currentRouteName(), 'test-successful');
@@ -79,4 +80,3 @@ test("LinkTo eventName can be changed", function(assert) {
   });
 
 });
-*/
