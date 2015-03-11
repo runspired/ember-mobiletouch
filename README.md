@@ -233,6 +233,8 @@ In `test-helper.js` you will need to import the `Ember.EventDispatcher` changes.
 In your tests on actions, you will need to use `triggerEvent('#some-selector', 'tap')` instead
 of `click('#some-selector')`
 
+**Important** The jQuery events you need to trigger are the Hammer variant, meaning it is entirely lowercase `swiperight`, `panup`.
+
 
 
 #Click
