@@ -15,7 +15,6 @@ module('LinkTo Integration Tests', {
 
  });
 
-
 test("LinkTo Triggers on Tap by default", function(assert) {
   assert.expect(1);
   visit('/linkto');
@@ -66,7 +65,7 @@ test("Clicks on child elements of a LinkTo are silenced", function(assert) {
 
 });
 
-
+/*
 test("LinkTo eventName can be changed", function(assert) {
   assert.expect(1);
   visit('/linkto');
@@ -80,3 +79,4 @@ test("LinkTo eventName can be changed", function(assert) {
   });
 
 });
+*/
