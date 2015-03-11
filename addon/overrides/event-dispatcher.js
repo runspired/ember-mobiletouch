@@ -183,7 +183,8 @@ export default Ember.EventDispatcher.reopen({
   setup: function (addedEvents, rootElement) {
 
     //merge the default configuration with the user's alterations
-    var config = Ember.merge({}, defaultConfiguration, this.get('_mobileTouchCustomizations'));
+    var customConfig = this.get('_mobileTouchCustomizations');
+    var config = Ember.merge(Ember.copy(defaultConfiguration, true), customConfig);
 
     //assert necessary configurations
     Ember.assert('ENV.mobileTouch.options.domEvents MUST be true!', config.options.domEvents);
