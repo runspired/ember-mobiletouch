@@ -1,11 +1,26 @@
 import Ember from "ember";
-import isCustomProtocol from "../utils/is-custom-protocol";
 
 export default Ember.LinkView.reopen({
 
   eventName : 'tap',
 
   __defaultTapOnPress : true,
+
+  /**!
+   *
+   * Allow the click to cause default behavior if either the class `allow-click`
+   * or `needsclick` is present.
+   *
+   * If this is overridden, be sure to call _super() if you want to keep this behavior.
+   *
+   */
+  internalClick: function(e) {
+    var $self = this.$();
+    var allow =  $self.hasClass('allow-click') || $self.hasClass('needsclick');
+    if (!allow) {
+      e.preventDefault();
+    }
+  },
 
   init: function() {
 
@@ -20,18 +35,6 @@ export default Ember.LinkView.reopen({
       this.on('press', this, this._invoke);
     }
 
-  },
-
-  // Allow the click to cause default behavior if either the class `allow-click` is present
-  // on the the link element or if there is a custom protocol like `mailto:` or `tel:`.
-  // If this is overridden, be sure to call _super() if you want to keep this behavior.
-  internalClick: function(e) {
-    var $self = this.$();
-    var allow =  $self.hasClass('allow-click') ||
-      $self.is('a[href]') && isCustomProtocol($self.attr('href'));
-    if (!allow) {
-      e.preventDefault();
-    }
   }
 
 });
