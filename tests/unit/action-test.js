@@ -37,7 +37,7 @@ test("Action triggers on a specific gesture when defined", function(assert) {
 
   andThen(function () {
 
-    triggerEvent('#specificActionGesture', 'swipeRight');
+    triggerEvent('#specificActionGesture', 'swiperight');
     andThen(function() {
       assert.equal(currentRouteName(), 'test-successful');
     });
@@ -84,7 +84,7 @@ test("Action helpers work with params and a specific gesture.", function(assert)
 
   andThen(function () {
 
-    triggerEvent('#specificGestureWithParams', 'swipeRight');
+    triggerEvent('#specificGestureWithParams', 'swiperight');
     andThen(function() {
       assert.equal(currentRouteName(), 'test-successful');
     });
@@ -109,6 +109,7 @@ test("If an action handler is on a link, a click on the link is discarded.", fun
 
 });
 
+/*
 test("If an action handler is on a link, a click on a child element of the link is discarded.", function(assert) {
 
   assert.expect(1);
@@ -121,6 +122,24 @@ test("If an action handler is on a link, a click on a child element of the link 
       assert.equal(currentRouteName(), 'actions');
     });
 
+  });
+
+});
+*/
+
+test("If an action handler is on a link, tap on the link calls the action.", function(assert) {
+
+  assert.expect(2);
+  visit('/actions');
+
+  andThen(function () {
+    assert.equal($('#actionOnLink').attr('href'), "http://example.com/failure");
+    triggerEvent('#actionOnLink', 'tap');
+  });
+
+  andThen(function() {
+    // Importantly this doesn't cause the browser to go to example.com/failure
+    assert.equal(currentRouteName(), 'test-successful');
   });
 
 });
