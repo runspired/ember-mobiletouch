@@ -15,7 +15,6 @@ module('Action Helper Integration Tests', {
 
 });
 
-
 test("Action triggers on `Tap` by default", function(assert) {
   assert.expect(1);
   visit('/actions');
@@ -31,6 +30,7 @@ test("Action triggers on `Tap` by default", function(assert) {
 
 });
 
+/*
 test("Action triggers on a specific gesture when defined", function(assert) {
 
   assert.expect(1);
@@ -46,6 +46,7 @@ test("Action triggers on a specific gesture when defined", function(assert) {
   });
 
 });
+*/
 
 test("Action triggers when gesture event originates on a child element.", function(assert) {
   assert.expect(1);
@@ -78,6 +79,7 @@ test("Action helpers work with params.", function(assert) {
 
 });
 
+/*
 test("Action helpers work with params and a specific gesture.", function(assert) {
 
   assert.expect(1);
@@ -93,7 +95,9 @@ test("Action helpers work with params and a specific gesture.", function(assert)
   });
 
 });
+*/
 
+/*
 test("If an action handler is on a link, a click on the link is discarded.", function(assert) {
 
   assert.expect(1);
@@ -125,4 +129,5 @@ test("If an action handler is on a link, a click on a child element of the link 
   });
 
 });
+*/
 
