@@ -7,6 +7,7 @@ import defaultConfiguration from "../default-config";
 import hammerEvents from "../utils/hammer-events";
 import RecognizerInterface from "../recognizers";
 import removeEventsPatch from "../utils/determine-remove-events-patch";
+import jQuery from "jquery";
 
 var IS_MOBILE = !!("ontouchstart" in window);
 
@@ -246,6 +247,15 @@ export default Ember.EventDispatcher.reopen({
 
     //setup hammer
     this._initializeHammer(rootElement);
+
+    // TODO: Do we need to tear this down? We may also want to conditionally stop
+    // propagation, but I couldn't figure out how do do this because we don't seem
+    // to have access to the {{action}} helper options that were used to define it
+    // such as preventDefault and bubbles.
+    jQuery(rootElement).on('click.ember-mobiletouch', '[data-ember-action]', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    });
 
     //setup rootElement and  event listeners
     this._super(addedEvents, rootElement);
