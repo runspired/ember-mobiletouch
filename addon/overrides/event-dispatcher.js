@@ -209,8 +209,23 @@ export default Ember.EventDispatcher.reopen({
       delete events[name];
     });
 
-    //change click to internalClick
-    events.click = 'internalClick';
+    //delegate native click to internalClick
+    rootElement.on('click.ember', '.ember-view', function(evt, triggeringManager) {
+      if (!evt.fastclick) {
+        var view = Ember.View.views[this.id];
+        var result = true;
+
+        var manager = self.canDispatchToEventManager ? self._findNearestEventManager(view, 'internalClick') : null;
+
+        if (manager && manager !== triggeringManager) {
+          result = self._dispatchEvent(manager, evt, 'internalClick', view);
+        } else if (view) {
+          result = self._bubbleEvent(view, evt, 'internalClick');
+        }
+
+        return result;
+      }
+    });
 
 
     //add gesture events
@@ -296,7 +311,12 @@ export default Ember.EventDispatcher.reopen({
    * @private
    */
   _dispatchEvent: function (object, event, eventName, view) {
+
     var result = true;
+
+    if (event && eventName === 'internalClick' && event.fastclick) {
+      event.stopPropagation();
+    }
 
     var handler = object[eventName];
     if (Ember.typeOf(handler) === 'function') {
@@ -310,8 +330,6 @@ export default Ember.EventDispatcher.reopen({
 
     return result;
   },
-
-
 
 
   /**
