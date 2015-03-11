@@ -6,6 +6,9 @@ export default Ember.Controller.extend({
 
   actions : {
 
+    anotherAction : function() {
+    },
+
     genericAction : function () {
       this.transitionToRoute('test-successful');
     },
