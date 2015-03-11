@@ -95,7 +95,7 @@ export default Ember.EventDispatcher.reopen({
 
 
     /*
-        Implements a fast focus mechanism on mobile web/Cordova
+        Implements fastclick and fastfocus mechanisms on mobile web/Cordova
      */
     if (IS_MOBILE) {
 
@@ -114,6 +114,13 @@ export default Ember.EventDispatcher.reopen({
         var notFocusableTypes = ['submit', 'button', 'hidden', 'reset', 'range', 'radio', 'image', 'checkbox'];
         if ($element.is('input') && notFocusableTypes.indexOf($element.attr('type')) === -1) {
           $element.focus();
+        } else {
+
+          //set the fastclick flag so that we can filter this from
+          // Ember's eventing later
+          var click = Ember.$.Event('click');
+          click.fastclick = true;
+          $element.trigger(click);
         }
 
       });
