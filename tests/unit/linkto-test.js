@@ -17,21 +17,51 @@ module('LinkTo Integration Tests', {
 
 
 test("LinkTo Triggers on Tap", function(assert) {
-     assert.expect(1);
-     visit('/linkto');
-     triggerEvent('#genericLinkTo', 'tap');
-     andThen(function() {
-       assert.equal(currentRouteName(), 'success');
-     });
+  assert.expect(1);
+  visit('/linkto');
 
- });
+  andThen(function () {
+
+    triggerEvent('#genericLinkTo', 'tap');
+    andThen(function() {
+      assert.equal(currentRouteName(), 'test-successful');
+    });
+  });
+
+});
 
 test("Click on LinkTo is silenced", function(assert) {
+
   assert.expect(1);
   visit('/linkto');
   click('#genericLinkTo');
   andThen(function() {
-    equal(currentRouteName(), 'success');
+    assert.equal(currentRouteName(), 'linkto');
+  });
+
+});
+
+test("LinkTo Triggers on Internal Tap", function(assert) {
+  assert.expect(1);
+  visit('/linkto');
+
+  andThen(function () {
+
+    triggerEvent('#genericLinkToInternal .internal-content', 'tap');
+    andThen(function() {
+      assert.equal(currentRouteName(), 'test-successful');
+    });
+  });
+
+});
+
+test("Clicks on LinkTo Internals are silenced", function(assert) {
+
+  assert.expect(1);
+  visit('/linkto');
+  click('#genericLinkToInternal .internal-content');
+  andThen(function() {
+    assert.equal(currentRouteName(), 'linkto');
   });
 
 });

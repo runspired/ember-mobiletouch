@@ -6,7 +6,7 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('success');
+  this.route('test-successful');
   this.route('linkto');
 });
 

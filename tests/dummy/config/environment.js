@@ -3,10 +3,10 @@
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'dummy',
-    podModulePrefix: 'pods',
+    podModulePrefix: 'dummy/pods',
     environment: environment,
     baseURL: '/',
-    locationType: 'none',
+    locationType: 'auto',
     EmberENV: { FEATURES: {} },
 
     APP: {}
