@@ -110,6 +110,9 @@ test("If an action handler is on a link, a click on the link is discarded.", fun
 });
 
 /*
+ * TODO: This needs to stay commented out until we fix it, becuase the test runner
+ * redirects away and we can't see test results.
+ *
 test("If an action handler is on a link, a click on a child element of the link is discarded.", function(assert) {
 
   assert.expect(1);
