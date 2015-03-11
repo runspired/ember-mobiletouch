@@ -1,9 +1,9 @@
 import config from "../config/environment";
-import EventManager from "ember-mobiletouch/overrides/event-manager";
+import EventDispatcher from "ember-mobiletouch/overrides/event-dispatcher";
 import CustomRecognizers from "../recognizers";
 
 
-export default EventManager.reopen({
+export default EventDispatcher.reopen({
   _mobileTouchCustomizations : config,
   _customRecognizers : CustomRecognizers
 });
