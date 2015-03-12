@@ -1,6 +1,6 @@
 {
   "name": "ember-mobiletouch",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "dependencies": {
     "jquery": "^1.11.1",
     "ember": "1.10.0",
