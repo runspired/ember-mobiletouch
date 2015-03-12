@@ -190,6 +190,7 @@ export default Ember.EventDispatcher.reopen({
   setup: function (addedEvents, rootElement) {
 
     //merge the default configuration with the user's alterations
+    var self = this;
     var customConfig = this.get('_mobileTouchCustomizations');
     var config = Ember.merge(Ember.copy(defaultConfiguration, true), customConfig);
 
@@ -210,6 +211,7 @@ export default Ember.EventDispatcher.reopen({
     });
 
     //delegate native click to internalClick
+    rootElement = jQuery(!Ember.isNone(rootElement) ? rootElement : Ember.get(this, 'rootElement'));
     rootElement.on('click.ember', '.ember-view', function(evt, triggeringManager) {
       if (!evt.fastclick) {
         var view = Ember.View.views[this.id];
