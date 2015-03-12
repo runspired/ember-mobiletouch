@@ -109,10 +109,6 @@ test("If an action handler is on a link, a click on the link is discarded.", fun
 
 });
 
-/*
- * TODO: This needs to stay commented out until we fix it, becuase the test runner
- * redirects away and we can't see test results.
- *
 test("If an action handler is on a link, a click on a child element of the link is discarded.", function(assert) {
 
   assert.expect(1);
@@ -128,7 +124,6 @@ test("If an action handler is on a link, a click on a child element of the link 
   });
 
 });
-*/
 
 test("If an action handler is on a link, tap on the link calls the action.", function(assert) {
 
@@ -147,3 +142,35 @@ test("If an action handler is on a link, tap on the link calls the action.", fun
 
 });
 
+test("Tap allowed to bubble through action-bearing elements", function(assert) {
+
+  assert.expect(1);
+  visit('/actions');
+
+  andThen(function () {
+    triggerEvent('#bubblingAction', 'tap');
+  });
+
+  andThen(function() {
+    var view = Ember.View.views.containsBubblingAction;
+    assert.equal(view.get('tapEvidence'), 1, 'bubbled');
+  });
+
+});
+
+test("Click doesn't bubble through action-bearing elements", function(assert) {
+
+  assert.expect(2);
+  visit('/actions');
+
+  andThen(function () {
+    triggerEvent('#bubblingAction', 'click');
+  });
+
+  andThen(function() {
+    var view = Ember.View.views.containsBubblingAction;
+    assert.equal(view.get('internalClickEvidence'), 0, 'no internalClick');
+    assert.equal(view.get('tapEvidence'), 0, 'no tap');
+  });
+
+});

@@ -73,7 +73,7 @@ test("LinkTo eventName can be changed", function(assert) {
   assert.expect(1);
   visit('/linkto');
   andThen(function () {
-    triggerEvent('#customGesture', 'swipeRight');
+    triggerEvent('#customGesture', 'swiperight');
     andThen(function() {
       assert.equal(currentRouteName(), 'test-successful');
     });

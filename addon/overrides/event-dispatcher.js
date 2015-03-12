@@ -7,6 +7,7 @@ import defaultConfiguration from "../default-config";
 import hammerEvents from "../utils/hammer-events";
 import RecognizerInterface from "../recognizers";
 import removeEventsPatch from "../utils/determine-remove-events-patch";
+import jQuery from "jquery";
 
 var IS_MOBILE = !!("ontouchstart" in window);
 
@@ -211,13 +212,15 @@ export default Ember.EventDispatcher.reopen({
     });
 
     //delegate native click to internalClick
-    rootElement = jQuery(!Ember.isNone(rootElement) ? rootElement : Ember.get(this, 'rootElement'));
-    rootElement.on('click.ember', '.ember-view', function(evt, triggeringManager) {
+    $rootElement = Ember.$(!Ember.isNone(rootElement) ? rootElement : Ember.get(this, 'rootElement'));
+    $rootElement.on('click.ember', '.ember-view', function(evt, triggeringManager) {
+
       if (!evt.fastclick) {
         var view = Ember.View.views[this.id];
         var result = true;
 
-        var manager = self.canDispatchToEventManager ? self._findNearestEventManager(view, 'internalClick') : null;
+        var manager = self.canDispatchToEventManager ?
+          self._findNearestEventManager(view, 'internalClick') : null;
 
         if (manager && manager !== triggeringManager) {
           result = self._dispatchEvent(manager, evt, 'internalClick', view);
@@ -248,6 +251,14 @@ export default Ember.EventDispatcher.reopen({
 
     //setup hammer
     this._initializeHammer(rootElement);
+
+    //prevent clicks on actions that are also links from triggering the default behavior
+    Ember.$(rootElement).on('click.ember-mobiletouch', '[data-ember-action]', function(e) {
+      if (e.currentTarget.tagName.toLowerCase() === 'a') {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    });
 
     //setup rootElement and  event listeners
     this._super(addedEvents, rootElement);

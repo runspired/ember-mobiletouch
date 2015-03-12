@@ -9,3 +9,7 @@
 <div {{action "actionWithParams" foo on="swipeRight"}} id="specificGestureWithParams"></div>
 
 <a href="http://example.com/failure" {{action "genericAction"}} id="actionOnLink"><div class="internal-content"></div></a>
+
+{{#view 'has-handlers' id='containsBubblingAction'}}
+  <div {{action "anotherAction" bubble=true}} id="bubblingAction"></div>
+{{/view}}
