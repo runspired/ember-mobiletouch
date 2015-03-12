@@ -259,14 +259,18 @@ export default Ember.EventDispatcher.reopen({
     $root.on('tap.ember-mobiletouch', submitSelector, function() {
       // When on mobile we get taps automatically and clicks are squashed,
       // so we trigger submit on tap.
-      if (isMobile()) jQuery(this).trigger('submit');
+      if (isMobile()) {
+        jQuery(this).trigger('submit');
+      }
     });
     $root.on('click.ember-mobiletouch', submitSelector, function() {
       // When not on mobile we seem to get a click when enter is used to submit
       // the form, so we rely on click to trigger submit. For actual button
       // clicks we could rely on tap as in the mobile case, but this doen't work
       // for pressing enter. 
-      if (!isMobile()) jQuery(this).trigger('submit');
+      if (!isMobile()) {
+        jQuery(this).trigger('submit');
+      }
     });
 
     // We may want to conditionally stop propagation, but I couldn't figure out
