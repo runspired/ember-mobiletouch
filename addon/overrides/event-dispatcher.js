@@ -8,8 +8,8 @@ import hammerEvents from "../utils/hammer-events";
 import RecognizerInterface from "../recognizers";
 import removeEventsPatch from "../utils/determine-remove-events-patch";
 import jQuery from "jquery";
+import { isMobile } from "../utils/is-mobile";
 
-var IS_MOBILE = !!("ontouchstart" in window);
 
 export default Ember.EventDispatcher.reopen({
 
@@ -80,7 +80,7 @@ export default Ember.EventDispatcher.reopen({
         recast the click as a "submit" action if we're on mobile
         this allows mobile keyboard submit button to work
        */
-      if (IS_MOBILE && $element.is('input[type="submit"], button[type="submit"]')) {
+      if (isMobile() && $element.is('input[type="submit"], button[type="submit"]')) {
         $element.trigger('submit');
       }
 
@@ -98,7 +98,7 @@ export default Ember.EventDispatcher.reopen({
     /*
         Implements fastclick and fastfocus mechanisms on mobile web/Cordova
      */
-    if (IS_MOBILE) {
+    if (isMobile()) {
 
       document.body.addEventListener('tap press', function (e) {
         e = e || window.event;
@@ -211,8 +211,10 @@ export default Ember.EventDispatcher.reopen({
     });
 
     var self = this;
+    var $root = jQuery(rootElement);
+
     //delegate native click to internalClick
-    jQuery(rootElement).on('click.ember', '.ember-view', function(evt, triggeringManager) {
+    $root.on('click.ember', '.ember-view', function(evt, triggeringManager) {
       if (!evt.fastclick) {
         var view = Ember.View.views[this.id];
         var result = true;
@@ -250,13 +252,26 @@ export default Ember.EventDispatcher.reopen({
     //setup hammer
     this._initializeHammer(rootElement);
 
-    // TODO: Do we need to tear this down? We may also want to conditionally stop
-    // propagation, but I couldn't figure out how do do this because we don't seem
-    // to have access to the {{action}} helper options that were used to define it
-    // such as preventDefault and bubbles.
-    jQuery(rootElement).on('click.ember-mobiletouch', '[data-ember-action]', function(e) {
+    // Tap events need to be converted to submit events on mobile. This is because the
+    // click events that would ordinarily trigger default submit event get prevented
+    // by the ghost click preventer.
+    $root.on('tap.ember-mobiletouch', 'button[type="submit"],input[type="submit"]', function() {
+      if (isMobile()) {
+        jQuery(this).trigger('submit');
+      }
+    });
+
+    // We may want to conditionally stop propagation, but I couldn't figure out
+    // how do do this because we don't seem to have access to the {{action}} helper
+    // options that were used to define it such as preventDefault and bubbles.
+    $root.on('click.ember-mobiletouch', '[data-ember-action]', function(e) {
       e.stopPropagation();
-      e.preventDefault();
+      // Allow clicks to trigger default behavor on form elements for which
+      // actions are specified.
+      var allow = jQuery(this).is('form');
+      if (!allow) {
+        e.preventDefault();
+      }
     });
 
     //setup rootElement and  event listeners
@@ -367,8 +382,12 @@ export default Ember.EventDispatcher.reopen({
    */
   destroy: function () {
 
-    var hammer = this.get('_hammerInstance'),
-      element = Ember.$(this.get('rootElement'))[0];
+    var hammer = this.get('_hammerInstance');
+    var $element = Ember.$(this.get('rootElement'));
+    var element = $element.get(0);
+
+    // Clean up edge case  handlers
+    $element.off('.ember-mobiletouch', '**');
 
     //teardown Hammer
     if (hammer) { hammer.destroy(); }

@@ -12,6 +12,7 @@ Router.map(function() {
   this.route('links');
   this.route('inputs');
   this.route('buttons');
+  this.route('forms');
 });
 
 export default Router;
