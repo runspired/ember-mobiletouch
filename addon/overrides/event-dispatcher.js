@@ -210,13 +210,15 @@ export default Ember.EventDispatcher.reopen({
       delete events[name];
     });
 
+    var self = this;
     //delegate native click to internalClick
-    rootElement.on('click.ember', '.ember-view', function(evt, triggeringManager) {
+    jQuery(rootElement).on('click.ember', '.ember-view', function(evt, triggeringManager) {
       if (!evt.fastclick) {
         var view = Ember.View.views[this.id];
         var result = true;
 
-        var manager = self.canDispatchToEventManager ? self._findNearestEventManager(view, 'internalClick') : null;
+        var manager = self.canDispatchToEventManager ?
+          self._findNearestEventManager(view, 'internalClick') : null;
 
         if (manager && manager !== triggeringManager) {
           result = self._dispatchEvent(manager, evt, 'internalClick', view);
