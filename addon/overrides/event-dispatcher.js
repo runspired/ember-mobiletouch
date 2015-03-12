@@ -255,10 +255,18 @@ export default Ember.EventDispatcher.reopen({
     // Tap events need to be converted to submit events on mobile. This is because the
     // click events that would ordinarily trigger default submit event get prevented
     // by the ghost click preventer.
-    $root.on('tap.ember-mobiletouch', 'button[type="submit"],input[type="submit"]', function() {
-      if (isMobile()) {
-        jQuery(this).trigger('submit');
-      }
+    var submitSelector = 'button[type="submit"],input[type="submit"]';
+    $root.on('tap.ember-mobiletouch', submitSelector, function() {
+      // When on mobile we get taps automatically and clicks are squashed,
+      // so we trigger submit on tap.
+      if (isMobile()) jQuery(this).trigger('submit');
+    });
+    $root.on('click.ember-mobiletouch', submitSelector, function() {
+      // When not on mobile we seem to get a click when enter is used to submit
+      // the form, so we rely on click to trigger submit. For actual button
+      // clicks we could rely on tap as in the mobile case, but this doen't work
+      // for pressing enter. 
+      if (!isMobile()) jQuery(this).trigger('submit');
     });
 
     // We may want to conditionally stop propagation, but I couldn't figure out
@@ -268,10 +276,7 @@ export default Ember.EventDispatcher.reopen({
       e.stopPropagation();
       // Allow clicks to trigger default behavor on form elements for which
       // actions are specified.
-      var allow = jQuery(this).is('form');
-      if (!allow) {
-        e.preventDefault();
-      }
+      e.preventDefault();
     });
 
     //setup rootElement and  event listeners
