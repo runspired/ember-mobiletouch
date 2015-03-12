@@ -2,7 +2,7 @@
 
 module.exports = function(/* environment, appConfig */) {
   return {
-    version : "1.4.2",
+    version : "1.4.3",
     mobileTouch : {
       useGesturesHash : false,
       alwaysTapOnPress : false,

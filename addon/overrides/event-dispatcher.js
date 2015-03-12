@@ -7,7 +7,6 @@ import defaultConfiguration from "../default-config";
 import hammerEvents from "../utils/hammer-events";
 import RecognizerInterface from "../recognizers";
 import removeEventsPatch from "../utils/determine-remove-events-patch";
-import jQuery from "jquery";
 import { isMobile } from "../utils/is-mobile";
 
 
@@ -191,6 +190,7 @@ export default Ember.EventDispatcher.reopen({
   setup: function (addedEvents, rootElement) {
 
     //merge the default configuration with the user's alterations
+    var self = this;
     var customConfig = this.get('_mobileTouchCustomizations');
     var config = Ember.merge(Ember.copy(defaultConfiguration, true), customConfig);
 
@@ -210,11 +210,10 @@ export default Ember.EventDispatcher.reopen({
       delete events[name];
     });
 
-    var self = this;
-    var $root = jQuery(rootElement);
-
     //delegate native click to internalClick
-    $root.on('click.ember', '.ember-view', function(evt, triggeringManager) {
+    var $rootElement = Ember.$(!Ember.isNone(rootElement) ? rootElement : Ember.get(this, 'rootElement'));
+    $rootElement.on('click.ember', '.ember-view', function(evt, triggeringManager) {
+
       if (!evt.fastclick) {
         var view = Ember.View.views[this.id];
         var result = true;
@@ -256,27 +255,24 @@ export default Ember.EventDispatcher.reopen({
     // click events that would ordinarily trigger default submit event get prevented
     // by the ghost click preventer.
     var submitSelector = 'button[type="submit"],input[type="submit"]';
-    $root.on('tap.ember-mobiletouch', submitSelector, function() {
-      // When on mobile we get taps automatically and clicks are squashed,
-      // so we trigger submit on tap.
+    $rootElement.on('tap.ember-mobiletouch', submitSelector, function() {
       if (isMobile()) {
-        jQuery(this).trigger('submit');
-      }
-    });
-    $root.on('click.ember-mobiletouch', submitSelector, function() {
-      // When not on mobile we seem to get a click when enter is used to submit
-      // the form, so we rely on click to trigger submit. For actual button
-      // clicks we could rely on tap as in the mobile case, but this doen't work
-      // for pressing enter. 
-      if (!isMobile()) {
-        jQuery(this).trigger('submit');
+        Ember.$(this).trigger('submit');
       }
     });
 
-    // We may want to conditionally stop propagation, but I couldn't figure out
-    // how do do this because we don't seem to have access to the {{action}} helper
-    // options that were used to define it such as preventDefault and bubbles.
-    $root.on('click.ember-mobiletouch', '[data-ember-action]', function(e) {
+    // When not on mobile we seem to get a click when enter is used to submit
+    // the form, so we rely on click to trigger submit. For actual button
+    // clicks we could rely on tap as in the mobile case, but this doen't work
+    // for pressing enter. 
+    $rootElement.on('click.ember-mobiletouch', submitSelector, function() {
+      if (!isMobile()) {
+        Ember.$(this).trigger('submit');
+      }
+    });
+
+    //prevent clicks on actions that are also links from triggering the default behavior
+    $rootElement.on('click.ember-mobiletouch', '[data-ember-action]', function(e) {
       e.stopPropagation();
       // Allow clicks to trigger default behavor on form elements for which
       // actions are specified.

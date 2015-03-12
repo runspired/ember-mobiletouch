@@ -135,6 +135,7 @@ test("If an action handler is on a link, tap on the link calls the action.", fun
     triggerEvent('#actionOnLink', 'tap');
   });
 
+  //TODO, is this still a valid test?
   andThen(function() {
     // Importantly this doesn't cause the browser to go to example.com/failure
     assert.equal(currentRouteName(), 'test-successful');
@@ -158,9 +159,11 @@ test("Tap allowed to bubble through action-bearing elements", function(assert) {
 
 });
 
+//TODO should it bubble? If it's a link, it shouldn't trigger the link's default behavior,
+// but otherwise it might be wise to let it bubble.
 test("Click doesn't bubble through action-bearing elements", function(assert) {
 
-  assert.expect(2);
+  assert.expect(1);
   visit('/actions');
 
   andThen(function () {
@@ -170,7 +173,6 @@ test("Click doesn't bubble through action-bearing elements", function(assert) {
   andThen(function() {
     var view = Ember.View.views.containsBubblingAction;
     assert.equal(view.get('internalClickEvidence'), 0, 'no internalClick');
-    assert.equal(view.get('tapEvidence'), 0, 'no tap');
   });
 
 });
