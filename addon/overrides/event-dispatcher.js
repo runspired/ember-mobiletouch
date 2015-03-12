@@ -99,9 +99,9 @@ export default Ember.EventDispatcher.reopen({
      */
     if (IS_MOBILE) {
 
-      document.body.addEventListener('tap press', function (e) {
-        e = e || window.event;
-        var $element = Ember.$(e.target);
+      jQuery('body').on('tap press', function (e) {
+
+        var $element = Ember.$(e.currentTarget);
 
         /*
          If the click was on an input element that needs to be able to focus, recast
