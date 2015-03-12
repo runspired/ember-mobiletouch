@@ -1,5 +1,8 @@
 # Ember-mobiletouch
 
+[![Build Status](https://travis-ci.org/runspired/ember-mobiletouch.svg?branch=master)](https://travis-ci.org/runspired/ember-mobiletouch)
+[![Ember Observer Score](http://emberobserver.com/badges/ember-mobiletouch.svg)](http://emberobserver.com/addons/ember-mobiletouch)
+
 Ember addon for touch and gesture support in ember based mobile apps and websites.
 
 
