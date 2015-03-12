@@ -1,7 +1,9 @@
 # Ember-mobiletouch
 
+[![npm version](https://badge.fury.io/js/ember-mobiletouch.svg)](http://badge.fury.io/js/ember-mobiletouch)
 [![Build Status](https://travis-ci.org/runspired/ember-mobiletouch.svg?branch=master)](https://travis-ci.org/runspired/ember-mobiletouch)
 [![Ember Observer Score](http://emberobserver.com/badges/ember-mobiletouch.svg)](http://emberobserver.com/addons/ember-mobiletouch)
+[![Circle CI](https://circleci.com/gh/runspired/ember-mobiletouch/tree/master.svg?style=svg)](https://circleci.com/gh/runspired/ember-mobiletouch/tree/master)
 
 Ember addon for touch and gesture support in ember based mobile apps and websites.
 
