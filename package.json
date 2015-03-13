@@ -17,7 +17,7 @@
     "url": "git@github.com:runspired/ember-mobiletouch.git"
   },
   "engines": {
-    "node": ">= 0.11.0"
+    "node": ">= 0.12.0"
   },
   "author": {
     "name": "Chris Thoburn (@runspired)",
