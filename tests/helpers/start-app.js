@@ -8,7 +8,7 @@ import CustomRecognizers from "../../recognizers";
 
 
 EventDispatcher.reopen({
-  _mobileTouchCustomizations : config,
+  _mobileTouchCustomizations : config.mobileTouch,
   _customRecognizers : CustomRecognizers
 });
 

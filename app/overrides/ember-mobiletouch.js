@@ -4,6 +4,6 @@ import CustomRecognizers from "../recognizers";
 
 
 export default EventDispatcher.reopen({
-  _mobileTouchCustomizations : config,
+  _mobileTouchCustomizations : config.mobileTouch,
   _customRecognizers : CustomRecognizers
 });
