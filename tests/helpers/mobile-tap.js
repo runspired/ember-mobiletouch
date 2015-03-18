@@ -1,18 +1,18 @@
 import Ember from "ember";
 
 function EventWithCoords(c) {
-  var e = {};
+
   var X = c.left + 1;
   var Y = c.top + 1;
-  e.pageX = X;
-  e.offsetX = X;
-  e.clientX = X;
-  e.screenX = X + 5;
-  e.pageY = Y;
-  e.offsetY = Y;
-  e.clientY = Y;
-  e.screenY = Y + 95;
-  return e;
+  this.pageX = X;
+  this.offsetX = X;
+  this.clientX = X;
+  this.screenX = X + 5;
+  this.pageY = Y;
+  this.offsetY = Y;
+  this.clientY = Y;
+  this.screenY = Y + 95;
+
 }
 
 export default function mobileTap(selector) {
@@ -21,8 +21,8 @@ export default function mobileTap(selector) {
 
     var $element = Ember.$(selector);
     var coords = $element.offset();
-    var Tap = Ember.$.Event('tap', EventWithCoords(coords));
-    var Click = Ember.$.Event('click', EventWithCoords(coords));
+    var Tap = Ember.$.Event('tap', new EventWithCoords(coords));
+    var Click = Ember.$.Event('click', new EventWithCoords(coords));
     $element.trigger(Tap);
     setTimeout((function () {
       $element.trigger(Click);
