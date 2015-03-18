@@ -1,4 +1,3 @@
-import jQuery from "jquery";
 import Ember from "ember";
 
 function EventWithCoords(c) {
@@ -20,10 +19,10 @@ export default function mobileTap(selector) {
 
   return new Ember.RSVP.Promise(function(resolve, reject) {
 
-    $element = jQuery(selector);
+    var $element = Ember.$(selector);
     var coords = $element.offset();
-    var Tap = jQuery.Event('tap', EventWithCoords(coords));
-    var Click = jQuery.Event('click', EventWithCoords(coords));
+    var Tap = Ember.$.Event('tap', EventWithCoords(coords));
+    var Click = Ember.$.Event('click', EventWithCoords(coords));
     $element.trigger(Tap);
     setTimeout((function () {
       $element.trigger(Click);

@@ -99,7 +99,7 @@ export default Ember.EventDispatcher.reopen({
      */
     if (IS_MOBILE) {
 
-      jQuery('body').on('tap press', function (e) {
+      Ember.$('body').on('tap press', function (e) {
 
         var $element = Ember.$(e.currentTarget);
 

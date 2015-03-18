@@ -2,6 +2,7 @@
 'use strict';
 
 module.exports = {
+
   name: 'ember-mobiletouch',
 
   included : function (app) {

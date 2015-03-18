@@ -89,8 +89,8 @@ export default Ember.Mixin.create({
     var hammer = this.get('_hammerInstance');
     if (hammer) {
       hammer.destroy();
+      this.set('_hammerInstance', null);
     }
-    this.set('_hammerInstance', null);
   }.on('willDestroyElement')
 
 });

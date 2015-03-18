@@ -13,6 +13,9 @@ Ember addon for touch and gesture support in ember based mobile apps and website
 ###[Roadmap](./ROADMAP.md)
 
 
+[![dependencies](https://david-dm.org/runspired/ember-mobiletouch.svg)](https://david-dm.org/runspired/ember-mobiletouch)
+[![devDependency Status](https://david-dm.org/runspired/ember-mobiletouch/dev-status.svg)](https://david-dm.org/runspired/ember-mobiletouch#info=devDependencies)
+
 
 ##Installation
 
