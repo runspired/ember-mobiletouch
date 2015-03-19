@@ -6,6 +6,10 @@ export default Ember.View.extend({
     this.incrementProperty('controller.taps');
   },
 
+  submit : function () {
+    this.incrementProperty('controller.submitEvents');
+  },
+
   internalClick : function (e) {
     this.incrementProperty('controller.internalClicks');
     e.preventDefault();

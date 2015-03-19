@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
   internalClicks : 0,
   taps : 0,
   clicks: 0,
-  isInserted : false
+  isInserted : false,
+  fired: 0
 
 });

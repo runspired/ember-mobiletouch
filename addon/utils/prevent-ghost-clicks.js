@@ -1,5 +1,5 @@
 import Ember from "ember"; // Ember.run.bind
-import { isMobile } from "./is-mobile";
+import mobileDetection from "./is-mobile";
 
 /**
  * Prevent click events after a touchend.
@@ -25,7 +25,7 @@ function makeGhostBuster(window, document) {
   var timeout = 2500;
 
   // no touch support
-  if(!isMobile()) {
+  if(!mobileDetection.is()) {
     return { add : function(){}, remove : function(){} };
   }
 
