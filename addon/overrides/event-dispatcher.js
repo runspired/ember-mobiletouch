@@ -188,7 +188,9 @@ export default Ember.EventDispatcher.reopen({
 
     //add initial recognizers (recognizers defined in app/recognizers.js are added later)
     config.use.forEach(function (name) {
-      Interface.Recognizers[capitalizeWord(name)] = EventManager._addRecognizer(name, config.tune[name]);
+      if (name !== 'rotate' && name !== 'pinch') {
+        Interface.Recognizers[capitalizeWord(name)] = EventManager._addRecognizer(name, config.tune[name]);
+      }
     });
 
     //if swipe and pan are present, recognize together
