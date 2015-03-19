@@ -10,16 +10,11 @@ import mobileDetection from "./is-mobile";
  * USAGE:
  * Prevent the click event for an certain element
  * ````
- *  PreventGhostClick(myElement);
- * ````
- *
- * Prevent clicks on the whole document (not recommended!!) *
- * ````
- *  PreventGhostClick(document);
+ *  PreventGhostClick($element);
  * ````
  *
  */
-function makeGhostBuster(window, document) {
+function makeGhostBuster() {
   var coordinates = [];
   var threshold = 25;
   var timeout = 2500;
@@ -45,6 +40,7 @@ function makeGhostBuster(window, document) {
       // within the range, so prevent the click
       if (Math.abs(ev.clientX - x) < threshold && Math.abs(ev.clientY - y) < threshold) {
         ev.stopPropagation();
+        ev.stopImmediatePropagation();
         ev.preventDefault();
         break;
       }
@@ -82,25 +78,24 @@ function makeGhostBuster(window, document) {
     }
   }
 
-  document.addEventListener("click", preventGhostClick, true);
 
   /**
    * prevent click events for the given element
-   * @param {EventTarget} el
+   * @param {EventTarget} $element jQuery object
    */
   return {
-    add : Ember.run.bind(this, function (el) {
-      el.addEventListener("touchstart", resetCoordinates, true);
-      el.addEventListener("touchend", registerCoordinates, true);
+    add : Ember.run.bind(this, function ($element) {
+      $element.on("touchstart.ghost-click-buster", resetCoordinates);
+      $element.on("touchend.ghost-click-buster", registerCoordinates);
+      $element.on("click.ghost-click-buster", preventGhostClick);
     }),
-    remove : Ember.run.bind(this, function (el) {
-      el.removeEventListener("touchstart", resetCoordinates);
-      el.removeEventListener("touchend", registerCoordinates);
+    remove : Ember.run.bind(this, function ($element) {
+      $element.off('.ghost-click-buster');
     })
   };
 
 }
 
-var preventGhostClicks = makeGhostBuster(window, document);
+var preventGhostClicks = makeGhostBuster();
 
 export default preventGhostClicks;

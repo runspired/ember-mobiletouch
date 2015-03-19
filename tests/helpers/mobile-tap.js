@@ -15,15 +15,39 @@ function EventWithCoords(c) {
 
 }
 
+function EventWithTouches(c) {
+
+  var X = c.left + 1;
+  var Y = c.top + 1;
+  this.pageX = X;
+  this.offsetX = X;
+  this.clientX = X;
+  this.screenX = X + 5;
+  this.pageY = Y;
+  this.offsetY = Y;
+  this.clientY = Y;
+  this.screenY = Y + 95;
+
+  this.touches = [{
+    clientX : X,
+    clientY : Y
+  }];
+  this.changedTouches = [{
+    clientX : X,
+    clientY : Y
+  }];
+
+}
+
 export default function mobileTap(selector) {
 
   return new Ember.RSVP.Promise(function(resolve, reject) {
 
     var $element = Ember.$(selector);
     var coords = $element.offset();
-    var TouchStart = Ember.$.Event('touchstart', new EventWithCoords(coords));
-    var TouchEnd = Ember.$.Event('touchend', new EventWithCoords(coords));
-    var Tap = Ember.$.Event('tap', new EventWithCoords(coords));
+    var TouchStart = Ember.$.Event('touchstart', new EventWithTouches(coords));
+    var TouchEnd = Ember.$.Event('touchend', new EventWithTouches(coords));
+    var Tap = Ember.$.Event('tap', new EventWithTouches(coords));
     var Click = Ember.$.Event('click', new EventWithCoords(coords));
     $element.trigger(TouchStart);
     $element.trigger(TouchEnd);

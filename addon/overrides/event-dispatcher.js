@@ -50,6 +50,15 @@ export default Ember.EventDispatcher.reopen({
     //add recognizers
     this._initializeRecognizers();
 
+    /*
+     Mobile devices trigger a click after a delay
+
+     Mobile Browsers try to pretend that they are normal browsers, so they fire a "click" event
+     a short delay after a "touchEnd". This is great for sites that haven't optimized for mobile,
+     but for sites that do use touchEnd to determine taps/clicks, the extra click event needs to
+     be captured and discarded, otherwise both the touchEnd and the click event will trigger a tap.
+     */
+    PreventGhostClicks.add($root);
 
     /*
      recast the non-fastclick's as a "submit" action
@@ -64,23 +73,12 @@ export default Ember.EventDispatcher.reopen({
     });
 
 
-
-
     /*
      We have to click bust clicks that trigger undesirable behaviors,
      but still allow clicks that do.
      */
+
     $root.on('click.ember-mobiletouch', '[data-ember-action]', function (e) {
-
-      //lock it down
-      //this unfortunately prevents submit behavior
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-
-    });
-
-    $root.on('click.ember-mobiletouch', function (e) {
 
       var $currentTarget = Ember.$(e.currentTarget);
 
@@ -100,8 +98,10 @@ export default Ember.EventDispatcher.reopen({
         e.stopImmediatePropagation();
         return false;
       }
+      return true;
 
     });
+
 
     //delegate native click to internalClick
     $root.on('click.ember-mobiletouch', '.ember-view', function(evt, triggeringManager) {
@@ -162,16 +162,6 @@ export default Ember.EventDispatcher.reopen({
       });
 
     }
-
-    /*
-      Mobile devices trigger a click after a delay
-
-      Mobile Browsers try to pretend that they are normal browsers, so they fire a "click" event
-      a short delay after a "touchEnd". This is great for sites that haven't optimized for mobile,
-      but for sites that do use touchEnd to determine taps/clicks, the extra click event needs to
-      be captured and discarded, otherwise both the touchEnd and the click event will trigger a tap.
-     */
-    PreventGhostClicks.add(element);
 
   },
 
@@ -376,7 +366,6 @@ export default Ember.EventDispatcher.reopen({
 
     var hammer = this.get('_hammerInstance');
     var $element = Ember.$(this.get('rootElement'));
-    var element = $element.get(0);
 
     // Clean up edge case handlers
     $element.off('tap press click');
@@ -386,7 +375,7 @@ export default Ember.EventDispatcher.reopen({
     this.set('_hammerInstance', null);
 
     //teardown clickbuster
-    PreventGhostClicks.remove(element);
+    PreventGhostClicks.remove($element);
 
     //run normal destroy
     this._super();
