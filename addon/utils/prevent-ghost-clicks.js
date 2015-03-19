@@ -34,6 +34,10 @@ function makeGhostBuster(window, document) {
    * @param {MouseEvent} ev
    */
   function preventGhostClick(ev) {
+
+    //don't prevent fastclicks
+    if (ev.fastclick) { return true; }
+
     for (var i = 0; i < coordinates.length; i++) {
       var x = coordinates[i][0];
       var y = coordinates[i][1];
