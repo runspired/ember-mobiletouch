@@ -2,11 +2,10 @@ import Ember from 'ember';
 import Application from '../../app';
 import Router from '../../router';
 import config from '../../config/environment';
+import customHelpers from './custom-helpers';
 
 import EventDispatcher from "ember-mobiletouch/overrides/event-dispatcher";
 import CustomRecognizers from "../../recognizers";
-
-import getController from './get-controller';
 
 
 
@@ -14,8 +13,6 @@ EventDispatcher.reopen({
   _mobileTouchCustomizations : config.mobileTouch,
   _customRecognizers : CustomRecognizers
 });
-
-
 
 export default function startApp(attrs) {
   var application;

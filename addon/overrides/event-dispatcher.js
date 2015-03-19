@@ -7,8 +7,8 @@ import defaultConfiguration from "../default-config";
 import hammerEvents from "../utils/hammer-events";
 import RecognizerInterface from "../recognizers";
 import removeEventsPatch from "../utils/determine-remove-events-patch";
+import { isMobile } from "../utils/is-mobile";
 
-var IS_MOBILE = !!("ontouchstart" in window);
 
 export default Ember.EventDispatcher.reopen({
 
@@ -79,7 +79,7 @@ export default Ember.EventDispatcher.reopen({
         recast the click as a "submit" action if we're on mobile
         this allows mobile keyboard submit button to work
        */
-      if (IS_MOBILE && $element.is('input[type="submit"], button[type="submit"]')) {
+      if (isMobile() && $element.is('input[type="submit"], button[type="submit"]')) {
         $element.trigger('submit');
       }
 
@@ -97,7 +97,7 @@ export default Ember.EventDispatcher.reopen({
     /*
         Implements fastclick and fastfocus mechanisms on mobile web/Cordova
      */
-    if (IS_MOBILE) {
+    if (isMobile()) {
 
       Ember.$('body').on('tap press', function (e) {
 
@@ -251,9 +251,31 @@ export default Ember.EventDispatcher.reopen({
     //setup hammer
     this._initializeHammer(rootElement);
 
+    // Tap events need to be converted to submit events on mobile. This is because the
+    // click events that would ordinarily trigger default submit event get prevented
+    // by the ghost click preventer.
+    var submitSelector = 'button[type="submit"],input[type="submit"]';
+    $rootElement.on('tap.ember-mobiletouch', submitSelector, function() {
+      if (isMobile()) {
+        Ember.$(this).trigger('submit');
+      }
+    });
+
+    // When not on mobile we seem to get a click when enter is used to submit
+    // the form, so we rely on click to trigger submit. For actual button
+    // clicks we could rely on tap as in the mobile case, but this doen't work
+    // for pressing enter. 
+    $rootElement.on('click.ember-mobiletouch', submitSelector, function() {
+      if (!isMobile()) {
+        Ember.$(this).trigger('submit');
+      }
+    });
+
     //prevent clicks on actions that are also links from triggering the default behavior
-    Ember.$(rootElement).on('click.ember-mobiletouch', '[data-ember-action]', function(e) {
+    $rootElement.on('click.ember-mobiletouch', '[data-ember-action]', function(e) {
       e.stopPropagation();
+      // Allow clicks to trigger default behavor on form elements for which
+      // actions are specified.
       e.preventDefault();
     });
 
@@ -365,8 +387,12 @@ export default Ember.EventDispatcher.reopen({
    */
   destroy: function () {
 
-    var hammer = this.get('_hammerInstance'),
-      element = Ember.$(this.get('rootElement'))[0];
+    var hammer = this.get('_hammerInstance');
+    var $element = Ember.$(this.get('rootElement'));
+    var element = $element.get(0);
+
+    // Clean up edge case  handlers
+    $element.off('.ember-mobiletouch', '**');
 
     //teardown Hammer
     if (hammer) { hammer.destroy(); }
