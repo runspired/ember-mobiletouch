@@ -21,8 +21,12 @@ export default function mobileTap(selector) {
 
     var $element = Ember.$(selector);
     var coords = $element.offset();
+    var TouchStart = Ember.$.Event('touchstart', new EventWithCoords(coords));
+    var TouchEnd = Ember.$.Event('touchend', new EventWithCoords(coords));
     var Tap = Ember.$.Event('tap', new EventWithCoords(coords));
     var Click = Ember.$.Event('click', new EventWithCoords(coords));
+    $element.trigger(TouchStart);
+    $element.trigger(TouchEnd);
     $element.trigger(Tap);
     setTimeout((function () {
       $element.trigger(Click);
