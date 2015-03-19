@@ -1,9 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.View.extend({
-  clickEvidence: null,
-  tapEvidence: null,
-  internalClickEvidence: null,
+
+  clickEvidence: 0,
+  tapEvidence: 0,
+  internalClickEvidence: 0,
 
   reset: function() {
     this.set('internalClickEvidence', 0);

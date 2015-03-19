@@ -1,14 +1,13 @@
 import Ember from "ember";
 import PreventGhostClicks from "../utils/prevent-ghost-clicks";
 import capitalizeWord from "../utils/capitalize-word";
-import isCustomProtocol from "../utils/is-custom-protocol";
+//import isCustomProtocol from "../utils/is-custom-protocol";
 import isGesture from "../utils/is-gesture";
 import defaultConfiguration from "../default-config";
 import hammerEvents from "../utils/hammer-events";
 import RecognizerInterface from "../recognizers";
 import removeEventsPatch from "../utils/determine-remove-events-patch";
-
-var IS_MOBILE = !!("ontouchstart" in window);
+import mobileDetection from "../utils/is-mobile";
 
 export default Ember.EventDispatcher.reopen({
 
@@ -38,7 +37,10 @@ export default Ember.EventDispatcher.reopen({
    */
   _initializeHammer: function (rootElement) {
 
-    var element = Ember.$(rootElement)[0];
+    var $root = Ember.$(rootElement);
+    var element = $root[0];
+    var self = this;
+
     Ember.assert('Application has no rootElement', element);
 
     //setup the Manager instance
@@ -50,58 +52,86 @@ export default Ember.EventDispatcher.reopen({
 
 
     /*
-      We have to click bust clicks that trigger undesirable behaviors,
-      but still allow clicks that do.
-     */
-    document.body.addEventListener('click', function (e) {
+     recast the non-fastclick's as a "submit" action
 
-      e = e || window.event;
-      var $element = Ember.$(e.target);
+     this allows mobile keyboard submit button and return key based submit to work
+     */
+    $root.on('click.ember-mobiletouch', 'input[type="submit"], button[type="submit"]', function (e) {
+      var $target = Ember.$(e.target);
+      if (!e.fastclick) {
+        $target.closest('form').trigger('submit');
+      }
+    });
+
+
+
+
+    /*
+     We have to click bust clicks that trigger undesirable behaviors,
+     but still allow clicks that do.
+     */
+    $root.on('click.ember-mobiletouch', '[data-ember-action]', function (e) {
+
+      //lock it down
+      //this unfortunately prevents submit behavior
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+    });
+
+    $root.on('click.ember-mobiletouch', function (e) {
+
+      var $currentTarget = Ember.$(e.currentTarget);
 
       // cancel the click only if there is an ember action defined on the input or button of type submit
       // or if the click is on a link and no href attribute is present
       var cancelIf =
 
         //allow overriding click busting by adding the `allow-click` class
-        !$element.hasClass('allow-click') &&
-        (
-          //bust clicks on links that don't have a custom protocol such as `mailto:` or `tel:`
-          ($element.is('a[href]') && !isCustomProtocol($element.attr('href'))) ||
+        !$currentTarget.hasClass('allow-click') &&
+        !$currentTarget.hasClass('needsclick');
 
-          //bust clicks on buttons and input buttons that aren't 'submit' buttons
-          $element.is('button[type!="submit"], input[type="button"]') ||
-
-          //bust clicks on inputs/buttons of type submit when they have a defined action handler
-          ($element.is('input[type="submit"], button[type="submit"]') && $element.attr('data-ember-action'))
-        );
-
-      /*
-        recast the click as a "submit" action if we're on mobile
-        this allows mobile keyboard submit button to work
-       */
-      if (IS_MOBILE && $element.is('input[type="submit"], button[type="submit"]')) {
-        $element.trigger('submit');
-      }
 
       //bust the click
       if (cancelIf) {
         e.preventDefault();
         e.stopPropagation();
+        e.stopImmediatePropagation();
         return false;
       }
 
     });
 
+    //delegate native click to internalClick
+    $root.on('click.ember-mobiletouch', '.ember-view', function(evt, triggeringManager) {
+
+      if (!evt.fastclick) {
+        var view = Ember.View.views[this.id];
+        var result = true;
+
+        var manager = self.canDispatchToEventManager ?
+          self._findNearestEventManager(view, 'internalClick') : null;
+
+        if (manager && manager !== triggeringManager) {
+          result = self._dispatchEvent(manager, evt, 'internalClick', view);
+        } else if (view) {
+          result = self._bubbleEvent(view, evt, 'internalClick');
+        }
+
+        return result;
+      }
+    });
 
 
     /*
         Implements fastclick and fastfocus mechanisms on mobile web/Cordova
      */
-    if (IS_MOBILE) {
+    if (mobileDetection.is()) {
 
-      document.body.addEventListener('tap press', function (e) {
-        e = e || window.event;
-        var $element = Ember.$(e.target);
+      $root.on('tap.ember-mobiletouch press.ember-mobiletouch', function (e) {
+
+        var $element = Ember.$(e.currentTarget);
 
         /*
          If the click was on an input element that needs to be able to focus, recast
@@ -112,15 +142,21 @@ export default Ember.EventDispatcher.reopen({
          will never reach the element.
          */
         var notFocusableTypes = ['submit', 'button', 'hidden', 'reset', 'range', 'radio', 'image', 'checkbox'];
+
+        //fastfocus
         if ($element.is('input') && notFocusableTypes.indexOf($element.attr('type')) === -1) {
           $element.focus();
+
+        //fastclick
         } else {
+
+          var $target = Ember.$(e.target);
+          var click = Ember.$.Event('click');
 
           //set the fastclick flag so that we can filter this from
           // Ember's eventing later
-          var click = Ember.$.Event('click');
           click.fastclick = true;
-          $element.trigger(click);
+          $target.trigger(click);
         }
 
       });
@@ -152,7 +188,9 @@ export default Ember.EventDispatcher.reopen({
 
     //add initial recognizers (recognizers defined in app/recognizers.js are added later)
     config.use.forEach(function (name) {
-      Interface.Recognizers[capitalizeWord(name)] = EventManager._addRecognizer(name, config.tune[name]);
+      if (name !== 'rotate' && name !== 'pinch') {
+        Interface.Recognizers[capitalizeWord(name)] = EventManager._addRecognizer(name, config.tune[name]);
+      }
     });
 
     //if swipe and pan are present, recognize together
@@ -190,7 +228,6 @@ export default Ember.EventDispatcher.reopen({
   setup: function (addedEvents, rootElement) {
 
     //merge the default configuration with the user's alterations
-    var self = this;
     var customConfig = this.get('_mobileTouchCustomizations');
     var config = Ember.merge(Ember.copy(defaultConfiguration, true), customConfig);
 
@@ -210,28 +247,6 @@ export default Ember.EventDispatcher.reopen({
       delete events[name];
     });
 
-    //delegate native click to internalClick
-    var $rootElement = Ember.$(!Ember.isNone(rootElement) ? rootElement : Ember.get(this, 'rootElement'));
-    $rootElement.on('click.ember', '.ember-view', function(evt, triggeringManager) {
-
-      if (!evt.fastclick) {
-        var view = Ember.View.views[this.id];
-        var result = true;
-
-        var manager = self.canDispatchToEventManager ?
-          self._findNearestEventManager(view, 'internalClick') : null;
-
-        if (manager && manager !== triggeringManager) {
-          result = self._dispatchEvent(manager, evt, 'internalClick', view);
-        } else if (view) {
-          result = self._bubbleEvent(view, evt, 'internalClick');
-        }
-
-        return result;
-      }
-    });
-
-
     //add gesture events
     config.use.forEach(function (category) {
       Ember.merge(events, hammerEvents[category]);
@@ -250,12 +265,6 @@ export default Ember.EventDispatcher.reopen({
 
     //setup hammer
     this._initializeHammer(rootElement);
-
-    //prevent clicks on actions that are also links from triggering the default behavior
-    Ember.$(rootElement).on('click.ember-mobiletouch', '[data-ember-action]', function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-    });
 
     //setup rootElement and  event listeners
     this._super(addedEvents, rootElement);
@@ -365,8 +374,12 @@ export default Ember.EventDispatcher.reopen({
    */
   destroy: function () {
 
-    var hammer = this.get('_hammerInstance'),
-      element = Ember.$(this.get('rootElement'))[0];
+    var hammer = this.get('_hammerInstance');
+    var $element = Ember.$(this.get('rootElement'));
+    var element = $element.get(0);
+
+    // Clean up edge case handlers
+    $element.off('tap press click');
 
     //teardown Hammer
     if (hammer) { hammer.destroy(); }

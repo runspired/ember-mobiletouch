@@ -8,10 +8,10 @@ export default Ember.Mixin.create({
   _hammerInstance : null,
 
   /**!
-   * Set this to something other than null to fine tune your swipe
+   * Set this to something other than null to fine tune your rotate
    * settings
    */
-  panConfiguration : null,
+  rotateConfiguration : null,
 
   /**!
    * Set this to something other than null to adjust the manager's
@@ -22,28 +22,7 @@ export default Ember.Mixin.create({
    */
   _hammerOptions : null,
 
-  /**!
-   * Internal flag used to make the vertical-pan and vertical-swipe
-   * mixins capable of both being added to the same view or component.
-   */
-  __hasPanMixin : true,
 
-
-  /**!
-   * Creates a localized hammer manager instance with
-   * vertical recognizers.  These events are still sent
-   * through as domEvents, so in your component/view you
-   * will still use panUp and panDown normally.
-   *
-   * It's heavily recommended to debounce events that fire
-   * rapidly.  E.G.
-   *
-   * ```
-   * panUp : function (event) {
-   *     Ember.run.debounce(this, this.doSomething, event, 10);
-   * }
-   * ```
-   */
   __setupHammer : function () {
 
     var element = this.$()[0];
@@ -64,18 +43,8 @@ export default Ember.Mixin.create({
       this.set('_hammerInstance', instance);
 
       //add pan configuration
-      var panConfiguration = this.get('panConfiguration') || {
-          direction : Hammer.DIRECTION_VERTICAL
-        };
-      instance.add(new Hammer.Pan(panConfiguration));
-
-      //play nice with swipe mixin if it's been added too
-      if (this.get('__hasSwipeMixin')) {
-        var swipeConfiguration = this.get('swipeConfiguration') || {
-            direction : Hammer.DIRECTION_VERTICAL
-          };
-        instance.add(new Hammer.Swipe(swipeConfiguration));
-      }
+      var rotateConfiguration = this.get('rotateConfiguration') || {};
+      instance.add(new Hammer.Rotate(rotateConfiguration));
 
     }
 
