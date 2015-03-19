@@ -74,8 +74,8 @@ export default Ember.EventDispatcher.reopen({
 
       var $currentTarget = Ember.$(e.currentTarget);
 
-      // cancel the click only if there is an ember action defined on the input or button of type submit
-      // or if the click is on a link and no href attribute is present
+      // cancel the click only if there is an ember action defined and
+      // it does not have the allow-click or needsclick class
       var cancelIf =
 
         //allow overriding click busting by adding the `allow-click` class
