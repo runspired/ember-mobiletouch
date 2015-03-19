@@ -20,6 +20,9 @@ export default Ember.View.extend({
     var observer = function (e) {
       if (e.fastclick) {
         view.incrementProperty('controller.fastClicks');
+        view.incrementProperty('controller.clicks');
+        e.preventDefault();
+        return false;
       }
       view.incrementProperty('controller.clicks');
     };
