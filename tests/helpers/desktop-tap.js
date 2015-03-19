@@ -25,6 +25,7 @@ export default function desktopTap(selector) {
     var MouseUp = Ember.$.Event('mouseup', new EventWithCoords(coords));
     var Tap = Ember.$.Event('tap', new EventWithCoords(coords));
     var Click = Ember.$.Event('click', new EventWithCoords(coords));
+    Click.isDesktop = true;
     $element.trigger(MouseDown);
     $element.trigger(MouseUp);
     $element.trigger(Tap);

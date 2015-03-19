@@ -132,6 +132,7 @@ export default Ember.EventDispatcher.reopen({
       $root.on('tap.ember-mobiletouch press.ember-mobiletouch', function (e) {
 
         var $element = Ember.$(e.currentTarget);
+        var $target = Ember.$(e.target);
 
         /*
          If the click was on an input element that needs to be able to focus, recast
@@ -147,10 +148,12 @@ export default Ember.EventDispatcher.reopen({
         if ($element.is('input') && notFocusableTypes.indexOf($element.attr('type')) === -1) {
           $element.focus();
 
+        } else if ($target.is('input') && notFocusableTypes.indexOf($target.attr('type')) === -1) {
+          $target.focus();
+
         //fastclick
         } else {
 
-          var $target = Ember.$(e.target);
           var click = Ember.$.Event('click');
 
           //set the fastclick flag so that we can filter this from
