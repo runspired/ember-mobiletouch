@@ -6,6 +6,9 @@ import config from '../../config/environment';
 import EventDispatcher from "ember-mobiletouch/overrides/event-dispatcher";
 import CustomRecognizers from "../../recognizers";
 
+import getController from './get-controller';
+
+
 
 EventDispatcher.reopen({
   _mobileTouchCustomizations : config.mobileTouch,
