@@ -38,7 +38,7 @@ test("Taps on links trigger via fastclick", function(assert) {
       assert.equal(controller.taps, 1, 'a tap was registered');
       Ember.run.later(function () {
         assert.equal(controller.fastClicks, 1, 'a fastclick was observed');
-        assert.equal(controller.internalClicks, 1, 'a regular click was observed');
+        assert.equal(controller.internalClicks, 0, 'The regular click was prevented');
         assert.equal(controller.clicks, 2, 'two clicks were observed');
       }, 350);
 
@@ -61,7 +61,7 @@ test("Links Trigger on Tap on internal content", function(assert) {
       assert.equal(controller.taps, 1, 'a tap was registered');
       Ember.run.later(function () {
         assert.equal(controller.fastClicks, 1, 'a fastclick was observed');
-        assert.equal(controller.internalClicks, 1, 'a regular click was observed');
+        assert.equal(controller.internalClicks, 0, 'The regular click was prevented');
         assert.equal(controller.clicks, 2, 'two clicks were observed');
       }, 350);
 
@@ -85,7 +85,7 @@ test("Relative Links Trigger on Tap", function(assert) {
       assert.equal(controller.taps, 1, 'a tap was registered');
       Ember.run.later(function () {
         assert.equal(controller.fastClicks, 1, 'a fastclick was observed');
-        assert.equal(controller.internalClicks, 1, 'a regular click was observed');
+        assert.equal(controller.internalClicks, 0, 'The regular click was prevented');
         assert.equal(controller.clicks, 2, 'two clicks were observed');
       }, 350);
 
@@ -108,7 +108,7 @@ test("Relative Links Trigger on Tap on internal content", function(assert) {
       assert.equal(controller.taps, 1, 'a tap was registered');
       Ember.run.later(function () {
         assert.equal(controller.fastClicks, 1, 'a fastclick was observed');
-        assert.equal(controller.internalClicks, 1, 'a regular click was observed');
+        assert.equal(controller.internalClicks, 0, 'The regular click was prevented');
         assert.equal(controller.clicks, 2, 'two clicks were observed');
       }, 350);
 

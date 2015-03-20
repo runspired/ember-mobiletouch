@@ -13,6 +13,7 @@ Router.map(function() {
   this.route('inputs');
   this.route('buttons');
   this.route('forms');
+  this.route('ghosts');
 });
 
 export default Router;

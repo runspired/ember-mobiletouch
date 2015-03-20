@@ -19,11 +19,13 @@ test("Action triggers on `Tap` by default", function(assert) {
   assert.expect(1);
   visit('/actions');
 
+  var controller = getController('actions');
+
   andThen(function () {
 
     triggerEvent('#genericAction', 'tap');
     andThen(function() {
-      assert.equal(currentRouteName(), 'test-successful');
+      assert.equal(controller.success, true, 'the action updated the success property');
     });
 
   });
@@ -35,11 +37,13 @@ test("Action triggers on a specific gesture when defined", function(assert) {
   assert.expect(1);
   visit('/actions');
 
+  var controller = getController('actions');
+
   andThen(function () {
 
     triggerEvent('#specificActionGesture', 'swiperight');
     andThen(function() {
-      assert.equal(currentRouteName(), 'test-successful');
+      assert.equal(controller.success, true, 'the action updated the success property');
     });
 
   });
@@ -50,11 +54,13 @@ test("Action triggers when gesture event originates on a child element.", functi
   assert.expect(1);
   visit('/actions');
 
+  var controller = getController('actions');
+
   andThen(function () {
 
     triggerEvent('#genericAction .internal-content', 'tap');
     andThen(function() {
-      assert.equal(currentRouteName(), 'test-successful');
+      assert.equal(controller.success, true, 'the action updated the success property');
     });
 
   });
@@ -66,11 +72,13 @@ test("Action helpers work with params.", function(assert) {
   assert.expect(1);
   visit('/actions');
 
+  var controller = getController('actions');
+
   andThen(function () {
 
     triggerEvent('#actionWithParams', 'tap');
     andThen(function() {
-      assert.equal(currentRouteName(), 'test-successful');
+      assert.equal(controller.success, true, 'the action updated the success property');
     });
 
   });
@@ -82,11 +90,13 @@ test("Action helpers work with params and a specific gesture.", function(assert)
   assert.expect(1);
   visit('/actions');
 
+  var controller = getController('actions');
+
   andThen(function () {
 
     triggerEvent('#specificGestureWithParams', 'swiperight');
     andThen(function() {
-      assert.equal(currentRouteName(), 'test-successful');
+      assert.equal(controller.success, true, 'the action updated the success property');
     });
 
   });
@@ -130,15 +140,16 @@ test("If an action handler is on a link, tap on the link calls the action.", fun
   assert.expect(2);
   visit('/actions');
 
+  var controller = getController('actions');
+
   andThen(function () {
     assert.equal($('#actionOnLink').attr('href'), "http://example.com/failure");
     triggerEvent('#actionOnLink', 'tap');
-  });
 
-  //TODO, is this still a valid test?
-  andThen(function() {
-    // Importantly this doesn't cause the browser to go to example.com/failure
-    assert.equal(currentRouteName(), 'test-successful');
+    andThen(function() {
+      assert.equal(controller.success, true, 'the action updated the success property');
+    });
+
   });
 
 });
@@ -159,8 +170,6 @@ test("Tap allowed to bubble through action-bearing elements", function(assert) {
 
 });
 
-//TODO should it bubble? If it's a link, it shouldn't trigger the link's default behavior,
-// but otherwise it might be wise to let it bubble.
 test("Click doesn't bubble through action-bearing elements", function(assert) {
 
   assert.expect(1);
