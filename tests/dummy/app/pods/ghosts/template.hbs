@@ -1,0 +1,7 @@
+<div {{action "switchContent"}}>
+{{#unless hasBeenTriggered}}
+  <div id="originalTarget">This is a box with some stuff</div>
+{{else}}
+  {{view "ghost-test" id="unintendedTarget"}}
+{{/unless}}
+</div>

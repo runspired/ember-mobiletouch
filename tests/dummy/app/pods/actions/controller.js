@@ -3,6 +3,7 @@ import Ember from "ember";
 export default Ember.Controller.extend({
 
   foo : 'bar',
+  success : false,
 
   actions : {
 
@@ -10,12 +11,12 @@ export default Ember.Controller.extend({
     },
 
     genericAction : function () {
-      this.transitionToRoute('test-successful');
+      this.set('success', true);
     },
 
     actionWithParams : function(params) {
       if (params === 'bar') {
-        this.transitionToRoute('test-successful');
+        this.set('success', true);
       }
     }
 

@@ -15,19 +15,27 @@ export default Ember.TextField.extend({
   taps : 0,
   clicks: 0,
 
-  focusIn : function () { this.incrementProperty('focuses'); },
-  focusOut : function () { this.incrementProperty('blurs'); },
-  tap : function () { this.incrementProperty('taps'); },
+  focusIn : function () {
+    this.incrementProperty('focuses');
+  },
+  focusOut : function () {
+    this.incrementProperty('blurs');
+  },
+
+  tap : function () {
+    this.incrementProperty('taps');
+  },
 
   internalClick : function (e) {
-
     this.incrementProperty('internalClicks');
-
-    if (e.isDesktop) {
+    if (e.isDefaultPrevented()) {
+      this.incrementProperty('preventedClicks');
+    } else {
       //trigger focus because clicks can't trigger focus in tests
       this.$().focus();
     }
 
+    return true;
   },
 
   observer: null,
@@ -35,12 +43,10 @@ export default Ember.TextField.extend({
   observeClicks : function () {
     var view = this;
     var observer = function (e) {
-
       if (e.fastclick) {
         view.incrementProperty('fastClicks');
       }
       view.incrementProperty('clicks');
-
     };
     this.set('controller.isInserted', true);
     this.$().on('click', observer);

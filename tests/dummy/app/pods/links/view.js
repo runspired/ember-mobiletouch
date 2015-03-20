@@ -8,32 +8,42 @@ export default Ember.View.extend({
 
   internalClick : function (e) {
     this.incrementProperty('controller.internalClicks');
-    e.preventDefault();
-    return false;
   },
 
   observer: null,
 
   observeClicks : function () {
-    this.incrementProperty('controller.fired');
     var view = this;
+
     var observer = function (e) {
       if (e.fastclick) {
         view.incrementProperty('controller.fastClicks');
-        view.incrementProperty('controller.clicks');
-        e.preventDefault();
-        return false;
       }
       view.incrementProperty('controller.clicks');
     };
+
+    var bustDefaultBehavior = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      return false;
+    };
+
+    this.set('buster', bustDefaultBehavior);
+    Ember.$('body').on('click', 'a[href]', bustDefaultBehavior);
+
     this.set('controller.isInserted', true);
     this.$().on('click', observer);
     this.set('observer', observer);
+
   }.on('didInsertElement'),
 
   removeObserver : function () {
     this.$().off('click', this.get('observer'));
     this.set('observer', null);
+
+    Ember.$('body').off('click', this.get('buster'));
+
   }.on('willDestroyElement')
 
 });

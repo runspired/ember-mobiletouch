@@ -26,7 +26,7 @@ module('Input Focus Integration Tests (mobile)', {
 
 test("Taps on inputs focus them.", function(assert) {
 
-  assert.expect(10);
+  assert.expect(9);
 
   visit('/inputs');
 
@@ -46,8 +46,7 @@ test("Taps on inputs focus them.", function(assert) {
 
       Ember.run.later(function () {
         assert.equal(view.fastClicks, 0, 'a fastclick was not observed');
-        assert.equal(view.internalClicks, 1, 'a regular click was observed');
-        assert.equal(view.preventedClicks, 0, 'a regular click was not prevented');
+        assert.equal(view.internalClicks, 0, 'the regular click was not observed');
         assert.equal(view.clicks, 1, 'a single click was observed');
         assert.equal(document.activeElement, $element.get(0), 'The input maintains focus.');
         assert.equal(view.focuses, 1, 'The view has not been focused more than once.');

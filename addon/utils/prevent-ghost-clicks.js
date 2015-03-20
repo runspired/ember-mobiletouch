@@ -26,10 +26,11 @@ function makeGhostBuster() {
 
   /**
    * prevent clicks if they're in a registered XY region
-   * @param {MouseEvent} ev
+   * @param {MouseEvent} event
    */
-  function preventGhostClick(ev) {
+  function preventGhostClick(event) {
 
+    var ev = event.originalEvent || event;
     //don't prevent fastclicks
     if (ev.fastclick) { return true; }
 
@@ -39,12 +40,13 @@ function makeGhostBuster() {
 
       // within the range, so prevent the click
       if (Math.abs(ev.clientX - x) < threshold && Math.abs(ev.clientY - y) < threshold) {
-        ev.stopPropagation();
-        ev.stopImmediatePropagation();
-        ev.preventDefault();
-        break;
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        return false;
       }
     }
+
   }
 
   /**
@@ -63,9 +65,11 @@ function makeGhostBuster() {
 
   /**
    * if it is an final touchend, we want to register it's place
-   * @param {TouchEvent} ev
+   * @param {TouchEvent} event
    */
-  function registerCoordinates(ev) {
+  function registerCoordinates(event) {
+    var ev = event.originalEvent || event;
+
     // touchend is triggered on every releasing finger
     // changed touches always contain the removed touches on a touchend
     // the touches object might contain these also at some browsers (firefox os)
@@ -73,7 +77,6 @@ function makeGhostBuster() {
     if(ev.touches.length - ev.changedTouches.length <= 0) {
       var touch = ev.changedTouches[0];
       coordinates.push([touch.clientX, touch.clientY]);
-
       setTimeout(popCoordinates, timeout);
     }
   }
@@ -88,6 +91,7 @@ function makeGhostBuster() {
       $element.on("touchstart.ghost-click-buster", resetCoordinates);
       $element.on("touchend.ghost-click-buster", registerCoordinates);
       $element.on("click.ghost-click-buster", preventGhostClick);
+      $element.on("click.ghost-click-buster", '.ember-view', preventGhostClick);
     }),
     remove : Ember.run.bind(this, function ($element) {
       $element.off('.ghost-click-buster');
@@ -96,6 +100,6 @@ function makeGhostBuster() {
 
 }
 
-var preventGhostClicks = makeGhostBuster();
+var preventGhostClicks = makeGhostBuster;
 
 export default preventGhostClicks;
