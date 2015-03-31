@@ -19,14 +19,17 @@ Ember addon for touch and gesture support in ember based mobile apps and website
 
 ##Installation
 
-`npm install ember-mobiletouch`
+If you are a recent version of `ember-cli` (0.1.5 or later) do the following:
 
-`ember g ember-mobiletouch`
+    ember install:addon ember-cli-fastclick
+    ember install:addon ember-mobiletouch
 
-(or, as of recent changes)
 
-`ember install:addon ember-mobiletouch`
+or, if you have an old version of `ember-cli` you can do:
 
+    npm install ember-mobiletouch
+    ember g ember-mobiletouch
+    ember g ember-cli-fastclick
 
 ##What's Included
 
