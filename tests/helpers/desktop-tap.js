@@ -36,5 +36,4 @@ export default function desktopTap(selector) {
 
   });
 
-
 }

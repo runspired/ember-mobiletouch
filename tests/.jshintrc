@@ -22,7 +22,8 @@
     "currentURL",
     "currentPath",
     "currentRouteName",
-    "getController"
+    "getController",
+    "triggerTap"
   ],
   "node": false,
   "browser": false,
