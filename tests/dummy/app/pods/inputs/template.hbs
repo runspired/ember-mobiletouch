@@ -1,3 +1,13 @@
 {{view "input-test" id="focusTest"}}
 
-{{input id="checkboxTest" type="checkbox" checked=checkboxChecked}}
+<div id='checkbox1-test'>
+  {{input id="checkbox1" type="checkbox" checked=checkbox1Checked}}
+</div>
+
+<form id='checkbox2-test' {{action "submitForm" on="submit"}}>
+  {{input id='checkbox2' type="checkbox" checked=checkbox2Checked}}
+</form>
+
+<form id='checkbox3-test'>
+  {{input id='checkbox3' type="checkbox" checked=checkbox3Checked}}
+</form>
