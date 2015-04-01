@@ -129,13 +129,12 @@ export default Ember.EventDispatcher.reopen({
     });
 
 
-    /*
-        Implements fastclick and fastfocus mechanisms on mobile web/Cordova
-     */
-    if (mobileDetection.is()) {
 
-      $root.on('tap.ember-mobiletouch press.ember-mobiletouch', function (e) {
-
+    $root.on('tap.ember-mobiletouch press.ember-mobiletouch', function (e) {
+      /*
+          Implements fastclick and fastfocus mechanisms on mobile web/Cordova
+       */
+      if (mobileDetection.is()) {
         var $element = Ember.$(e.currentTarget);
         var $target = Ember.$(e.target);
 
@@ -167,9 +166,9 @@ export default Ember.EventDispatcher.reopen({
           $target.trigger(click);
         }
 
-      });
+      }
 
-    }
+    });
 
   },
 
