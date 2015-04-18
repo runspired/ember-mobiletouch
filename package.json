@@ -38,6 +38,7 @@
     "ember-cli-uglify": "1.0.1",
     "ember-data": "1.0.0-beta.15",
     "ember-export-application-global": "^1.0.2",
+    "ember-velocity-mixin": "0.2.2",
     "grunt": "^0.4.5",
     "grunt-bump": "0.0.16",
     "grunt-cli": "^0.1.13",
