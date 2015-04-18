@@ -1,110 +1,96 @@
 import Ember from "ember";
 import { module, test } from 'qunit';
+import { pairModule, pairTest, pairConclude } from '../helpers/pair';
 
 import mobileDetection from "ember-mobiletouch/utils/is-mobile";
 import startApp from '../helpers/start-app';
-import mobileTap from '../helpers/mobile-tap';
-import desktopTap from '../helpers/desktop-tap';
 
 var App;
 
-module('Input Focus Integration Tests (mobile)', {
+pairModule('Input Focus Integration Tests', {
 
   beforeEach: function() {
-    mobileDetection.fake(true);
     App = startApp();
   },
 
   afterEach: function() {
     Ember.run(App, App.destroy);
-    mobileDetection.detect();
   }
 
 });
 
 
+pairTest("Tap on inputs focus them.", function(assert) {
 
-test("Taps on inputs focus them.", function(assert) {
+  var view;
+  var $element;
 
-  assert.expect(9);
+  assert.expect(8);
 
   visit('/inputs');
 
-  andThen(function () {
+  andThen(function() {
 
-    var view = Ember.View.views.focusTest;
-    var $element = view.$();
+    view = Ember.View.views.focusTest;
+    $element = view.$();
 
     assert.notEqual(document.activeElement, $element.get(0), 'The input is not initially focused.');
+  });
 
-    mobileTap('#focusTest');
-    andThen(function() {
+  triggerTap('#focusTest');
 
-      assert.equal(view.taps, 1, 'a tap was registered');
-      assert.equal(document.activeElement,$element.get(0), 'The input receives focus.');
-      assert.equal(view.focuses, 1, 'The view has been focused once.');
+  andThen(function() {
 
-      Ember.run.later(function () {
-        assert.equal(view.fastClicks, 0, 'a fastclick was not observed');
-        assert.equal(view.internalClicks, 0, 'the regular click was not observed');
-        assert.equal(view.clicks, 1, 'a single click was observed');
-        assert.equal(document.activeElement, $element.get(0), 'The input maintains focus.');
-        assert.equal(view.focuses, 1, 'The view has not been focused more than once.');
-      }, 350);
+    assert.equal(view.taps, 1, 'a tap was registered');
+    assert.equal(document.activeElement,$element.get(0), 'The input receives focus.');
+    assert.equal(view.focuses, 1, 'The view has been focused once.');
 
-    });
+    Ember.run.later(function () {
+      assert.equal(view.fastClicks, 0, 'a fastclick was not observed');
+      assert.equal(view.clicks, 1, 'a single click was observed');
+      assert.equal(document.activeElement, $element.get(0), 'The input maintains focus.');
+      assert.equal(view.focuses, 1, 'The view has not been focused more than once.');
+    }, 350);
+
   });
 
 });
 
+/*
+// Three related tests that vary in the context of the checkbox.
+var testBatch = [
+  {label: 'without a form', sel: '#checkbox1-test', prop: 'checkbox1Checked'},
+  {label: 'form without an action', sel: '#checkbox2-test', prop: 'checkbox2Checked'},
+  {label: 'form with a submit action', sel: '#checkbox3-test', prop: 'checkbox3Checked'}
+];
 
-
-module('Input Focus Integration Tests (desktop)', {
-
-  beforeEach: function() {
-    mobileDetection.fake(false);
-    App = startApp();
-  },
-
-  afterEach: function() {
-    Ember.run(App, App.destroy);
-    mobileDetection.detect();
-  }
-
-});
-
-test("A click on an input generates focus.", function(assert) {
-
-  assert.expect(9);
-
-  visit('/inputs');
-
-  andThen(function () {
-
-    var view = Ember.View.views.focusTest;
-    var $element = view.$();
-
-    assert.notEqual(document.activeElement, $element.get(0), 'The input is not initially focused.');
-
-    desktopTap('#focusTest');
-
+// Instantiate a test for each member in the testBatch.
+testBatch.forEach(function(t) {
+  var checkboxSel = t.sel+' input[type="checkbox"]';
+  pairTest("Tap checkbox makes it checked - "+t.label, function(assert) {
+  
+    assert.expect(6);
+    var controller = getController('inputs');
+  
+    assert.equal(controller.get('name'), 'inputs controller');
+    assert.ok(controller.get(t.prop) === false);
+  
+    visit('/inputs');
+    triggerTap(checkboxSel);
+  
     andThen(function() {
-
-      assert.equal(view.taps, 1, 'a tap was registered');
-      assert.equal(document.activeElement, $element.get(0), 'The input received focus.');
-      assert.equal(view.focuses, 1, 'The view has been focused once.');
-
-      Ember.run.later(function () {
-        assert.equal(view.fastClicks, 0, 'a fastclick was not observed');
-        assert.equal(view.internalClicks, 1, 'a regular click was observed');
-        assert.equal(view.clicks, 1, 'a single click was observed');
-        assert.equal(document.activeElement, $element.get(0), 'The input maintains focus.');
-        assert.equal(view.focuses, 1, 'The view has not been focused more than once.');
-      }, 350);
-
+      assert.ok(controller.get(t.prop));
+      assert.ok($(checkboxSel).prop('checked'));
+      Ember.run.later(function() {
+        assert.ok($(checkboxSel).prop('checked'));
+      }, 100);
     });
+    andThen(function() {
+      assert.ok($(checkboxSel).prop('checked'));
+    });
+  
   });
-
-
 });
+*/
 
+pairConclude();

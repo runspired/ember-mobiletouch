@@ -52,9 +52,9 @@ export default function mobileTap(selector) {
     $element.trigger(TouchStart);
     $element.trigger(TouchEnd);
     $element.trigger(Tap);
-    setTimeout((function () {
+    Ember.run.later((function () {
       $element.trigger(Click);
-      setTimeout((function () {
+      Ember.run.later((function () {
         resolve();
       }), 50);
     }), 300);
