@@ -5,22 +5,14 @@ module.exports = {
   normalizeEntityName: function() {},
 
   afterInstall: function() {
-    var success = true,
-      bowerPackages = [
+    var bowerPackages = [
         { name : 'hammerjs', version : '2.0.4' }
-      ],
-      npmPackages = [
-        {name : 'ember-cli-fastclick', version : '1.0.3'}
-      ];
+    ];
 
-    success = this.addBowerPackagesToProject(bowerPackages);
-
-    if (success) {
-      success = this.addPackagesToProject(npmPackages);
-    }
-
-    return success;
-
+    var receiver = this;
+    return this.addBowerPackagesToProject(bowerPackages).then(function() {
+      return receiver.addPackageToProject('ember-cli-fastclick');
+    });
   }
 
 
