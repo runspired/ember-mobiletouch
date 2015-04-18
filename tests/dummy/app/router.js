@@ -14,6 +14,7 @@ Router.map(function() {
   this.route('buttons');
   this.route('forms');
   this.route('ghosts');
+  this.route('drag-and-drop');
 });
 
 export default Router;

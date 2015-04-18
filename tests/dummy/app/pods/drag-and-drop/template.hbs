@@ -1,0 +1,17 @@
+{{#draggable-item}}
+  <h3>I'm draggable</h3>
+  <p>You can drag me anywhere.</p>
+{{/draggable-item}}
+
+{{#draggable-item}}
+    <h3>I'm also draggable</h3>
+    <p>You can drag me anywhere too!</p>
+{{/draggable-item}}
+
+{{#sortable-list tagName='ul'}}
+  {{#each model as |item|}}
+    {{#draggable-item}}
+      <li>{{item.name}}</li>
+    {{/draggable-item}}
+  {{/each}}
+{{/sortable-list}}
