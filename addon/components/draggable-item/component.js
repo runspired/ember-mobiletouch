@@ -1,5 +1,5 @@
 import Ember from "ember";
-import VelocityMixin from 'ember-velocity-mixin/main';
+import VelocityMixin from '../../mixins/ember-velocity-mixin';
 
 const {
   on,
@@ -19,7 +19,6 @@ function scheduleAnimation(e) {
 }
 
 function animatePosition(e) {
-  var $element = this.$();
 
   var dX = this.__pos.x - e.screenX;
   var dY = this.__pos.y - e.screenY;
@@ -27,29 +26,67 @@ function animatePosition(e) {
   this.__pos.x += dX;
   this.__pos.y += dY;
 
+  console.log('animating', dX, dY);
   this.animate({translateX: dX, translateY: dY});
 
 }
 
 function onInputMove(e) {
-  var e = e || window.event;
+  e = e || window.event;
   throttle(this, scheduleAnimation, e, UPDATE_POSITION_THROTTLE);
 }
 
 function onInputStop(e) {
-  var e = e || window.event;
+  e = e || window.event;
   this.set('isDragging', false);
   this.$().off('draggable');
 }
 
 export default Ember.Component.extend(VelocityMixin, {
 
+  /**!
+   * Whether the item is currently being dragged
+   */
   isDragging: false,
 
+  /**!
+   * Whether the item should only move horizontally
+   */
+  lockX: false,
+
+  /**!
+   * whether the item should only move vertically
+   */
+  lockY: false,
+
+  /**!
+   * whether the item's movement should snap to a grid,
+   * if true, use columnWidth and rowHeight to set
+   * dimensions to be snapped to.
+   */
+  snapToGrid: false,
+  columnWidth: 0,
+  rowHeight: 0,
+
+  /**!
+   * Cached position of the draggable item.
+   *
+   * @private
+   */
   __pos: {
     x: 0,
     y: 0
   },
+
+  /**!
+   * One of
+   * - empty (default)
+   * - clone
+   * - view
+   */
+  contentBehavior: 'empty',
+  _spacerElement: null,
+  spacerView: null,
 
   /**!
    * activate isDragging and add movement listeners
