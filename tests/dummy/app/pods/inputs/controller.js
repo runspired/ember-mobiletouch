@@ -5,7 +5,7 @@ export default Ember.Controller.extend({
   checkbox1Checked: false,
   checkbox2Checked: false,
   checkbox3Checked: false,
-  watchBoxes:function() {
-    console.log('check');
-  }.observes('checkbox1Checked', 'checkbox2Checked', 'checkbox3Checked')
+  watchBoxes: Ember.observer('checkbox1Checked', 'checkbox2Checked', 'checkbox3Checked', function() {
+    Ember.Logger.debug('check');
+  })
 });
