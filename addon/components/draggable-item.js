@@ -44,6 +44,8 @@ function onInputStop(e) {
 
 export default Ember.Component.extend(VelocityMixin, {
 
+  tagName: 'draggable-item',
+
   /**!
    * Whether the item is currently being dragged
    */

@@ -3,7 +3,7 @@ import Ember from "ember";
 export default Ember.Component.extend({
 
   tagName : 'div',
-  layoutName : 'tappable-element',
+  layoutName : 'context-area',
 
   action : null,
 
