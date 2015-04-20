@@ -3,13 +3,20 @@
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'dummy',
-    podModulePrefix: 'dummy/pods',
     environment: environment,
     baseURL: '/',
-    locationType: 'none',
+    locationType: 'hash',
     EmberENV: { FEATURES: {} },
 
-    APP: {}
+    APP: {},
+
+    contentSecurityPolicy: {
+      'font-src': "'self' https://maxcdn.bootstrapcdn.com",
+      'img-src': "'self' https://maxcdn.bootstrapcdn.com",
+      'style-src': "'self' https://maxcdn.bootstrapcdn.com",
+      'media-src': "'self' https://maxcdn.bootstrapcdn.com"
+  }
+
   };
 
   if (environment === 'test') {

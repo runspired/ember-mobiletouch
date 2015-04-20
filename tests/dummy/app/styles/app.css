@@ -2,6 +2,9 @@ body {
   font-size: 125%;
 }
 
+draggable-item,
+sortable-item,
+sortable-list,
 .block-element {
   width: 100%;
   position: static;

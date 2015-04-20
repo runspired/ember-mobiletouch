@@ -11,8 +11,8 @@
 
 {{#sortable-list tagName='ul'}}
   {{#each model as |item|}}
-    {{#draggable-item}}
-      <li>{{item.name}}</li>
-    {{/draggable-item}}
+    {{#sortable-item tagName="li"}}
+      {{item.name}}
+    {{/sortable-item}}
   {{/each}}
 {{/sortable-list}}
