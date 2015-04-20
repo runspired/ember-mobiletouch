@@ -1,18 +1,22 @@
 import Ember from "ember";
-import VelocityMixin from '../../mixins/ember-velocity-mixin';
+import VelocityMixin from '../mixins/ember-velocity-mixin';
 
 const {
   on,
   run
-} = Ember;
+  } = Ember;
+
+const jQuery = Ember.$;
 
 const {
   throttle,
-  debounce,
   schedule
-} = Ember;
+  } = run;
 
 const UPDATE_POSITION_THROTTLE = 1000 / 16; // 60fps ;)
+const ANIMATION_LAG = 8;
+
+var SharedListeners = null;
 
 function scheduleAnimation(e) {
   schedule('render', this, animatePosition, e);
@@ -20,14 +24,22 @@ function scheduleAnimation(e) {
 
 function animatePosition(e) {
 
-  var dX = this.__pos.x - e.screenX;
-  var dY = this.__pos.y - e.screenY;
+  console.log(this.__pos, e.pageX, e.pageY, e.clientX, e.clientY);
 
-  this.__pos.x += dX;
-  this.__pos.y += dY;
+  var dX =  e.pageX - this.__pos.left + 'px';
+  var dY =  e.pageY - this.__pos.top + 'px';
 
-  console.log('animating', dX, dY);
-  this.animate({translateX: dX, translateY: dY});
+  var animation = {};
+
+  if (!this.get('lockX')) {
+    animation.translateY = dY;
+  }
+  if (!this.get('lockY')) {
+    animation.translateX = dX;
+  }
+
+  console.log('animating', animation);
+  this.animate(animation, {duration: ANIMATION_LAG});
 
 }
 
@@ -36,10 +48,11 @@ function onInputMove(e) {
   throttle(this, scheduleAnimation, e, UPDATE_POSITION_THROTTLE);
 }
 
-function onInputStop(e) {
-  e = e || window.event;
+function onInputStop() {
+  console.log('removing draggable bindings');
   this.set('isDragging', false);
-  this.$().off('draggable');
+  var id = this.get('elementId');
+  jQuery('body').off('.draggable-' + id);
 }
 
 export default Ember.Component.extend(VelocityMixin, {
@@ -71,16 +84,6 @@ export default Ember.Component.extend(VelocityMixin, {
   rowHeight: 0,
 
   /**!
-   * Cached position of the draggable item.
-   *
-   * @private
-   */
-  __pos: {
-    x: 0,
-    y: 0
-  },
-
-  /**!
    * One of
    * - empty (default)
    * - clone
@@ -91,23 +94,37 @@ export default Ember.Component.extend(VelocityMixin, {
   spacerView: null,
 
   /**!
+   * Cached position of the draggable item.
+   *
+   * @private
+   */
+  __pos: {
+    x: 0,
+    y: 0
+  },
+
+  /**!
    * activate isDragging and add movement listeners
    */
   press: function() {
 
-    var $element = this.$();
+    var $element = jQuery('body');
+    var id = this.get('elementId');
 
     // we're dragging now
     this.set('isDragging', true);
 
+    console.log('namespace: .draggable-'+id);
+
     // attach both listeners for devices that can do both
-    $element.on('mousemove.draggable touchmove.draggable', onInputMove.bind(this));
-    $element.on('mouseup.draggable touchend.draggable', onInputStop.bind(this));
+    $element.on('mousemove.draggable-' + id + ' touchmove.draggable-' + id, onInputMove.bind(this));
+    $element.on('mouseup.draggable-' + id + ' touchend.draggable-' + id, onInputStop.bind(this));
 
   },
 
   teardownComponent: on('willDestroyElement', function removeDraggableListeners(){
-    $element.off('draggable');
+    var id = this.get('elementId');
+    jQuery('body').off('.draggable-' + id);
   }),
 
   establishInitialPosition: on('didInsertElement', function cacheInitialElementPosition() {

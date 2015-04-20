@@ -1,3 +1,3 @@
-import Component from "ember-mobiletouch/components/draggable-item";
+import Component from "ember-mobiletouch/components/sortable-item";
 
 export default Component;
