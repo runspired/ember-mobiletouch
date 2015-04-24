@@ -6,6 +6,25 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+
+  // Primitives
+  this.route('link-example');
+  this.route('gestured-link-example');
+  this.route('action-example');
+  this.route('multi-action-example');
+  this.route('action-area-example');
+  this.route('context-area-example');
+  this.route('velocity-mixin-example');
+  this.route('gesture-mixin-example');
+  this.route('drag-example');
+  this.route('sort-example');
+  this.route('drop-example');
+  this.route('svg-example');
+
+  // Examples
+  this.route('slide-toggle-example');
+
+  // Testing
   this.route('test-successful');
   this.route('linkto');
   this.route('actions');

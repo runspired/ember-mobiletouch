@@ -1,20 +1,40 @@
-<header class="row">
-  <div class="logo col-md-4">
-      <h1>Ember MobileTouch</h1>
-  </div>
-  <div class="title col-md-offset-4 col-md-4">
-      <h2>Tests</h2>
+<header class="row ui-header">
+  <div class="logo col-sm-4">
+      <h1>Ember Gestures</h1>
   </div>
 </header>
 
-<section class="row">
-  <div class="col-md-4">
+<div class="row">
+  <aside class="ui-menu col-sm-3">
+    <h2>Primitives</h2>
     <ul>
-      <li>{{#link-to "inputs"}}Input tests{{/link-to}}</li>
+      <li>{{#link-to "link-example"}}link-to{{/link-to}}</li>
+      <li>{{#link-to "gestured-link-example"}}gestured-link-to{{/link-to}}</li>
+      <li>{{#link-to "action-example"}}action{{/link-to}}</li>
+      <li>{{#link-to "multi-action-example"}}multi-action{{/link-to}}</li>
+      <li>{{#link-to "action-area-example"}}action area{{/link-to}}</li>
+      <li>{{#link-to "context-area-example"}}context area{{/link-to}}</li>
+      <li>{{#link-to "velocity-mixin-example"}}Velocity Mixin{{/link-to}}</li>
+      <li>{{#link-to "gesture-mixin-example"}}Filter Gesture Mixin{{/link-to}}</li>
+      <li>{{#link-to "drag-example"}}Dragging{{/link-to}}</li>
+      <li>{{#link-to "sort-example"}}Sorting{{/link-to}}</li>
+      <li>{{#link-to "drop-example"}}Dropping{{/link-to}}</li>
     </ul>
-  </div>
-</section>
 
-<section class="row">
-  {{outlet}}
-</section>
+    <h2>Examples</h2>
+    <ul>
+        <li>{{#link-to "slide-toggle-example"}}Slide Toggle{{/link-to}}</li>
+        <li>{{#link-to "svg-example"}}SVG{{/link-to}}</li>
+    </ul>
+
+    <h2>Tests</h2>
+    <ul>
+        <li>{{#link-to "inputs"}}Input tests{{/link-to}}</li>
+    </ul>
+  </aside>
+
+  <section class="ui-body col-sm-9">
+      {{liquid-outlet "main"}}
+  </section>
+
+</div>

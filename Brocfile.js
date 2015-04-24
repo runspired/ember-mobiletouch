@@ -7,7 +7,9 @@ var app = new EmberAddon({
   velocityOptions : {
     enabled: true,
     ui: false
-  }
+  },
+  snippetPaths: ['tests/dummy/snippets'],
+  snippetSearchPaths: ['app', 'tests/dummy/app', 'addon']
 });
 
 // Use `app.import` to add additional libraries to the generated

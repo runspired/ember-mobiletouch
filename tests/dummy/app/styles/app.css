@@ -1,5 +1,10 @@
-body {
+html {
   font-size: 125%;
+}
+body {
+  font-size: .75em;
+  background: #f0f0f0;
+  font-family: 'raleway';
 }
 
 draggable-item,
@@ -9,4 +14,35 @@ sortable-list,
   width: 100%;
   position: static;
   display: block;
+}
+
+draggable-item {
+  background: #444;
+  border-radius: 3px;
+  border: 1px dashed #222;
+  color: #ffbe57;
+  padding: 0 10px 10px;
+}
+
+draggable-item h3 {
+  color: #fff;
+}
+
+.ui-header {
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  height: 2.5rem;
+  line-height: 2.5rem;
+}
+
+.ui-header h1 {
+  margin: 0;
+  color: #555;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.66666667em;
+}
+
+h2 {
+  font-size: 1.25rem;
 }
