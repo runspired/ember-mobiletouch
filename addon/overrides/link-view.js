@@ -2,9 +2,9 @@ import Ember from "ember";
 
 export default Ember.LinkView.reopen({
 
-  eventName : 'tap',
+  eventName: 'tap',
 
-  __defaultTapOnPress : true,
+  events: '',
 
   /**!
    *
@@ -24,16 +24,25 @@ export default Ember.LinkView.reopen({
 
   init: function() {
 
-    //run normal linkView setup
-    this._super.apply(this, arguments);
+    var eventName = this.get('events').split(' ');
 
-    // Map desired event name to invoke function
-    var defaultTapOnPress = this.get('__defaultTapOnPress'),
-      eventName = this.get('eventName');
+    if (!eventName[0]) {
+      this._super.apply(this, arguments);
 
-    if (defaultTapOnPress && eventName === 'tap') {
-      this.on('press', this, this._invoke);
+    } else {
+      var remainingEvents = Ember.A(eventName.splice(1));
+      var Component = this;
+
+      this.set('eventName', eventName[0]);
+      this._super.apply(this, arguments);
+
+      remainingEvents.forEach(function(event) {
+        Ember.Logger.debug('Adding trigger for', event);
+        Component.on(event, Component, Component._invoke);
+      });
+
     }
+
 
   }
 

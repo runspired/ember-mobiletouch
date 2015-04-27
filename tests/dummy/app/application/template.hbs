@@ -1,17 +1,19 @@
 <header class="row ui-header">
   <div class="logo col-sm-4">
-      <h1>Ember Gestures</h1>
+      {{#link-to "index" tagName="h1"}}Ember Gestures{{/link-to}}
+  </div>
+  <div class="col-sm-8">
+      <h3>Ambitious Interfaces for Ambitious Applications.</h3>
   </div>
 </header>
 
-<div class="row">
+<div class="row ui-body">
   <aside class="ui-menu col-sm-3">
+    {{#link-to "index" tagName="h2"}}Overview{{/link-to}}
     <h2>Primitives</h2>
     <ul>
       <li>{{#link-to "link-example"}}link-to{{/link-to}}</li>
-      <li>{{#link-to "gestured-link-example"}}gestured-link-to{{/link-to}}</li>
       <li>{{#link-to "action-example"}}action{{/link-to}}</li>
-      <li>{{#link-to "multi-action-example"}}multi-action{{/link-to}}</li>
       <li>{{#link-to "action-area-example"}}action area{{/link-to}}</li>
       <li>{{#link-to "context-area-example"}}context area{{/link-to}}</li>
       <li>{{#link-to "velocity-mixin-example"}}Velocity Mixin{{/link-to}}</li>
@@ -21,7 +23,12 @@
       <li>{{#link-to "drop-example"}}Dropping{{/link-to}}</li>
     </ul>
 
-    <h2>Examples</h2>
+    <h2>Docs</h2>
+    <ul>
+        <li>{{#link-to "customization-docs"}}Customizing{{/link-to}}</li>
+    </ul>
+
+      <h2>Examples</h2>
     <ul>
         <li>{{#link-to "slide-toggle-example"}}Slide Toggle{{/link-to}}</li>
         <li>{{#link-to "svg-example"}}SVG{{/link-to}}</li>

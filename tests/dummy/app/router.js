@@ -9,9 +9,7 @@ Router.map(function() {
 
   // Primitives
   this.route('link-example');
-  this.route('gestured-link-example');
   this.route('action-example');
-  this.route('multi-action-example');
   this.route('action-area-example');
   this.route('context-area-example');
   this.route('velocity-mixin-example');
@@ -23,6 +21,9 @@ Router.map(function() {
 
   // Examples
   this.route('slide-toggle-example');
+
+  // Docs
+  this.route('customization-docs');
 
   // Testing
   this.route('test-successful');

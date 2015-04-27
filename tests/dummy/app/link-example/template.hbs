@@ -1,0 +1,63 @@
+<section class="container-fluid">
+
+  <h2>Link-to Helper</h2>
+
+  <h3>Basic</h3>
+  <p>
+    The `link-to` helper functions as it always has, except it now triggers on `tap`
+    instead of `click`. Events originating within the link-to are still captured correctly.
+  </p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET link-example-1 }}
+        {{#link-to 'action-example'}}
+            <i class="glyphicon glyphicon-fire"></i>
+            <span class="link-text">Actions</span>
+        {{/link-to}}
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="link-example-1.hbs"}}
+      </div>
+  </div>
+
+  <h3>Custom Gesture</h3>
+  <p>
+      You can customize the gesture that triggers a link-to the same way
+      you could before using `eventName`, alternatively you can specify the
+      event using `events` with a single event name.
+  </p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET link-example-2 }}
+        {{#link-to 'action-example' eventName="panRight"}}
+            <i class="glyphicon glyphicon-fire"></i>
+            <span class="link-text">Actions</span>
+        {{/link-to}}
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="link-example-2.hbs"}}
+      </div>
+  </div>
+
+  <h3>Using Multiple Gestures</h3>
+  <p>
+      Use `events` to specify which gestures/events to use.
+      Tap, press or panRight to trigger the link below.
+  </p>
+    <div class="row">
+        <div class="col-sm-4">
+          {{!- BEGIN-SNIPPET link-example-3 }}
+          {{#link-to 'action-example' class="actionable-example" events="tap press panRight"}}
+              <i class="glyphicon glyphicon-fire"></i>
+              <span class="link-text">Actions</span>
+          {{/link-to}}
+          {{!- END-SNIPPET }}
+        </div>
+        <div class="col-sm-8">
+          {{code-snippet name="link-example-3.hbs"}}
+        </div>
+    </div>
+
+</section>

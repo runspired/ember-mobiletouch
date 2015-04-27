@@ -8,6 +8,13 @@ import hammerEvents from "../utils/hammer-events";
 import RecognizerInterface from "../recognizers";
 import removeEventsPatch from "../utils/determine-remove-events-patch";
 import mobileDetection from "../utils/is-mobile";
+import { ActionHelper } from "../overrides/action-helper";
+
+var jQuery = Ember.$;
+
+const {
+  View
+} = Ember;
 
 export default Ember.EventDispatcher.reopen({
 
@@ -40,7 +47,7 @@ export default Ember.EventDispatcher.reopen({
    */
   _initializeHammer: function (rootElement) {
 
-    var $root = Ember.$(rootElement);
+    var $root = jQuery(rootElement);
     var element = $root[0];
     var self = this;
 
@@ -71,7 +78,7 @@ export default Ember.EventDispatcher.reopen({
      this allows mobile keyboard submit button and return key based submit to work
      */
     $root.on('click.ember-mobiletouch', 'input[type="submit"], button[type="submit"]', function (e) {
-      var $target = Ember.$(e.target);
+      var $target = jQuery(e.target);
       if (!e.fastclick) {
         $target.closest('form').trigger('submit');
       }
@@ -85,7 +92,7 @@ export default Ember.EventDispatcher.reopen({
 
     $root.on('click.ember-mobiletouch', '[data-ember-action]', function (e) {
 
-      var $currentTarget = Ember.$(e.currentTarget);
+      var $currentTarget = jQuery(e.currentTarget);
 
       // cancel the click only if there is an ember action defined and
       // it does not have the allow-click or needsclick class
@@ -135,8 +142,8 @@ export default Ember.EventDispatcher.reopen({
           Implements fastclick and fastfocus mechanisms on mobile web/Cordova
        */
       if (mobileDetection.is()) {
-        var $element = Ember.$(e.currentTarget);
-        var $target = Ember.$(e.target);
+        var $element = jQuery(e.currentTarget);
+        var $target = jQuery(e.target);
 
         /*
          If the click was on an input element that needs to be able to focus, recast
@@ -158,7 +165,7 @@ export default Ember.EventDispatcher.reopen({
         //fastclick
         } else {
 
-          var click = Ember.$.Event('click');
+          var click = jQuery.Event('click');
 
           //set the fastclick flag so that we can filter this from
           // Ember's eventing later
@@ -232,7 +239,6 @@ export default Ember.EventDispatcher.reopen({
     Ember.assert('ENV.mobileTouch.options.domEvents MUST be true!', config.options.domEvents);
     Ember.assert('ENV.mobileTouch.use MUST contain a minimum of `tap`!', (config.use.indexOf('tap') !== -1));
 
-
     //save configuration
     this.set('_mobileTouchConfig', config);
 
@@ -269,47 +275,47 @@ export default Ember.EventDispatcher.reopen({
   },
 
 
-
-
-  /**!
-   *
-   * If a view or component had defined gestureAllow or gestureExclude,
-   * filter gesture events.
-   *
-   * @param eventName
-   * @param event
-   * @param view
-   * @param context
-   * @returns {*}
-   * @private
+  /**
+   Registers an event listener on the rootElement. If the given event is
+   triggered, the provided event handler will be triggered on the target view.
+   If the target view does not implement the event handler, or if the handler
+   returns `false`, the parent view will be called. The event will continue to
+   bubble to each successive parent view until it reaches the top.
+   @private
+   @method setupHandler
+   @param {Element} rootElement
+   @param {String} event the browser-originated event to listen to
+   @param {String} eventName the name of the method to call on the view
    */
-  __executeGestureWithFilters: function (eventName, event, view, context) {
+  setupHandler: function(rootElement, event, eventName) {
+    var self = this;
 
-    var shouldFilter = isGesture(eventName) ? (view.get('gestureAllow') || view.get('gestureExclude')) : false,
-      element, result;
+    rootElement.on(event + '.ember', '.ember-view', function(evt, triggeringManager) {
+      var view = View.views[this.id];
+      var result = true;
 
-    if (context) {
+      var manager = self.canDispatchToEventManager ? self._findNearestEventManager(view, eventName) : null;
 
-      element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
-      result = (shouldFilter && !element) ? false : Ember.run(context, context[eventName], event, view);
+      if (manager && manager !== triggeringManager) {
+        result = self._dispatchEvent(manager, evt, eventName, view);
+      } else if (view) {
+        result = self._bubbleEvent(view, evt, eventName);
+      }
 
-    } else {
+      return result;
+    });
 
-      element = shouldFilter ? view._filterTouchableElements.call(view, event.target) : false;
-      result = (shouldFilter && !element) ? false : Ember.run.join(view, view.handleEvent, eventName, event);
+    rootElement.on(event + '.ember', '[data-ember-action]', function(evt) {
+      var actionId = jQuery(evt.currentTarget).attr('data-ember-action');
+      var action   = ActionHelper.registeredActions[actionId];
 
-    }
-
-    //only stop propagation if result is explicitly false, not null or undefined
-    if (result === false) {
-      //hammer events have different semantics than normal events, so we must check before invoking
-      if (event.stopPropagation) { event.stopPropagation(); }
-      if (event.preventDefault) { event.preventDefault(); }
-      if (event.preventDefaults) { event.preventDefaults(); }
-    }
-
-    return result;
-
+      // We have to check for action here since in some cases, jQuery will trigger
+      // an event on `removeChild` (i.e. focusout) after we've already torn down the
+      // action handlers for the view.
+      if (action && action.events.indexOf(eventName) !== -1) {
+        return action.handler(evt);
+      }
+    });
   },
 
 
@@ -317,51 +323,17 @@ export default Ember.EventDispatcher.reopen({
 
   /**
    *
-   * Alters the normal _dispatchEvent to allow gesture filtering
+   * extends the default _dispatchEvent
+   * to handle internalClick and fastclick
    *
-   * @param object
-   * @param event
-   * @param eventName
-   * @param view
-   * @returns {boolean}
    * @private
    */
-  _dispatchEvent: function (object, event, eventName, view) {
-
-    var result = true;
-
+  _dispatchEvent: function (object, event, eventName /*, view */) {
     if (event && eventName === 'internalClick' && event.fastclick) {
       event.stopPropagation();
     }
-
-    var handler = object[eventName];
-    if (Ember.typeOf(handler) === 'function') {
-      result = this.__executeGestureWithFilters(eventName, event, view, object);
-      // Do not preventDefault in eventManagers.
-      event.stopPropagation();
-    }
-    else if (view) {
-      result = this._bubbleEvent(view, event, eventName);
-    }
-
-    return result;
+    return this._super.apply(this, arguments);
   },
-
-
-  /**
-   *
-   * Alters the normal _bubbleEvent to allow gesture filtering
-   *
-   * @param view
-   * @param event
-   * @param eventName
-   * @returns {*}
-   * @private
-   */
-  _bubbleEvent: function (view, event, eventName) {
-    return this.__executeGestureWithFilters(eventName, event, view);
-  },
-
 
 
 
@@ -372,7 +344,7 @@ export default Ember.EventDispatcher.reopen({
   destroy: function () {
 
     var hammer = this.get('_hammerInstance');
-    var $element = Ember.$(this.get('rootElement'));
+    var $element = jQuery(this.get('rootElement'));
 
     // Clean up edge case handlers
     $element.off('tap press click');

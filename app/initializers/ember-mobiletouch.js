@@ -3,7 +3,7 @@ import defaultConfig from 'ember-mobiletouch/default-config';
 
 //activate overrides
 import ModifiedView from 'ember-mobiletouch/overrides/view';
-import ModifiedLinkView from 'ember-mobiletouch/overrides/link-view';
+import ModifiedLinkTo from 'ember-mobiletouch/overrides/link-view';
 import ModifiedEventDispatcher from '../overrides/ember-mobiletouch';
 import ModifiedActionHelper from 'ember-mobiletouch/overrides/action-helper';
 
@@ -18,7 +18,6 @@ export default {
 
     //add config settings to overrides
     ModifiedView.reopen({ __useGesturesHash : mergedConfig.useGesturesHash });
-    ModifiedLinkView.reopen({ __defaultTapOnPress : mergedConfig.defaultTapOnPress });
 
   }
 };
