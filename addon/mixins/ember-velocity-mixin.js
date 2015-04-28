@@ -96,6 +96,6 @@ export default Ember.Mixin.create({
    * @private
    */
   _checkElement: function(element) {
-    return element instanceof Ember.View || element instanceof $;
+    return element instanceof Ember.View || element instanceof $ || element instanceof HTMLElement;
   }
 });

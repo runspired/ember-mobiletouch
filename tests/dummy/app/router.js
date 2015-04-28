@@ -12,7 +12,6 @@ Router.map(function() {
   this.route('action-example');
   this.route('action-area-example');
   this.route('context-area-example');
-  this.route('velocity-mixin-example');
   this.route('gesture-mixin-example');
   this.route('drag-example');
   this.route('sort-example');

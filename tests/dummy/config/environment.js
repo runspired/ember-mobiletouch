@@ -13,11 +13,13 @@ module.exports = function(environment) {
     contentSecurityPolicy: {
       'font-src': "'self' https://maxcdn.bootstrapcdn.com",
       'img-src': "'self' https://maxcdn.bootstrapcdn.com",
-      'style-src': "'self' https://maxcdn.bootstrapcdn.com",
+      'style-src': "'unsafe-inline' 'self' https://maxcdn.bootstrapcdn.com",
       'media-src': "'self' https://maxcdn.bootstrapcdn.com"
   }
 
   };
+
+  ENV.APP.LOG_RESOLVER = true;
 
   if (environment === 'test') {
 
@@ -28,6 +30,7 @@ module.exports = function(environment) {
     // keep test console output quieter
     ENV.APP.LOG_ACTIVE_GENERATION = false;
     ENV.APP.LOG_VIEW_LOOKUPS = false;
+    ENV.APP.LOG_RESOLVER = false;
 
     ENV.APP.rootElement = '#ember-testing';
   }

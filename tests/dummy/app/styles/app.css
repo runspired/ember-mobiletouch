@@ -3,7 +3,7 @@ html {
 }
 body {
   font-size: .75em;
-  background: #444;
+  background: #f0f0f0;
   font-family: 'raleway', 'open sans', 'helvetica', 'arial', sans-serif;
 }
 
@@ -30,19 +30,19 @@ draggable-item h3 {
 }
 
 aside {
-  color: #eeeeee;
+  color: #555;
 }
 
 aside a {
-  color: #bbbbbb;
+  color: #888888;
 }
-aside a:hover, aside a:active {
-  color: #ccc;
+aside a:hover, aside a:active, aside a:focus {
+  color: #999999;
 }
 
 .ui-header {
   background: #17B56C;
-  border-bottom: 2px solid #444;
+  border-bottom: 1px solid #0b6033;
   min-height: 2.5rem;
   line-height: 2.5rem;
   position: fixed;
@@ -52,7 +52,7 @@ aside a:hover, aside a:active {
 
 .ui-header h1 {
   margin: 0;
-  color: #0E7043;
+  color: #0b6033;
   font-weight: 400;
   font-size: 1.5rem;
   line-height: 1.66666667em;

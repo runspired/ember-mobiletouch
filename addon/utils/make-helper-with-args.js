@@ -28,6 +28,7 @@ export default function makeHelperWithArgs(component) {
         hash[key + 'Binding'] = hash[key];
         delete hash[key];
       }
+
     }
 
     return Ember.Handlebars.helpers.view.helperFunction.call(this, [component], hash, options, options);

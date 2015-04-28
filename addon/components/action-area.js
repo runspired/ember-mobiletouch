@@ -2,8 +2,10 @@ import Ember from "ember";
 import toCamel from "../utils/dasherized-to-camel";
 import verticalPan from "../mixins/vertical-pan";
 import verticalSwipe from "../mixins/vertical-swipe";
+import rotate from "../mixins/rotate";
+import pinch from "../mixins/pinch";
 
-export default Ember.Component.extend(verticalPan, verticalSwipe, {
+export default Ember.Component.extend(verticalPan, verticalSwipe, rotate, pinch, {
 
   classBindings: ['requestState'],
 
