@@ -1,17 +1,21 @@
 import Ember from "ember";
 
+const {
+  on
+  } = Ember;
+
 export default Ember.Mixin.create({
 
   /**!
    * Stores the reference to the local manager instance
    */
-  _hammerInstance : null,
+  _hammerInstance: null,
 
   /**!
    * Set this to something other than null to fine tune your swipe
    * settings
    */
-  swipeConfiguration : null,
+  swipeConfiguration: null,
 
   /**!
    * Set this to something other than null to adjust the manager's
@@ -20,13 +24,19 @@ export default Ember.Mixin.create({
    * It's not recommended to add anything here, but ff you do
    * set this, make certain you set domEvents to true!
    */
-  _hammerOptions : null,
+  _hammerOptions: null,
 
   /**!
    * Internal flag used to make the vertical-pan and vertical-swipe
    * mixins capable of both being added to the same view or component.
    */
-  __hasSwipeMixin : true,
+  __hasSwipeMixin: true,
+
+  /**!
+   * If false, a Hammer instance/recognizers will not be created unless
+   * panUp or panDown are present.
+   */
+  alwaysCreateHammerInstance: true,
 
 
   /**!
@@ -44,7 +54,11 @@ export default Ember.Mixin.create({
    * }
    * ```
    */
-  __setupHammer : function () {
+  __setupHammer: on('didInsertElement', function setupHammerInstance() {
+
+    if (!this.get('alwaysCreateHammerInstance') && !this.get('panUp') && !this.get('panDown')) {
+      return;
+    }
 
     var element = this.$()[0];
     var instance = this.get('_hammerInstance');
@@ -79,18 +93,18 @@ export default Ember.Mixin.create({
 
     }
 
-  }.on('didInsertElement'),
+  }),
 
 
   /**!
    * Destroy the localized instance when the view/component is destroyed
    */
-  __teardownHammer : function () {
+  __teardownHammer: on('willDestroyElement', function teardownHammerInstance() {
     var hammer = this.get('_hammerInstance');
     if (hammer) {
       hammer.destroy();
       this.set('_hammerInstance', null);
     }
-  }.on('willDestroyElement')
+  })
 
 });

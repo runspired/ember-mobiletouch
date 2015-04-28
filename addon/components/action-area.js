@@ -1,14 +1,18 @@
 import Ember from "ember";
-import uncapitalize from "../utils/uncapitalize-word";
+import toCamel from "../utils/dasherized-to-camel";
+import verticalPan from "../mixins/vertical-pan";
+import verticalSwipe from "../mixins/vertical-swipe";
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(verticalPan, verticalSwipe, {
 
   classBindings: ['requestState'],
 
+  alwaysCreateHammerInstance: false,
+
   _defaultParams: null,
   _getParams: function(actionName) {
-    var rawActionArguments = this.getWithDefault('_actionArgs', []);
-    var actionArgumentTypes = this.getWithDefault('_argTypes', []);
+    var args = this.getWithDefault('_anonArgs', []);
+    var argTypes = this.getWithDefault('_anonArgTypes', []);
     var actionArguments = [actionName];
     var defaultParams = this.get('_defaultParams');
 
@@ -20,10 +24,10 @@ export default Ember.Component.extend({
     // the option types stored in _argTypes). If so, we get the stream and retrieve
     // the value when the button is clicked. Once the Stream API is public,
     // the helper will be converted to pass in a concatenated array of streams
-    for (var index = 0, length = rawActionArguments.length; index < length; index++) {
-      var value = rawActionArguments[index];
+    for (var index = 0, length = args.length; index < length; index++) {
+      var value = args[index];
 
-      if (actionArgumentTypes[index] === 'ID') {
+      if (argTypes[index] === 'ID') {
         value = this._parentView.getStream(value).value();
       }
 
@@ -51,20 +55,22 @@ export default Ember.Component.extend({
         }
 
         //setup listener for key
-        if (key.indexOf('on') === 0) {
-          let event = uncapitalize(key.substr(2));
+        if (key.indexOf('on-') === 0) {
+          let event = toCamel(key.substr(3));
           let action = this[key];
 
           this.set(event + 'Action', action);
 
           this.set(event, function () {
 
-            var context = this._getParams(event + 'Action');
             var target = this.get('target');
+            var context;
 
             if (target && target.send) {
+              context = this._getParams(action);
               target.send.apply(this, context);
             } else {
+              context = this._getParams(event + 'Action');
               this.sendAction.apply(this, context);
             }
 
