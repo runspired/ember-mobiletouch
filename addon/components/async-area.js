@@ -2,7 +2,8 @@ import ActionArea from "./action-area";
 import Ember from "ember";
 
 const {
-  observer
+  observer,
+  get: get
 } = Ember;
 
 /**!
@@ -13,7 +14,7 @@ const {
  */
 export default ActionArea.extend({
 
-  classNameBinding: ['actionState'],
+  classNameBindings: ['actionState'],
   actionState: 'default',
 
   _getParams: function(actionName) {
