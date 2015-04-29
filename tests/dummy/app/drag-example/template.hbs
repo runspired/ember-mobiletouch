@@ -6,7 +6,7 @@
   <div class="row">
       <div class="col-sm-4">
         {{!- BEGIN-SNIPPET draggable-example-1 }}
-        {{#draggable-item class="draggable-box"}}
+        {{#draggable-item class="draggable-box" startOnPress=false}}
             <h3>Drag Me!</h3>
             <p>
                 If you can drag me here, you can drag me anywhere!
@@ -23,7 +23,7 @@
   <div class="row">
       <div class="col-sm-4">
         {{!- BEGIN-SNIPPET draggable-example-2 }}
-        {{#draggable-item lockX=true class="draggable-box"}}
+        {{#draggable-item lockX=true class="draggable-box" startOnPress=false}}
             <h3>Drag Me!</h3>
             <p>
                 You can drag me, but I ain't goin' witchya.
@@ -40,7 +40,7 @@
   <div class="row">
       <div class="col-sm-4">
         {{!- BEGIN-SNIPPET draggable-example-3 }}
-        {{#draggable-item lockY=true class="draggable-box"}}
+        {{#draggable-item lockY=true class="draggable-box" startOnPress=false}}
             <h3>The Beatle</h3>
             <p>
                 I wanna hold your haaaaand.
@@ -61,7 +61,7 @@
   <div class="row">
       <div class="col-sm-4">
         {{!- BEGIN-SNIPPET draggable-example-3 }}
-        {{#draggable-item lockToViewport=true class="draggable-box"}}
+        {{#draggable-item lockToViewport=true class="draggable-box" startOnPress=false}}
             <h3>Moneypit</h3>
             <p>
                 You ain't tryin' to fix me, are ya?
