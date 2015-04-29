@@ -5,5 +5,6 @@
 import Component from "./draggable-item";
 
 export default Component.extend({
-  tagName: 'sortable-item'
+  tagName: 'sortable-item',
+  lockY: true
 });

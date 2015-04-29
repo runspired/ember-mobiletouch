@@ -1,0 +1,23 @@
+<section class="container-fluid">
+
+  <h2>Sortable Item</h2>
+
+  <h3>Basic</h3>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET draggable-example-1 }}
+        {{#sortable-list tagName='ul'}}
+          {{#each model as |item|}}
+            {{#sortable-item tagName="li"}}
+              {{item.name}}
+            {{/sortable-item}}
+          {{/each}}
+        {{/sortable-list}}
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="draggable-example-1.hbs"}}
+      </div>
+  </div>
+
+</section>

@@ -74,6 +74,12 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
   lockX: false,
 
   /**!
+   * An jQuery selector for an element which
+   * the draggable element cannot leave.
+   */
+  boundary: '',
+
+  /**!
    * whether the item should only move vertically
    */
   lockY: false,
@@ -110,6 +116,51 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
 
   isDragging: false,
   startOnPress: true,
+
+  /**!
+   *
+   * @param dX left movement
+   * @param dY right movement
+   * @returns {{}}
+   * @private
+   */
+  _keepInBoundary: function(dX, dY) {
+    var hasBoundary = this.get('boundary');
+    if (!hasBoundary) {
+      return {
+        dX: dX,
+        dY: dY
+      };
+    }
+    // TODO optimize element usage
+    var element = this.element;
+    var box = jQuery(this.get('boundary')).get(0);
+    var current = element.getBoundingClientRect();
+    var boundary = box.getBoundingClientRect();
+
+    if (current.right + dX > boundary.right) {
+      console.log('adjusting right dX');
+      dX = boundary.right - current.right;
+    }
+    if (current.left + dX < boundary.left) {
+      console.log('adjusting left dX');
+      dX = boundary.left - current.left;
+    }
+    if (current.top + dY > boundary.top) {
+      console.log('adjusting top dY');
+      dY = boundary.top - current.top;
+    }
+    if (current.bottom + dY < boundary.bottom) {
+      console.log('adjusting bottom dY');
+      dY = boundary.bottom - current.bottom;
+    }
+
+    return {
+      dX: dX,
+      dY: dY
+    };
+
+  },
 
   /**!
    * activate isDragging and add movement listeners
