@@ -16,8 +16,8 @@ const {
   schedule
 } = run;
 
-const UPDATE_POSITION_THROTTLE = 1000 / 16; // 60fps ;)
-const ANIMATION_LAG = 8;
+const UPDATE_POSITION_THROTTLE = 1000 / 32; // 120fps ;)
+const ANIMATION_LAG = 4;
 
 function scheduleAnimation(e) {
   schedule('render', this, animatePosition, e);
@@ -35,6 +35,7 @@ function animatePosition(e) {
     animation.translateX = deltas.dX + 'px';
   }
 
+  console.log('gesture', e.originalEvent.gesture);
   console.log('animating', deltas, animation);
   this.animate(animation, {duration: ANIMATION_LAG});
 
@@ -188,13 +189,17 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
   },
 
   panEnd: function(e) {
-    console.log('pan end');
-    this.end(e);
+    if(this.get('isDragging')) {
+      console.log('pan end');
+      this.end(e);
+    }
   },
 
   pressUp: function(e) {
-    console.log('press end');
-    this.end(e);
+    if(this.get('isDragging')) {
+      console.log('press end');
+      this.end(e);
+    }
   }
 
 });

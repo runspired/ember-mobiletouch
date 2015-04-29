@@ -23,6 +23,7 @@ draggable-item {
   border: 1px dashed #222;
   color: #ffbe57;
   padding: 0 10px 10px;
+  z-index: 1000;
 }
 
 .actionable-example.pending {
