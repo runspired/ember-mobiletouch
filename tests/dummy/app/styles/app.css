@@ -24,6 +24,7 @@ draggable-item {
   color: #ffbe57;
   padding: 0 10px 10px;
   z-index: 1000;
+  position: relative;
 }
 
 .actionable-example.pending {
