@@ -8,7 +8,7 @@
         {{!- BEGIN-SNIPPET draggable-example-1 }}
         {{#sortable-list tagName='ul'}}
           {{#each model as |item|}}
-            {{#sortable-item tagName="li"}}
+            {{#sortable-item tagName="li" class="sortable-item"}}
               {{item.name}}
             {{/sortable-item}}
           {{/each}}

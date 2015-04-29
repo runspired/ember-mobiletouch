@@ -16,6 +16,18 @@ sortable-list,
   display: block;
 }
 
+.sortable-list {
+  background: #444;
+  padding: 10px;
+  color: #fff;
+  margin: 0;
+}
+.sortable-item {
+  background: rgba(255, 255, 255, 0.5);
+  color: #ffbe57;
+  display: block;
+}
+
 .actionable-example,
 draggable-item {
   background: #444;

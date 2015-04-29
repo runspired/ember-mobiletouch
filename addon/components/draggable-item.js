@@ -106,21 +106,25 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
     var current = element.getBoundingClientRect();
     var boundary = box.getBoundingClientRect();
 
+    console.log('bounds', dX, dY);
+
     if (current.right + dX > boundary.right) {
       console.log('adjusting right dX');
       dX = boundary.right - current.right;
-    }
-    if (current.left + dX < boundary.left) {
+    } else if (current.left + dX < boundary.left) {
       console.log('adjusting left dX');
       dX = boundary.left - current.left;
     }
-    if (current.top + dY > boundary.top) {
-      console.log('adjusting top dY');
-      dY = boundary.top - current.top;
-    }
-    if (current.bottom + dY < boundary.bottom) {
-      console.log('adjusting bottom dY');
-      dY = boundary.bottom - current.bottom;
+
+    // A + B = C + D
+    // D = A + B - C
+
+    if (current.top + dY < boundary.top) {
+      console.log('adjusting top dY', boundary.top - current.top + dY);
+      dY = boundary.top - current.top + dY;
+    } else if (current.bottom + dY > boundary.bottom) {
+      console.log('adjusting bottom dY', boundary.bottom - current.bottom + dY);
+      dY = boundary.bottom - current.bottom + dY;
     }
 
     return {

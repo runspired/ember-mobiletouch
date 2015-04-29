@@ -19,7 +19,7 @@ module.exports = function(environment) {
 
   };
 
-  ENV.APP.LOG_RESOLVER = true;
+  // ENV.APP.LOG_RESOLVER = true;
 
   if (environment === 'test') {
 
