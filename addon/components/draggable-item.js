@@ -46,17 +46,6 @@ function animatePosition(e) {
 
 }
 
-function onInputMove(e) {
-  e = e || window.event;
-  throttle(this, scheduleAnimation, e, UPDATE_POSITION_THROTTLE);
-}
-
-function onInputStop(e) {
-  console.log('removing draggable bindings', e);
-  set(this, 'isDragging', false);
-  var id = this.get('elementId');
-  jQuery('body').off('.draggable-' + id);
-}
 
 export default Ember.Component.extend(VelocityMixin, VerticalPan, {
 
@@ -168,12 +157,7 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
 
     // fix panStart firing twice?
     if(!get(this, 'isDragging')) {
-
       console.log('meta start');
-
-      var $element = jQuery('body');
-      var id = get(this, 'elementId');
-
       set(this, 'isDragging', true);
 
       this.setProperties({
@@ -181,26 +165,33 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
         '__pos.y': e.originalEvent.gesture.pointers[0].y
       });
 
-      $element.on('mousemove.draggable-' + id + ' touchmove.draggable-' + id, onInputMove.bind(this));
-      $element.on('mouseup.draggable-' + id + ' touchend.draggable-' + id, onInputStop.bind(this));
-
     }
 
   },
 
+  move: function(e) {
+    throttle(this, scheduleAnimation, e, UPDATE_POSITION_THROTTLE);
+  },
+
+  pan: function(e) {
+    if (this.get('isDragging')) {
+      this.move(e);
+    }
+  },
+
   end: function(e) {
-    console.log('meta end');
-    set(this, 'isDragging', false);
+    // TODO cache position
+    this.set('isDragging', false);
   },
 
   panStart: function(e) {
-    if (!this.get('startOnPress')) {
+    if (!this.get('startOnPress') && !this.get('isDragging')) {
       this.start(e);
     }
   },
 
   press: function(e) {
-    if (this.get('startOnPress')) {
+    if (this.get('startOnPress') && !this.get('isDragging')) {
       this.start(e);
     }
   },
@@ -209,9 +200,8 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
     this.end(e);
   },
 
-  teardownComponent: on('willDestroyElement', function removeDraggableListeners(){
-    var id = this.get('elementId');
-    jQuery('body').off('.draggable-' + id);
-  })
+  pressUp: function(e) {
+    this.end(e);
+  }
 
 });
