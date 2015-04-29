@@ -3,7 +3,7 @@ import Ember from "ember";
 const DEFAULT_ACTION_TEXT = "You are currently doing nothing.";
 
 function randomBoolean() {
-  return Math.random() >= 0.5;
+  return Math.random() > 0.5;
 }
 
 export default Ember.Controller.extend({
@@ -12,8 +12,6 @@ export default Ember.Controller.extend({
 
   actions: {
     showTap: function (callback) {
-
-      Ember.Logger.debug('arguments!', arguments);
 
       var self = this;
       var promise = new Ember.RSVP.Promise(function(resolve, reject) {

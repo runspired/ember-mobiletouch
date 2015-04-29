@@ -25,6 +25,16 @@ draggable-item {
   padding: 0 10px 10px;
 }
 
+.actionable-example.pending {
+  background: #aaa;
+}
+.actionable-example.fulfilled {
+  background: #00dd55;
+}
+.actionable-example.rejected {
+  background: #ee3300;
+}
+
 draggable-item h3 {
   color: #fff;
 }
