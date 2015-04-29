@@ -19,29 +19,28 @@ const {
 const UPDATE_POSITION_THROTTLE = 1000 / 16; // 60fps ;)
 const ANIMATION_LAG = 8;
 
-var SharedListeners = null;
-
 function scheduleAnimation(e) {
   schedule('render', this, animatePosition, e);
 }
 
 function animatePosition(e) {
 
-  console.log(this.__pos, e.pageX, e.pageY, e.clientX, e.clientY);
-
-  var dX =  e.pageX - this.__pos.x + 'px';
-  var dY =  e.pageY - this.__pos.y + 'px';
+  var startPosition = this.get('__pos');
+  var deltas =  this._keepInBoundary(
+    startPosition.x + e.originalEvent.gesture.deltaX,
+    startPosition.y + e.originalEvent.gesture.deltaY
+  );
 
   var animation = {};
 
   if (!this.get('lockX')) {
-    animation.translateY = dY;
+    animation.translateY = deltas.dY;
   }
   if (!this.get('lockY')) {
-    animation.translateX = dX;
+    animation.translateX = deltas.dX;
   }
 
-  console.log('animating', animation);
+  console.log('animating', deltas, animation);
   this.animate(animation, {duration: ANIMATION_LAG});
 
 }
@@ -96,7 +95,7 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
    *
    * @private
    */
-  // @todo: left & top from jQuery or x and y?
+  // TODO: left & top from jQuery or x and y?
   __pos: {
     x: 0,
     y: 0
