@@ -4,8 +4,10 @@ import VerticalPan from '../mixins/vertical-pan';
 
 const {
   on,
-  run
-  } = Ember;
+  run,
+  set: set,
+  get: get
+} = Ember;
 
 const jQuery = Ember.$;
 
@@ -27,8 +29,8 @@ function animatePosition(e) {
 
   console.log(this.__pos, e.pageX, e.pageY, e.clientX, e.clientY);
 
-  var dX =  e.pageX - this.__pos.left + 'px';
-  var dY =  e.pageY - this.__pos.top + 'px';
+  var dX =  e.pageX - this.__pos.x + 'px';
+  var dY =  e.pageY - this.__pos.y + 'px';
 
   var animation = {};
 
@@ -45,6 +47,7 @@ function animatePosition(e) {
 }
 
 function onInputMove(e) {
+  console.log('onInputMove');
   e = e || window.event;
   throttle(this, scheduleAnimation, e, UPDATE_POSITION_THROTTLE);
 }
@@ -56,7 +59,7 @@ function onInputStop() {
   jQuery('body').off('.draggable-' + id);
 }
 
-export default Ember.Component.extend(VelocityMixin, {
+export default Ember.Component.extend(VelocityMixin, VerticalPan, {
 
   tagName: 'draggable-item',
 
@@ -99,6 +102,7 @@ export default Ember.Component.extend(VelocityMixin, {
    *
    * @private
    */
+  // @todo: left & top from jQuery or x and y?
   __pos: {
     x: 0,
     y: 0
@@ -110,7 +114,9 @@ export default Ember.Component.extend(VelocityMixin, {
   /**!
    * activate isDragging and add movement listeners
    */
-  press: function() {
+  press: function(e) {
+
+    console.log('pressed');
 
     var $element = jQuery('body');
     var id = this.get('elementId');
@@ -118,7 +124,14 @@ export default Ember.Component.extend(VelocityMixin, {
     // we're dragging now
     this.set('isDragging', true);
 
+    // get and set offsets
+    this.setProperties({
+      '__pos.x': e.originalEvent.gesture.pointers[0].x,
+      '__pos.y': e.originalEvent.gesture.pointers[0].y
+    });
+
     console.log('namespace: .draggable-'+id);
+    console.log(this.__pos);
 
     // attach both listeners for devices that can do both
     $element.on('mousemove.draggable-' + id + ' touchmove.draggable-' + id, onInputMove.bind(this));
@@ -129,12 +142,6 @@ export default Ember.Component.extend(VelocityMixin, {
   teardownComponent: on('willDestroyElement', function removeDraggableListeners(){
     var id = this.get('elementId');
     jQuery('body').off('.draggable-' + id);
-  }),
-
-  establishInitialPosition: on('didInsertElement', function cacheInitialElementPosition() {
-    this.__pos = this.$().position();
   })
-
-
 
 });
