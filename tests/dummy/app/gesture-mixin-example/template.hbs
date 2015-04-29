@@ -1,0 +1,28 @@
+<section class="container-fluid">
+
+  <h2>Gesture Filter Mixin</h2>
+
+  <h3>Usage</h3>
+  <p>
+   The filter Gesture mixin is available to patch behavior from 1.0 you may have come to rely on.
+   If you previously used `gestureAllow` or `gestureExclude`, this mixin will enable them to work
+    again if used in the following way.
+  </p>
+  <p>
+      <strong>{{currentUserAction}}</strong>
+  </p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET filter-gesture-example-1 }}
+        <div class="actionable-example">
+          <h3>Tap me anywhere, but the text don't trigger.</h3>
+        </div>
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="filter-gesture-example-1.js"}}
+        {{code-snippet name="filter-gesture-example-1.hbs"}}
+      </div>
+  </div>
+
+</section>
