@@ -25,19 +25,14 @@ function scheduleAnimation(e) {
 
 function animatePosition(e) {
 
-  var startPosition = this.get('__pos');
-  var deltas =  this._keepInBoundary(
-    startPosition.x + e.originalEvent.gesture.deltaX,
-    startPosition.y + e.originalEvent.gesture.deltaY
-  );
-
+  var deltas =  this._getAdjustedPosition(e);
   var animation = {};
 
   if (!this.get('lockX')) {
-    animation.translateY = deltas.dY;
+    animation.translateY = deltas.dY + 'px';
   }
   if (!this.get('lockY')) {
-    animation.translateX = deltas.dX;
+    animation.translateX = deltas.dX + 'px';
   }
 
   console.log('animating', deltas, animation);
@@ -95,14 +90,22 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
    *
    * @private
    */
-  // TODO: left & top from jQuery or x and y?
   __pos: {
-    x: 0,
-    y: 0
+    dX: 0,
+    dY: 0
   },
 
-  isDragging: false,
   startOnPress: true,
+
+  _getAdjustedPosition: function(e) {
+    var startPosition = this.get('__pos');
+    console.log('start position', startPosition);
+    console.log('deltas', e.originalEvent.gesture.deltaX, e.originalEvent.gesture.deltaY);
+    return this._keepInBoundary(
+      startPosition.dX + e.originalEvent.gesture.deltaX,
+      startPosition.dY + e.originalEvent.gesture.deltaY
+    );
+  },
 
   /**!
    *
@@ -149,25 +152,6 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
 
   },
 
-  /**!
-   * activate isDragging and add movement listeners
-   */
-  start: function(e) {
-
-    // fix panStart firing twice?
-    if(!get(this, 'isDragging')) {
-      console.log('meta start');
-      set(this, 'isDragging', true);
-
-      this.setProperties({
-        '__pos.x': e.originalEvent.gesture.pointers[0].x,
-        '__pos.y': e.originalEvent.gesture.pointers[0].y
-      });
-
-    }
-
-  },
-
   move: function(e) {
     throttle(this, scheduleAnimation, e, UPDATE_POSITION_THROTTLE);
   },
@@ -181,25 +165,35 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
   end: function(e) {
     // TODO cache position
     this.set('isDragging', false);
+
+    var deltas = this._getAdjustedPosition(e);
+
+    console.log('end deltas', deltas);
+    this.setProperties({
+      '__pos.dX': deltas.dX,
+      '__pos.dY': deltas.dY
+    });
   },
 
   panStart: function(e) {
     if (!this.get('startOnPress') && !this.get('isDragging')) {
-      this.start(e);
+      set(this, 'isDragging', true);
     }
   },
 
   press: function(e) {
     if (this.get('startOnPress') && !this.get('isDragging')) {
-      this.start(e);
+      set(this, 'isDragging', true);
     }
   },
 
   panEnd: function(e) {
+    console.log('pan end');
     this.end(e);
   },
 
   pressUp: function(e) {
+    console.log('press end');
     this.end(e);
   }
 
