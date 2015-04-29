@@ -47,14 +47,13 @@ function animatePosition(e) {
 }
 
 function onInputMove(e) {
-  console.log('onInputMove');
   e = e || window.event;
   throttle(this, scheduleAnimation, e, UPDATE_POSITION_THROTTLE);
 }
 
-function onInputStop() {
-  console.log('removing draggable bindings');
-  this.set('isDragging', false);
+function onInputStop(e) {
+  console.log('removing draggable bindings', e);
+  set(this, 'isDragging', false);
   var id = this.get('elementId');
   jQuery('body').off('.draggable-' + id);
 }
@@ -111,32 +110,41 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
   isDragging: false,
   startOnPress: true,
 
-  /**!
-   * activate isDragging and add movement listeners
-   */
-  press: function(e) {
+  start: function(e) {
 
-    console.log('pressed');
+    // fix panStart firing twice?
+    if(!get(this, 'isDragging')) {
 
-    var $element = jQuery('body');
-    var id = this.get('elementId');
+      console.log('meta start');
 
-    // we're dragging now
-    this.set('isDragging', true);
+      var $element = jQuery('body');
+      var id = get(this, 'elementId');
 
-    // get and set offsets
-    this.setProperties({
-      '__pos.x': e.originalEvent.gesture.pointers[0].x,
-      '__pos.y': e.originalEvent.gesture.pointers[0].y
-    });
+      set(this, 'isDragging', true);
 
-    console.log('namespace: .draggable-'+id);
-    console.log(this.__pos);
+      this.setProperties({
+	'__pos.x': e.originalEvent.gesture.pointers[0].x,
+	'__pos.y': e.originalEvent.gesture.pointers[0].y
+      });
 
-    // attach both listeners for devices that can do both
-    $element.on('mousemove.draggable-' + id + ' touchmove.draggable-' + id, onInputMove.bind(this));
-    $element.on('mouseup.draggable-' + id + ' touchend.draggable-' + id, onInputStop.bind(this));
+      $element.on('mousemove.draggable-' + id + ' touchmove.draggable-' + id, onInputMove.bind(this));
+      $element.on('mouseup.draggable-' + id + ' touchend.draggable-' + id, onInputStop.bind(this));
 
+    }
+
+  },
+
+  end: function(e) {
+    console.log('meta end');
+    set(this, 'isDragging', false);
+  },
+
+  panStart: function(e) {
+    this.start(e);
+  },
+
+  panEnd: function(e) {
+    this.end(e);
   },
 
   teardownComponent: on('willDestroyElement', function removeDraggableListeners(){
