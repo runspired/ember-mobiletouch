@@ -42,6 +42,7 @@ export default Ember.Component.extend(VelocityMixin, {
 
       Ember.Logger.debug('updating css', value);
 
+      // TODO can this happen via this.css ?
       this.animate(element, {translateX: value + 'px'}, {duration: 1});
     }
 

@@ -1,5 +1,6 @@
 import Ember from "ember";
 import VelocityMixin from '../mixins/ember-velocity-mixin';
+import VerticalPan from '../mixins/vertical-pan';
 
 const {
   on,
@@ -11,7 +12,7 @@ const jQuery = Ember.$;
 const {
   throttle,
   schedule
-  } = run;
+} = run;
 
 const UPDATE_POSITION_THROTTLE = 1000 / 16; // 60fps ;)
 const ANIMATION_LAG = 8;
@@ -102,6 +103,9 @@ export default Ember.Component.extend(VelocityMixin, {
     x: 0,
     y: 0
   },
+
+  isDragging: false,
+  startOnPress: true,
 
   /**!
    * activate isDragging and add movement listeners
