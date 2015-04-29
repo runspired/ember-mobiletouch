@@ -11,6 +11,7 @@ Router.map(function() {
   this.route('link-example');
   this.route('action-example');
   this.route('action-area-example');
+  this.route('async-area-example');
   this.route('context-area-example');
   this.route('gesture-mixin-example');
   this.route('drag-example');

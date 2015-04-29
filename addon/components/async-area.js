@@ -2,7 +2,8 @@ import ActionArea from "./action-area";
 import Ember from "ember";
 
 const {
-  observer
+  observer,
+  get: get
 } = Ember;
 
 /**!
@@ -13,7 +14,7 @@ const {
  */
 export default ActionArea.extend({
 
-  classNameBinding: ['actionState'],
+  classNameBindings: ['actionState'],
   actionState: 'default',
 
   _getParams: function(actionName) {
@@ -22,6 +23,7 @@ export default ActionArea.extend({
     var Component = this;
 
     function callbackHandler(promise) {
+      Ember.Logger.debug('callback!');
       Component.set('promise', promise);
       Component.set('actionState', 'pending');
     }
@@ -36,10 +38,12 @@ export default ActionArea.extend({
     var Component = this;
     get(this, 'promise').then(function() {
       if (!Component.isDestroyed) {
+        Ember.Logger.debug('fulfilled!');
         Component.set('actionState', 'fulfilled');
       }
     }).catch(function() {
       if (!Component.isDestroyed) {
+        Ember.Logger.debug('rejected!');
         Component.set('actionState', 'rejected');
       }
     });
