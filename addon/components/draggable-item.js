@@ -16,30 +16,8 @@ const {
   schedule
 } = run;
 
-const UPDATE_POSITION_THROTTLE = 1000 / 32; // 120fps ;)
+const UPDATE__posITION_THROTTLE = 1000 / 32; // 120fps ;)
 const ANIMATION_LAG = 4;
-
-function scheduleAnimation(e) {
-  schedule('render', this, animatePosition, e);
-}
-
-function animatePosition(e) {
-
-  var deltas =  this._getAdjustedPosition(e);
-  var animation = {};
-
-  if (!this.get('lockX')) {
-    animation.translateY = deltas.dY + 'px';
-  }
-  if (!this.get('lockY')) {
-    animation.translateX = deltas.dX + 'px';
-  }
-
-  console.log('gesture', e.originalEvent.gesture);
-  console.log('animating', deltas, animation);
-  this.animate(animation, {duration: ANIMATION_LAG});
-
-}
 
 
 export default Ember.Component.extend(VelocityMixin, VerticalPan, {
@@ -91,17 +69,12 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
    *
    * @private
    */
-  __pos: {
-    dX: 0,
-    dY: 0
-  },
+  __pos: null,
 
   startOnPress: true,
 
   _getAdjustedPosition: function(e) {
     var startPosition = this.get('__pos');
-    console.log('start position', startPosition);
-    console.log('deltas', e.originalEvent.gesture.deltaX, e.originalEvent.gesture.deltaY);
     return this._keepInBoundary(
       startPosition.dX + e.originalEvent.gesture.deltaX,
       startPosition.dY + e.originalEvent.gesture.deltaY
@@ -116,6 +89,7 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
    * @private
    */
   _keepInBoundary: function(dX, dY) {
+
     var hasBoundary = this.get('boundary');
     if (!hasBoundary) {
       return {
@@ -123,6 +97,9 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
         dY: dY
       };
     }
+
+    console.log('checking boundaries');
+
     // TODO optimize element usage
     var element = this.element;
     var box = jQuery(this.get('boundary')).get(0);
@@ -153,8 +130,28 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
 
   },
 
+  animatePosition: function(e) {
+
+    var deltas =  this._getAdjustedPosition(e);
+    var animation = {};
+
+    if (!this.get('lockX')) {
+      animation.translateY = deltas.dY + 'px';
+    }
+    if (!this.get('lockY')) {
+      animation.translateX = deltas.dX + 'px';
+    }
+
+    this.animate(animation, {duration: ANIMATION_LAG});
+
+  },
+
+  scheduleAnimation: function(e) {
+    schedule('render', this, this.animatePosition, e);
+  },
+
   move: function(e) {
-    throttle(this, scheduleAnimation, e, UPDATE_POSITION_THROTTLE);
+    throttle(this, this.scheduleAnimation, e, UPDATE__posITION_THROTTLE);
   },
 
   pan: function(e) {
@@ -164,12 +161,8 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
   },
 
   end: function(e) {
-    // TODO cache position
     this.set('isDragging', false);
-
     var deltas = this._getAdjustedPosition(e);
-
-    console.log('end deltas', deltas);
     this.setProperties({
       '__pos.dX': deltas.dX,
       '__pos.dY': deltas.dY
@@ -190,7 +183,6 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
 
   panEnd: function(e) {
     if(this.get('isDragging')) {
-      console.log('pan end');
       this.end(e);
     }
   },
@@ -200,6 +192,14 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
       console.log('press end');
       this.end(e);
     }
+  },
+
+  init: function() {
+    this._super();
+    this.set('__pos', {
+      dX: 0,
+      dY: 0
+    });
   }
 
 });
