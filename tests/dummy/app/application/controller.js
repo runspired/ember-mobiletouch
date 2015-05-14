@@ -1,6 +1,9 @@
 import Ember from "ember";
 
 export default Ember.Controller.extend({
+
+  showMenu: false,
+
   actions : {
     alert : function () {
       Ember.Logger.debug('The alert triggered!');
@@ -28,6 +31,12 @@ export default Ember.Controller.extend({
     },
     swipingDown : function () {
       Ember.Logger.debug('swipingDown!');
+    },
+
+    toggleMenu: function() {
+      this.toggleProperty('showMenu');
+      return true;
     }
+
   }
 });

@@ -14,6 +14,7 @@ Router.map(function() {
   this.route('async-area-example');
   this.route('context-area-example');
   this.route('gesture-mixin-example');
+  this.route('input-example');
   this.route('drag-example');
   this.route('sort-example');
   this.route('drop-example');

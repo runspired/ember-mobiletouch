@@ -69,8 +69,6 @@ aside a:hover, aside a:active, aside a:focus {
   border-bottom: 1px solid #0b6033;
   min-height: 2.5rem;
   line-height: 2.5rem;
-  position: fixed;
-  width: 100%;
   z-index: 1000;
 }
 
@@ -116,7 +114,7 @@ aside a:hover, aside a:active, aside a:focus {
 }
 
 .ui-body {
-  margin-top: 2.5rem;
+  margin-top: .25rem;
 }
 
 h2 {
