@@ -156,10 +156,10 @@ export default Ember.EventDispatcher.reopen({
         var notFocusableTypes = ['submit', 'button', 'hidden', 'reset', 'range', 'radio', 'image', 'checkbox'];
 
         //fastfocus
-        if ($element.is('input') && notFocusableTypes.indexOf($element.attr('type')) === -1) {
+        if ($element.is('textarea') || ($element.is('input') && notFocusableTypes.indexOf($element.attr('type')) === -1)) {
           $element.focus();
 
-        } else if ($target.is('input') && notFocusableTypes.indexOf($target.attr('type')) === -1) {
+        } else if ($target.is('textarea') || ($target.is('input') && notFocusableTypes.indexOf($target.attr('type')) === -1)) {
           $target.focus();
 
         //fastclick

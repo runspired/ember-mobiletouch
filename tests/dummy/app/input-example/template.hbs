@@ -1,0 +1,65 @@
+<section class="container-fluid">
+
+  <h2>Action Helper</h2>
+
+  <h3>Basic</h3>
+  <p>
+    The `action` helper functions as it always has, except it now triggers on `tap`
+    instead of `click`.
+  </p>
+  <p>You have triggered "addCount" {{counter}} times.</p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET action-example-1 }}
+        <button {{action "addCount"}}>
+            <i class="glyphicon glyphicon-plus"></i>
+            <span class="link-text">Increment</span>
+        </button>
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="action-example-1.hbs"}}
+      </div>
+  </div>
+
+  <h3>Custom Gesture</h3>
+  <p>
+      You can customize the gesture that triggers the action helper the same way
+      you could before using `on`.  This example triggers only when you pan right.
+  </p>
+  <p>You have triggered "addCount" {{counter}} times.</p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET action-example-2 }}
+          <button {{action "addCount" on="panRight"}}>
+              <i class="glyphicon glyphicon-plus"></i>
+              <span class="link-text">Increment</span>
+          </button>
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="action-example-2.hbs"}}
+      </div>
+  </div>
+
+  <h3>Using Multiple Gestures to trigger a single action</h3>
+  <p>
+      Separate multiple gestures or events within `on` to specify which to use.
+      This example triggers on tap, press, or when a `pan` sequence ends.
+  </p>
+  <p>You have triggered "addCount" {{counter}} times.</p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET action-example-3 }}
+          <button {{action "addCount" on="tap press panEnd"}}>
+              <i class="glyphicon glyphicon-plus"></i>
+              <span class="link-text">Increment</span>
+          </button>
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="action-example-3.hbs"}}
+      </div>
+  </div>
+
+</section>
