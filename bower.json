@@ -1,6 +1,6 @@
 {
   "name": "ember-mobiletouch",
-  "version": "1.4.10",
+  "version": "2.0.0-beta.1",
   "dependencies": {
     "ember": "1.11.3",
     "ember-cli-shims": "ember-cli/ember-cli-shims#0.0.3",
