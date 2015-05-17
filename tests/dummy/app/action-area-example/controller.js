@@ -1,3 +1,4 @@
+/* global alert */
 import Ember from "ember";
 
 const DEFAULT_ACTION_TEXT = "You are currently doing nothing.";
@@ -47,7 +48,7 @@ export default Ember.Controller.extend({
       this.set('currentUserAction', "You stopped pressing.");
     },
     endPan: function () {
-      this.set('currentUserAction', "You stopped panning.")
+      this.set('currentUserAction', "You stopped panning.");
     }
   }
 });

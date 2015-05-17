@@ -2,7 +2,6 @@ import Ember from "ember";
 import preventGhostClicks from "../utils/prevent-ghost-clicks";
 import capitalizeWord from "../utils/capitalize-word";
 //import isCustomProtocol from "../utils/is-custom-protocol";
-import isGesture from "../utils/is-gesture";
 import defaultConfiguration from "../default-config";
 import hammerEvents from "../utils/hammer-events";
 import RecognizerInterface from "../recognizers";

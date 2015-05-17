@@ -4,8 +4,7 @@ import VelocityMixin from '../mixins/ember-velocity-mixin';
 const {
   run,
   copy,
-  computed,
-  observer
+  computed
 } = Ember;
 
 const {
@@ -61,7 +60,7 @@ export default Ember.Component.extend(VelocityMixin, {
     // the value when the button is clicked. Once the Stream API is public,
     // the helper will be converted to pass in a concatenated array of streams
     for (var index = 0, length = args.length; index < length; index++) {
-      var value = args[index];
+      value = args[index];
 
       if (argTypes[index] === 'ID') {
         value = this._parentView.getStream(value).value();

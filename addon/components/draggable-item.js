@@ -3,10 +3,8 @@ import VelocityMixin from '../mixins/ember-velocity-mixin';
 import VerticalPan from '../mixins/vertical-pan';
 
 const {
-  on,
   run,
-  set: set,
-  get: get
+  set: set
 } = Ember;
 
 const jQuery = Ember.$;
@@ -173,13 +171,13 @@ export default Ember.Component.extend(VelocityMixin, VerticalPan, {
     });
   },
 
-  panStart: function(e) {
+  panStart: function() {
     if (!this.get('startOnPress') && !this.get('isDragging')) {
       set(this, 'isDragging', true);
     }
   },
 
-  press: function(e) {
+  press: function() {
     if (this.get('startOnPress') && !this.get('isDragging')) {
       set(this, 'isDragging', true);
     }

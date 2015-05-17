@@ -5,6 +5,25 @@ import verticalSwipe from "../mixins/vertical-swipe";
 import rotate from "../mixins/rotate";
 import pinch from "../mixins/pinch";
 
+function makeActionHandler(event, action) {
+
+  return function actionHandler() {
+
+    var target = this.get('target');
+    var context;
+
+    if (target && target.send) {
+      context = this._getParams(action);
+      target.send.apply(this, context);
+    } else {
+      context = this._getParams(event + 'Action');
+      this.sendAction.apply(this, context);
+    }
+
+  };
+
+}
+
 export default Ember.Component.extend(verticalPan, verticalSwipe, rotate, pinch, {
 
   classBindings: ['requestState'],
@@ -41,7 +60,7 @@ export default Ember.Component.extend(verticalPan, verticalSwipe, rotate, pinch,
 
   },
 
-  init : function () {
+  init: function () {
 
     this._super();
 
@@ -63,20 +82,7 @@ export default Ember.Component.extend(verticalPan, verticalSwipe, rotate, pinch,
 
           this.set(event + 'Action', action);
 
-          this.set(event, function () {
-
-            var target = this.get('target');
-            var context;
-
-            if (target && target.send) {
-              context = this._getParams(action);
-              target.send.apply(this, context);
-            } else {
-              context = this._getParams(event + 'Action');
-              this.sendAction.apply(this, context);
-            }
-
-          }.bind(this));
+          this.set(event, makeActionHandler(event, action));
         }
 
       }

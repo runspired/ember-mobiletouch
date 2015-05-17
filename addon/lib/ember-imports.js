@@ -1,6 +1,7 @@
 import Ember from "ember";
 
 const {
+  get: get,
   ControllerMixin
 } = Ember;
 

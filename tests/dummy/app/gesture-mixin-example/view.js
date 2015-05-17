@@ -1,3 +1,4 @@
+/* global alert */
 /* BEGIN-SNIPPET filter-gesture-example-1 */
 import Ember from "ember";
 import filterMixin from "ember-mobiletouch/mixins/gesture-filter";

@@ -33,6 +33,6 @@ export default function makeHelperWithArgs(component) {
 
     return Ember.Handlebars.helpers.view.helperFunction.call(this, [component], hash, options, options);
 
-  }
+  };
 
 }
