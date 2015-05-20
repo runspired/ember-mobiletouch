@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/runspired/ember-mobiletouch.png?label=ready&title=Ready)](https://waffle.io/runspired/ember-mobiletouch)
 # Ember-mobiletouch
 
 [![npm version](https://badge.fury.io/js/ember-mobiletouch.svg)](http://badge.fury.io/js/ember-mobiletouch)
