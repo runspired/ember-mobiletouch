@@ -144,6 +144,6 @@ function actionHelper(params, hash, options, env) {
 }
 
 
-Ember.Handlebars.helpers.action.helperFunction = actionHelper;
+Ember.Handlebars.helpers.action = actionHelper;
 
 export default actionHelper;

@@ -3,7 +3,7 @@ import defaultConfig from 'ember-mobiletouch/default-config';
 
 //activate overrides
 import ModifiedView from 'ember-mobiletouch/overrides/view';
-import ModifiedLinkTo from 'ember-mobiletouch/overrides/link-view';
+import ModifiedLinkTo from 'ember-mobiletouch/overrides/link-to';
 import ModifiedEventDispatcher from '../overrides/ember-mobiletouch';
 import ModifiedActionHelper from 'ember-mobiletouch/overrides/action-helper';
 

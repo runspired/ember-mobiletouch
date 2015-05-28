@@ -37,7 +37,6 @@ export default Ember.LinkView.reopen({
       this._super.apply(this, arguments);
 
       remainingEvents.forEach(function(event) {
-        Ember.Logger.debug('Adding trigger for', event);
         Component.on(event, Component, Component._invoke);
       });
 
