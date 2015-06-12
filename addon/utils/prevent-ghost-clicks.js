@@ -70,6 +70,13 @@ function makeGhostBuster() {
   function registerCoordinates(event) {
     var ev = event.originalEvent || event;
 
+    // It seems that touchend is the cause for derived events like 'change' for
+    // checkboxes. Since we're creating fastclicks, which will also cause 'change'
+    // events to fire, we need to prevent default on touchend events, which has
+    // the effect of not causing these derived events to be created. I am not
+    // sure if this has any other negative consequences.
+    ev.preventDefault();
+
     // touchend is triggered on every releasing finger
     // changed touches always contain the removed touches on a touchend
     // the touches object might contain these also at some browsers (firefox os)
