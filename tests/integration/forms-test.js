@@ -41,7 +41,9 @@ test("Tap on a button triggers default form action", function(assert) {
 
   visit('/forms');
 
-  desktopTap('#submit-button-1');
+  andThen(function() {
+    desktopTap('#submit-button-1');
+  });
 
   andThen(function() {
     assert.equal(controller.submits, 1);
@@ -86,7 +88,9 @@ test("Tap on a button triggers default form action", function(assert) {
 
   visit('/forms');
 
-  mobileTap('#submit-button-1');
+  andThen(function() {
+    mobileTap('#submit-button-1');
+  });
 
   andThen(function() {
     assert.equal(controller.taps, 1, 'a tap was registered');

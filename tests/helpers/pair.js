@@ -7,6 +7,9 @@ var currentTests = [];
 
 // Save the label and hooks so we can use them with each pair of tests.
 var pairModule = function(label, hooks) {
+  if (currentModuleLabel || currentModuleHooks) {
+    throw new Error("Pair test wasn't cleaned up");
+  }
   currentModuleLabel = label;
   currentModuleHooks = hooks;
 };

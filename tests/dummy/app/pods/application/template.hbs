@@ -4,17 +4,15 @@
   </div>
   <div class="title col-md-offset-4 col-md-4">
       <h2>Tests</h2>
+      <ul>
+        <li>{{#link-to "inputs"}}Input tests{{/link-to}}</li>
+        <li>{{#link-to "checkboxes"}}Checkbox tests{{/link-to}}</li>
+      </ul>
   </div>
 </header>
 
 <section class="row">
-  <div class="col-md-4">
-    <ul>
-      <li>{{#link-to "inputs"}}Input tests{{/link-to}}</li>
-    </ul>
-  </div>
-</section>
-
-<section class="row">
-  {{outlet}}
+    <div class="col-xs-12">
+        {{outlet}}
+    </div>
 </section>

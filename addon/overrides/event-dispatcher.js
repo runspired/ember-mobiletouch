@@ -131,7 +131,7 @@ export default Ember.EventDispatcher.reopen({
     /* It seems that elements nested inside links are not getting preventDefault
      * called on them, causing Safari to reload the Ember app at the new URL. Here
      * I fix this for the special case of {{#link-to}} ... {{/link-to}} helpers */
-    $root.on('click.ember-mobiletouch', 'a.ember-view *', function(evt, triggeringManager) {
+    $root.on('click.ember-mobiletouch', 'a.ember-view *', function(evt) {
       if (mobileDetection.is()) {
         evt.preventDefault();
       }
