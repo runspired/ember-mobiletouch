@@ -188,13 +188,9 @@ export default Ember.EventDispatcher.reopen({
      *
      */
     $root.on('click.ember-mobiletouch', 'a.allow-click', function (e) {
-      logEvent('click fixer-upper', e);
       if (mobileDetection.is()) {
-        console.log('is mobile');
         if (!e.defaultPrevented && e.fastclick) {
-          console.log('not prevented and is a fastclick');
           if (typeof(this.click) == "function") {
-            console.log('will click');
             this.click();
           }
         }
