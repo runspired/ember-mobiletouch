@@ -172,9 +172,33 @@ export default Ember.EventDispatcher.reopen({
           click.fastclick = true;
           $target.trigger(click);
         }
-
       }
+    });
 
+    /* On mobile, regular (non-ember) links are triggered by touchend events. But we
+     * preventDefault() on touchend so that we don't get multiple change events or other
+     * undesirable side-effects. But this means we need to trigger links. Conveniently
+     * we have percolating fastclick events that we can use for this purpose.
+     *
+     * If a click meets all of the following criteria, we visit it using the DOM
+     * click() method:
+     *  - on a mobile device
+     *  - default side-effects have not been prevented
+     *  - the click is a fastclick created by ember-mobiletouch
+     *
+     */
+    $root.on('click.ember-mobiletouch', 'a.allow-click', function (e) {
+      logEvent('click fixer-upper', e);
+      if (mobileDetection.is()) {
+        console.log('is mobile');
+        if (!e.defaultPrevented && e.fastclick) {
+          console.log('not prevented and is a fastclick');
+          if (typeof(this.click) == "function") {
+            console.log('will click');
+            this.click();
+          }
+        }
+      }
     });
 
   },
