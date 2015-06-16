@@ -1,10 +1,14 @@
 bower_components/
+node_modules/
 tests/
+tmp/
+dist/
 
 .bowerrc
 .editorconfig
 .ember-cli
 .travis.yml
+circle.yml
 .npmignore
 **/.gitkeep
 bower.json
