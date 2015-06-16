@@ -1,4 +1,11 @@
-<h3>Form with submit action</h3>
-<form id='form-with-submit-action' {{action "submitForm" on="submit"}}>
-  <button type="submit" id='submit-button-1'>Submit</button>
-</form>
+<div class='col-xs-12'>
+  <h3>Form with submit action</h3>
+  <form class='form' id='form-with-submit-action' {{action "submitForm" on="submit"}}>
+    <button class='btn btn-default' type="submit" id='submit-button-1'>Submit</button>
+    <div class='form-group'>
+      {{input type="text" value=textFieldText}}
+    </div>
+    <p>Submits: {{submits}}</p>
+    {{forms/complete-it}}
+  </form>
+</div>
