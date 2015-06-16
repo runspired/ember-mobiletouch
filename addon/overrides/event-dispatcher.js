@@ -93,7 +93,8 @@ export default Ember.EventDispatcher.reopen({
 
         //allow overriding click busting by adding the `allow-click` class
         !$currentTarget.hasClass('allow-click') &&
-        !$currentTarget.hasClass('needsclick');
+        !$currentTarget.hasClass('needsclick') &&
+        !e.fastclick;
 
 
       //bust the click

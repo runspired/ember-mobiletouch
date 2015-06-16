@@ -8,6 +8,9 @@ module.exports = function(environment) {
     baseURL: '/',
     locationType: 'none',
     EmberENV: { FEATURES: {} },
+    contentSecurityPolicy: {
+      'style-src': "'self' https://maxcdn.bootstrapcdn.com"
+    },
 
     APP: {}
   };
