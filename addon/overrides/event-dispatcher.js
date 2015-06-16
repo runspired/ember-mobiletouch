@@ -190,7 +190,7 @@ export default Ember.EventDispatcher.reopen({
     $root.on('click.ember-mobiletouch', 'a.allow-click', function (e) {
       if (mobileDetection.is()) {
         if (!e.defaultPrevented && e.fastclick) {
-          if (typeof(this.click) == "function") {
+          if (typeof(this.click) === "function") {
             this.click();
           }
         }
