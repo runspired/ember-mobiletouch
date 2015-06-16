@@ -138,6 +138,15 @@ export default Ember.EventDispatcher.reopen({
       }
     });
 
+    /* It seems that links that have actions specified are not getting preventDefault
+     * called on them, causing Safari to reload the Ember app at the new URL. Here
+     * I fix this for the special case of <a href='#' {{action "something"}}> ... </a> */
+    $root.on('click.ember-mobiletouch', 'a[data-ember-action]', function(evt) {
+      if (mobileDetection.is()) {
+        evt.preventDefault();
+      }
+    });
+
     $root.on('tap.ember-mobiletouch press.ember-mobiletouch', function (e) {
       /*
           Implements fastclick and fastfocus mechanisms on mobile web/Cordova
