@@ -93,7 +93,8 @@ export default Ember.EventDispatcher.reopen({
 
         //allow overriding click busting by adding the `allow-click` class
         !$currentTarget.hasClass('allow-click') &&
-        !$currentTarget.hasClass('needsclick');
+        !$currentTarget.hasClass('needsclick') &&
+        !e.fastclick;
 
 
       //bust the click
@@ -128,14 +129,29 @@ export default Ember.EventDispatcher.reopen({
       }
     });
 
+    /* It seems that elements nested inside links are not getting preventDefault
+     * called on them, causing Safari to reload the Ember app at the new URL. Here
+     * I fix this for the special case of {{#link-to}} ... {{/link-to}} helpers */
+    $root.on('click.ember-mobiletouch', 'a.ember-view *', function(evt) {
+      if (mobileDetection.is()) {
+        evt.preventDefault();
+      }
+    });
 
-    /*
-        Implements fastclick and fastfocus mechanisms on mobile web/Cordova
-     */
-    if (mobileDetection.is()) {
+    /* It seems that links that have actions specified are not getting preventDefault
+     * called on them, causing Safari to reload the Ember app at the new URL. Here
+     * I fix this for the special case of <a href='#' {{action "something"}}> ... </a> */
+    $root.on('click.ember-mobiletouch', 'a[data-ember-action]', function(evt) {
+      if (mobileDetection.is()) {
+        evt.preventDefault();
+      }
+    });
 
-      $root.on('tap.ember-mobiletouch press.ember-mobiletouch', function (e) {
-
+    $root.on('tap.ember-mobiletouch press.ember-mobiletouch', function (e) {
+      /*
+          Implements fastclick and fastfocus mechanisms on mobile web/Cordova
+       */
+      if (mobileDetection.is()) {
         var $element = Ember.$(e.currentTarget);
         var $target = Ember.$(e.target);
 
@@ -166,10 +182,30 @@ export default Ember.EventDispatcher.reopen({
           click.fastclick = true;
           $target.trigger(click);
         }
+      }
+    });
 
-      });
-
-    }
+    /* On mobile, regular (non-ember) links are triggered by touchend events. But we
+     * preventDefault() on touchend so that we don't get multiple change events or other
+     * undesirable side-effects. But this means we need to trigger links. Conveniently
+     * we have percolating fastclick events that we can use for this purpose.
+     *
+     * If a click meets all of the following criteria, we visit it using the DOM
+     * click() method:
+     *  - on a mobile device
+     *  - default side-effects have not been prevented
+     *  - the click is a fastclick created by ember-mobiletouch
+     *
+     */
+    $root.on('click.ember-mobiletouch', 'a.allow-click', function (e) {
+      if (mobileDetection.is()) {
+        if (!e.defaultPrevented && e.fastclick) {
+          if (typeof(this.click) === "function") {
+            this.click();
+          }
+        }
+      }
+    });
 
   },
 

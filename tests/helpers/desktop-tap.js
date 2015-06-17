@@ -30,11 +30,10 @@ export default function desktopTap(selector) {
     $element.trigger(MouseUp);
     $element.trigger(Tap);
     $element.trigger(Click);
-    setTimeout((function () {
+    Ember.run.later((function () {
       resolve();
     }), 100);
 
   });
-
 
 }

@@ -9,6 +9,7 @@ export default Ember.Controller.extend({
   taps : 0,
   clicks: 0,
   isInserted : false,
+  textFieldText: null,
   fired: 0,
 
   actions: {
