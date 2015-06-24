@@ -43,6 +43,7 @@ export default Ember.EventDispatcher.reopen({
     var $root = Ember.$(rootElement);
     var element = $root[0];
     var self = this;
+    var viewRegistry = this.container.lookup('-view-registry:main') || Ember.View.views;
 
     Ember.assert('Application has no rootElement', element);
 
@@ -113,7 +114,7 @@ export default Ember.EventDispatcher.reopen({
     $root.on('click.ember-mobiletouch', '.ember-view', function(evt, triggeringManager) {
 
       if (!evt.fastclick) {
-        var view = Ember.View.views[this.id];
+        var view = viewRegistry[this.id];
         var result = true;
 
         var manager = self.canDispatchToEventManager ?

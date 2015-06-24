@@ -4,6 +4,7 @@ import { pairModule, pairTest, pairConclude } from '../helpers/pair';
 
 import mobileDetection from "ember-mobiletouch/utils/is-mobile";
 import startApp from '../helpers/start-app';
+import viewRegistry from '../helpers/view-registry';
 
 var App;
 
@@ -31,7 +32,7 @@ pairTest("Tap on inputs focus them.", function(assert) {
 
   andThen(function() {
 
-    view = Ember.View.views.focusTest;
+    view = viewRegistry(App).focusTest;
     $element = view.$();
 
     assert.notEqual(document.activeElement, $element.get(0), 'The input is not initially focused.');
@@ -68,16 +69,16 @@ var testBatch = [
 testBatch.forEach(function(t) {
   var checkboxSel = t.sel+' input[type="checkbox"]';
   pairTest("Tap checkbox makes it checked - "+t.label, function(assert) {
-  
+
     assert.expect(6);
     var controller = getController('inputs');
-  
+
     assert.equal(controller.get('name'), 'inputs controller');
     assert.ok(controller.get(t.prop) === false);
-  
+
     visit('/inputs');
     triggerTap(checkboxSel);
-  
+
     andThen(function() {
       assert.ok(controller.get(t.prop));
       assert.ok($(checkboxSel).prop('checked'));
@@ -88,7 +89,7 @@ testBatch.forEach(function(t) {
     andThen(function() {
       assert.ok($(checkboxSel).prop('checked'));
     });
-  
+
   });
 });
 */

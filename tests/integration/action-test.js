@@ -1,6 +1,8 @@
 import Ember from "ember";
 import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
+import viewRegistry from '../helpers/view-registry';
+
 var App;
 
 module('Action Helper Integration Tests', {
@@ -164,7 +166,7 @@ test("Tap allowed to bubble through action-bearing elements", function(assert) {
   });
 
   andThen(function() {
-    var view = Ember.View.views.containsBubblingAction;
+    var view = viewRegistry(App).containsBubblingAction;
     assert.equal(view.get('tapEvidence'), 1, 'bubbled');
   });
 
@@ -180,7 +182,7 @@ test("Click doesn't bubble through action-bearing elements", function(assert) {
   });
 
   andThen(function() {
-    var view = Ember.View.views.containsBubblingAction;
+    var view = viewRegistry(App).containsBubblingAction;
     assert.equal(view.get('internalClickEvidence'), 0, 'no internalClick');
   });
 
