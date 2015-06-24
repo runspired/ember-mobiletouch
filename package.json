@@ -8,7 +8,8 @@
   "scripts": {
     "start": "ember server",
     "build": "ember build",
-    "test": "ember test"
+    "test": "ember test",
+    "try:testall": "ember try:testall"
   },
   "homepage": "https://github.com/runspired/ember-mobiletouch",
   "bugs": "https://github.com/runspired/ember-mobiletouch/issues",
@@ -38,6 +39,7 @@
     "ember-cli-uglify": "1.0.1",
     "ember-data": "1.0.0-beta.16.1",
     "ember-export-application-global": "^1.0.2",
+    "ember-try": "0.0.7",
     "grunt": "^0.4.5",
     "grunt-bump": "0.0.16",
     "grunt-cli": "^0.1.13",

@@ -3,6 +3,8 @@ import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
 import mobileDetection from "ember-mobiletouch/utils/is-mobile";
 import ghostTap from '../helpers/ghost-tap';
+import viewRegistry from '../helpers/view-registry';
+
 var App;
 
 module('GhostClick', {
@@ -33,7 +35,7 @@ test("A tap does not focus an input inserted by the tap.", function(assert) {
 
     andThen(function() {
 
-      var view = Ember.View.views['unintendedTarget'];
+      var view = viewRegistry(App)['unintendedTarget'];
       var $element = view.$();
 
       assert.equal(view.taps, 0, 'a tap was not observed');
@@ -52,4 +54,3 @@ test("A tap does not focus an input inserted by the tap.", function(assert) {
 
   });
 });
-

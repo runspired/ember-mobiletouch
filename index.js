@@ -7,6 +7,14 @@ module.exports = {
 
   included : function (app) {
     app.import(app.bowerDirectory + '/hammerjs/hammer.js');
-  }
+  },
 
+  setupPreprocessorRegistry: function(type, registry) {
+    var DefaultActionToTap = require('./htmlbars-plugins/default-action-to-tap');
+
+    registry.add('htmlbars-ast-plugin', {
+      name: "default-action-to-tap",
+      plugin: DefaultActionToTap
+    });
+  }
 };

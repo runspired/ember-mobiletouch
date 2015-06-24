@@ -1,6 +1,8 @@
 import Ember from "ember";
 
-export default Ember.LinkView.reopen({
+var LinkComponent = Ember.LinkComponent || Ember.LinkView;
+
+export default LinkComponent.reopen({
 
   eventName : 'tap',
 
