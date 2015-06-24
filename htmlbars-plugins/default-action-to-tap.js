@@ -23,7 +23,7 @@ DefaultActionToTap.prototype.transform = function DefaultActionToTap_transform(a
 
   walker.visit(ast, function(node) {
     if (pluginContext.validate(node)) {
-      var modifier = elementModifierForPath(node.modifiers, 'action');
+      var modifier = elementModifierForPath(node, 'action');
       if (!modifier.hash) {
         modifier.hash = b.hash();
       }
@@ -39,18 +39,23 @@ DefaultActionToTap.prototype.transform = function DefaultActionToTap_transform(a
 };
 
 DefaultActionToTap.prototype.validate = function DefaultActionToTap_validate(node) {
-  if (node.type !== 'ElementNode') {
-    return false;
+  var modifier;
+
+  if (node.type === 'ElementNode') {
+    modifier = elementModifierForPath(node, 'action');
+
+    return modifier && !hashPairForKey(modifier.hash, 'on');
   }
 
-  var modifier = elementModifierForPath(node.modifiers, 'action');
-
-  return modifier && !hashPairForKey(modifier.hash, 'on');
+  return false;
 };
 
-function elementModifierForPath(modifiers, path) {
+function elementModifierForPath(node, path) {
+  // 1.11+ uses node.modifiers, and 1.10 uses node.helpers
+  var modifiers = node.modifiers || node.helpers;
   for (var i = 0, l = modifiers.length; i < l; i++) {
-    var modifier = modifiers[i];
+    var modifier = sexpr(modifiers[i]);
+
     if (modifier.path.original === path) {
       return modifier;
     }
@@ -68,6 +73,15 @@ function hashPairForKey(hash, key) {
   }
 
   return false;
+}
+
+// For compatibility with pre- and post-glimmer
+function sexpr(node) {
+  if (node.sexpr) {
+    return node.sexpr;
+  } else {
+    return node;
+  }
 }
 
 module.exports = DefaultActionToTap;
