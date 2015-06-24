@@ -11,6 +11,7 @@ env:
   - EMBER_TRY_SCENARIO=1.10.0
   - EMBER_TRY_SCENARIO=1.11.3
   - EMBER_TRY_SCENARIO=1.12.1
+  - EMBER_TRY_SCENARIO=1.13.2
 
 before_install:
   - "npm config set spin false"
