@@ -117,6 +117,9 @@ ActionHelper.registerAction = function registerAction(actionNameOrStream, option
 export { ActionHelper };
 
 function actionHelper(params, hash, options, env) {
+
+  console.log('registering action!');
+
   var view = env.data.view;
   var target;
   if (!hash.target) {
@@ -143,7 +146,7 @@ function actionHelper(params, hash, options, env) {
   env.dom.setAttribute(options.element, 'data-ember-action', actionId);
 }
 
-
-Ember.Handlebars.helpers.action = actionHelper;
+window.actionhelp = actionHelper;
+Ember.Handlebars.registerBoundHelper('action', actionHelper);
 
 export default actionHelper;
