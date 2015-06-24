@@ -5,7 +5,15 @@ machine:
     version: 0.12
 
 dependencies:
+  pre:
+    - npm config set spin false
+    - npm install -g npm@^2
+    
   override:
     - npm install -g bower
     - npm install
     - bower install
+
+test:
+  override:
+    - npm run try:testall
