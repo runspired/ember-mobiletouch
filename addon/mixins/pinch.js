@@ -1,5 +1,11 @@
 import Ember from "ember";
 
+const PINCH_GESTURES = Ember.A(['pinch', 'pinchMove', 'pinchEnd', 'pinchCancel', 'pinchIn', 'pinchOut']);
+
+const {
+  on
+  } = Ember;
+
 export default Ember.Mixin.create({
 
   /**!
@@ -22,8 +28,50 @@ export default Ember.Mixin.create({
    */
   _hammerOptions : null,
 
+  /**!
+   * If false, a Hammer instance/recognizers will not be created unless
+   * pinch-based handlers are present.
+   */
+  alwaysCreateHammerInstance: true,
 
-  __setupHammer : Ember.on('didInsertElement', function () {
+  /**!
+   * Checks if a pinch handler is present
+   *
+   * @returns {boolean}
+   * @private
+   */
+  __hasPinchHandler: function() {
+    var ret = false;
+    var self = this;
+    PINCH_GESTURES.forEach(function(name) {
+      if (self.get(name)) {
+        ret = true;
+      }
+    });
+    return ret;
+  },
+
+
+  /**!
+   * Creates a localized hammer manager instance with
+   * pinch recognizers.  These events are still sent
+   * through as domEvents, so in your component/view you
+   * will still use pinch normally.
+   *
+   * It's heavily recommended to debounce or throttle events that fire
+   * rapidly.  E.G.
+   *
+   * ```
+   * pinchMove : function (event) {
+   *     Ember.run.debounce(this, this.doSomething, event, 10);
+   * }
+   * ```
+   */
+  __setupHammer: on('didInsertElement', function setupHammerInstance() {
+
+    if (!this.get('alwaysCreateHammerInstance') && !this.__hasPinchHandler()) {
+      return;
+    }
 
     var element = this.$()[0];
     var instance = this.get('_hammerInstance');
@@ -54,7 +102,7 @@ export default Ember.Mixin.create({
   /**!
    * Destroy the localized instance when the view/component is destroyed
    */
-  __teardownHammer : Ember.on('willDestroyElement', function () {
+  __teardownHammer: on('willDestroyElement', function teardownHammerInstance() {
     var hammer = this.get('_hammerInstance');
     if (hammer) {
       hammer.destroy();
