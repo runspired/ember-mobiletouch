@@ -1,6 +1,25 @@
 import Ember from 'ember';
+import jQuery from 'jquery';
 
-export default Ember.Mixin.create({
+const {
+  on,
+  deprecate,
+  assert,
+  Mixin
+  } = Ember;
+
+const clickDeprecationNotice = "Use of click in ember-mobileTouch is currently discouraged in favor of `tap`" +
+  ", Only Tap will trigger. If a `tap` handler is not present, the click handler will rewritten" +
+  "to `tap` and `preventDefault` will not work as expected.  If your app or addon depends on click," +
+  "`tap` will work for most cases. `internalClick` is available for edge cases. Fine grained control" +
+  "should use mouseDown and touchStart";
+
+const filterDeprecationNotice = "filtering of elements via gestureAllow and gestureExclude has been " +
+  "deprecated and will be removed in ember-mobiletouch 2.0, this behavior is easily duplicated within " +
+  "your own event handlers. See docs for details.";
+
+//Ember.Component extends Ember.View so this reopen will affect both
+export default Mixin.create({
 
   /**!
    * Set gestureAllow to a jQuery selector string to optionally specify
@@ -40,14 +59,17 @@ export default Ember.Mixin.create({
    */
   _filterTouchableElements : function (element) {
 
-    var allowed = Ember.$(element),
-      filter = this.get('gestureAllow'),
-      exclude = this.get('gestureExclude'),
-      viewEl = this.$()[0];
+    var allowed = jQuery(element);
+    var filter = this.get('gestureAllow');
+    var exclude = this.get('gestureExclude');
+    var viewEl = this.$()[0];
 
     if (element === viewEl) {
       return element;
     }
+
+    deprecate(filterDeprecationNotice, !filter || !exclude);
+
     if (filter) {
       allowed = allowed.filter(filter);
     }
@@ -59,9 +81,10 @@ export default Ember.Mixin.create({
 
 
   /**!
-   *
+   *  Set's up gestures.
+   *  Uses view.init and _super to avoid extra change events
    */
-  __setupGestures : Ember.on('init', function () {
+  init: function() {
 
     var EventManager = this.get('eventManager') || this;
     var events;
@@ -70,7 +93,7 @@ export default Ember.Mixin.create({
     var gestures = this.get('gestures');
 
     //warn about gestures, remove in 2.0
-    Ember.assert(
+    assert(
       'Using the Gestures hash has been deprecated. Set `ENV.mobileTouch.useGesturesHash` to `true` to' +
       ' temporarily allow.', !(!this.get('__useGesturesHash') && !!gestures));
 
@@ -79,17 +102,15 @@ export default Ember.Mixin.create({
     }
 
 
-    //warn about hammerOptions, remove in 2.0
-    if (this.get('hammerOptions')) {
-      Ember.Logger.warn('[DEAD CODE] Configuring hammerOptions directly on a view or component is no' +
-      ' longer allowed.  Use ENV.mobileTouch.options in config/environment.js');
-    }
+    //assert about hammerOptions, remove in 2.0
+    assert('[DEAD CODE] Configuring hammerOptions directly on a view or component is no' +
+    ' longer allowed.  Use ENV.mobileTouch.options in config/environment.js', !this.get('hammerOptions'));
 
 
     //warn if hammerAllow is present, remove in 2.0
     allow = this.get('hammerAllow');
     if (allow) {
-      Ember.Logger.warn('[DEPRECATED] Use of hammerAllow on views and components will be removed in 2.0.  Use gestureAllow instead.');
+      deprecate('Use of hammerAllow on views and components will be removed in ember-mobiletouch 2.0.  Use gestureAllow instead.', false);
       this.gestureAllow = allow;
     }
 
@@ -97,7 +118,7 @@ export default Ember.Mixin.create({
     //warn if hammerExclude is present, remove in 2.0
     exclude = this.get('hammerExclude');
     if (exclude) {
-      Ember.Logger.warn('[DEPRECATED] Use of hammerExclude on views and components will be removed in 2.0.  Use gestureExclude instead.');
+      deprecate("Use of hammerExclude on views and components will be removed in ember-mobiletouch 2.0.  Use gestureExclude instead.", false);
       this.gestureExclude = exclude;
     }
 
@@ -119,5 +140,7 @@ export default Ember.Mixin.create({
 
     }
 
-  })
+    this._super();
+  }
+
 });
