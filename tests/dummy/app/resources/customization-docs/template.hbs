@@ -1,0 +1,189 @@
+<section class="container-fluid">
+
+    <h4>Jump To</h4>
+    <ul>
+        <li><a href="#recognizers">Custom Recognizers</a></li>
+        <li><a href="#vertical">Vertical Pan/Swipe</a></li>
+        <li><a href="#multitouch">Pinch/Rotate</a></li>
+        <li><a href="#touchZone">Improving touch on small objects</a></li>
+        <li><a href="#configuration">Configuration</a></li>
+        <li><a href="#click">Click</a></li>
+    </ul>
+
+    <h2>Custom Recognizers</h2>
+    <p>
+        You can define custom recognizers by adding them in `app/recognizers.js`.  (See the example)[https://github.com/runspired/ember-mobiletouch/blob/master/app/recognizers.js].
+
+        For instance, to add a doubleTap gesture.
+
+        ```
+        export default function () {
+
+        //the DOM event will be all lowercase (doubletap)
+        //the Ember event will be camelCase (doubleTap)
+        //the key in this.Recognizers will be SnakeCase (DoubleTap)
+
+        this.recognize({
+
+        name : 'doubleTap', //always camelCase this
+
+        gesture : 'tap', //the base Hammer recognizer to use
+
+        tune : { //the settings to pass to the recognizer, event will be added automatically
+        taps : 2
+        },
+
+        'with' : ['tap'], //an array of recognizers to recognize with.
+
+        without : [] //an array of recognizers that must first fail
+        });
+
+        }
+
+        ```
+        Be forewarned, this example implementation will still also trigger two taps along with the doubleTap.
+    </p>
+</section>
+Custom Recognizers
+
+
+
+## Vertical Swipe/Pan without breaking scroll
+
+`ember-mobileTouch` now comes with two mixins you can use to add localized hammer instances when you need to
+add vertical swipe / pan functionality without breaking the ability to scroll on mobile devices.
+
+`import VerticalPanMixin from "ember-mobiletouch/mixins/vertical-pan";`
+`import VerticalSwipeMixin from "ember-mobiletouch/mixins/vertical-swipe";`
+
+These mixins can be used together.  The default recognizer configuration for both is
+
+```
+{
+direction : Hammer.DIRECTION_VERTICAL
+}
+```
+
+You can adjust the recognizer configuration by setting the `panConfiguration` and `swipeConfiguration`
+properties respectively.
+
+
+
+## Configuration
+
+The following settings can be configured in `config/environment.js`.  They are shown below with their defaults.
+You can read more by reading the documentation comments in [addon/default-config.js](https://github.com/runspired/ember-mobiletouch/blob/master/addon/default-config.js)
+
+The default configuration can be examined here: http://codepen.io/anon/pen/bNLJbN?editors=001
+
+```
+ENV.mobileTouch = {
+
+//which gesture families to allow, will create a recognizer for each
+//a minimum of tap must be present, turning off unused gestures can help performance
+use : ['tap', 'press', 'pan', 'swipe'],
+
+//whether to alias "press" to tap within Ember's eventing
+// very useful if you don't need to distinguish and don't want to lose
+// taps from people who tap longer
+alwaysTapOnPress : false,
+
+//whether links and actions should trigger tap behavior on press as well
+// if eventName or "on" has not been explicitly defined
+// currently does not work with actions
+defaultTapOnPress : true,
+
+//passed to new Hammer.Manager(element, options)
+options : {
+domEvents : true
+},
+
+//passed to the respective recognizer
+tune : {
+tap : { time : 250, threshold : 9 }, //Hammer default is 250 / 2
+press : { time : 251, threshold : 9 }, //Hammer default is 500 / 5
+swipe : { direction : 6, velocity : 0.3, threshold : 25 },
+pan : { direction : 6 },
+pinch : {},
+rotate : {}
+},
+
+//what default Ember events should be disabled
+events : [
+'touchstart',
+'touchmove',
+'touchend',
+'touchcancel',
+'mousedown',
+'mouseup',
+'click', //not removed, re-aliased to internalClick.  Use cautiously.
+'dblclick',
+'mousemove',
+'mouseenter',
+'mouseleave'
+]
+
+};
+```
+
+## touchZone
+
+Sometimes smaller buttons or critical buttons need a larger capture area than their visible area.
+You can increase the area that recognizes touch events for a specific button
+https://gist.github.com/runspired/506f39a4abb2be48d63f
+
+
+
+## Testing
+
+When using ember-mobiletouch, actions etc. are no longer triggered by clicks, but by taps.
+This can break some of your apps existing tests.
+
+In `test-helper.js` you will need to import the `Ember.EventDispatcher` changes.
+
+`import mobileTouchOverrides from 'yourapp/overrides/ember-mobiletouch';`
+
+In your tests on actions, you will need to use `triggerEvent('#some-selector', 'tap')` instead
+of `click('#some-selector')`
+
+**Important** The jQuery events you need to trigger are the Hammer variant, meaning it is entirely lowercase `swiperight`, `panup`.
+
+
+
+# Click
+==================================================
+
+**Q:** Where did click go?  Why not just alias tap/touchStart/touchEnd to click?
+
+**A:** Aliasing other events to click has unintended results.  You can't preventDefault()
+a tap the same way as a click, and a tap could have been triggered by many varying event
+conditions.  Aliasing other events to click would force all of your click handlers to need
+to examine the event object to determine what type of event it originated as.
+
+Removing click from eventing has it's own complications.  It then becomes necessary to determine
+what click events to prevent default behavior on.  Global handlers to catch clicks on links are
+error prone because `event.target` may be an element within the link and not the link itself, but
+adding a click handler to all views that need to prevent clicks would also introduce complications.
+
+To provide a great gesture API while also addressing these challenges, Mobile Touch uses an
+cautious cancelling approach while still providing the ability to custom tailor the behavior where
+necessary.
+
+As of 1.4.3, click is aliased to `internalClick`, and used to prevent default behavior on clicks on
+link-tos.  Adding `.allow-click` or `.needsclick` to a view, link, or button that would otherwise cancel the
+click will allow the click to pass through.  Synthetic clicks are also triggered on tap (not press),
+and used as a "fastclick" mechanism on links not within Ember's view ecosystem.  "fastclick" clicks
+do not enter Ember's eventing as `internalClick`s but are instead filtered out when they reach the body.
+
+The rules for whether mobile touch will prevent the default behavior of a click are as follows:
+
+
+- it does not have the `.allow-click` or `.needsclick` (added as a convenience for those coming from fastclick.js) class
+
+AND
+
+- it was on or has bubbled to an `Ember.linkView`
+- (OR) it is `button[type!="submit"]` or  `input[type="button"]`
+- (OR) it is `input[type="submit"]` or `button[type="submit"]` AND does not have the attribute `data-ember-action`
+
+

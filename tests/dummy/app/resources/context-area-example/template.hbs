@@ -1,0 +1,41 @@
+<section class="container-fluid">
+
+  <h2>Context Area Component</h2>
+
+  <h3>Basic</h3>
+  <p>
+    The `context-area` component functions the same as `action-area` but provides
+    access to the element and the component as the first and second arguments
+    sent to the action handler.
+  </p>
+  <p>
+      <strong>{{currentUserAction}}</strong>
+  </p>
+  <p>
+      The element has the class <em>{{elementClass}}</em> and the component
+      has `foo` property equal to <em>{{componentFoo}}</em>.
+  </p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET context-area-example-1 }}
+        {{#context-area
+          foo="ActionAreaExample"
+          class="actionable-example"
+          on-pan-right="showRight"
+          on-pan-left="showLeft"
+          on-pan-end="endPan"
+          on-tap="showTap"
+          on-press="showPress"
+          on-press-up="endPress"
+        }}
+          <h3>Interact with me!</h3>
+          <p>Pan, tap, or press me to see how I behave.</p>
+        {{/context-area}}
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="context-area-example-1.hbs"}}
+      </div>
+  </div>
+
+</section>

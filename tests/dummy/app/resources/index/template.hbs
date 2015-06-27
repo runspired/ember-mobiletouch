@@ -1,0 +1,48 @@
+<section class="container-fluid">
+
+  <h2>Overview</h2>
+  <p>
+    <span class="billboard-right">
+        <i class="ui-logo"></i>
+    </span>
+      Ambitious interfaces should be rich and interactive, not based on click.
+      Ember Gestures provides a powerful, platform agnostic gesture API for
+      Ember applications.  Ember Gestures is built over <a href="http://hammerjs.github.io/">HammerJS 2.0.4</a>,
+      and used Ember's eventing to bubble and handle gestures.
+  </p>
+  <p>
+      In addition to exposing gestures as events, Ember Gestures brings a series of
+      mixins and primitives to help you quickly build highly interactive applications.
+  </p>
+  <p>
+      Ember Gestures relies on solid, performance minded defaults that take away the need for you
+      to learn to Hammer, but for the truly ambitious among you, mixins and easy customizations abound,
+      see the docs on {{#link-to "customization-docs"}}customization{{/link-to}} for more.
+  </p>
+
+  <h3>Performance</h3>
+  <p>
+      Ember gestures utilizes Events triggered by a single Hammer Instance.  Additional
+      instances can be created via mixins to add events for vertical behavior within
+      specific components which would otherwise break scrolling behavior in many environments.
+  </p>
+  <p>
+      This approach doesn't just avoid adding dozens (or more) hammer instances for each
+      interactive area on the page, it also avoids conflicts in behavior that arise when
+      areas governed by multiple hammer instances overlap.  Utilizing one primary instance
+      and Ember's eventing allows for a single, truthful event source.
+  </p>
+
+  <h3>Consistency</h3>
+  <p>
+      In addition to avoiding collisions between hammer instances, Ember Gestures helps you
+      avoid unexpected event behavior by encouraging `tap` over `click`.  Taps and clicks are
+      both inherently and physically different behaviors with different expected APIs.
+      For instance, you cannot easily `.preventDefault()` a `tap`.  Previous solutions to cross-platform
+      eventing aliased `tap` `touchstart` or `touchend` to `click`, an error prone solution
+      that introduces a lack of consistency in the event object received by the handler, the
+      user action(s) that triggered it, and often prevents more complicated gestures from being
+      achieved.
+  </p>
+
+</section>

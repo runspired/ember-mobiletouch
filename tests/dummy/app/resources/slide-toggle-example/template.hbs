@@ -1,0 +1,63 @@
+<section class="container-fluid">
+
+  <h2>Slide Toggle Component</h2>
+
+  <h3>Basic Usage</h3>
+  <p>
+    The `slide-toggle` component is an example of how easy it is to create rich
+    controls with `ember-gestures`.  Just as with a native iOS slide toggle, the
+    component alternates it's state after a tap, a press, or a pan, and track's
+    a user's finger in the process.
+  </p>
+  <p>
+      Current Value: <strong>{{shouldAutosave}}</strong>
+  </p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET slide-toggle-example-1 }}
+        {{slide-toggle value=shouldAutosave}}
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="slide-toggle-example-1.hbs"}}
+      </div>
+  </div>
+
+  <h3>Advanced Usage</h3>
+  <p>
+      `slide-toggle` can be made to send an action on change,
+      specify `on-toggle=fooAction`.
+  </p>
+  <p>
+      `slide-toggle` can utilize a unidirection data flow pattern that
+      does not alter `value`.  To utilize this pattern, specify
+      `unidirectional=true`. If `on-toggle` is undefined, you will need to
+      handle the action `slideToggleChange`.
+  </p>
+  <p>
+      Like `action-area`, `slide-toggle` allows you to pass anonymous params and
+      select a target to which to send the action.
+  </p>
+  <p>
+      Current Value: <strong>{{if shouldAutosave "true" "false"}}</strong>
+      Current Foo: <strong>{{fooProp}}</strong>
+  </p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET slide-toggle-example-2 }}
+        {{slide-toggle
+          fooProp
+          value=shouldAutosave
+          unidirectional=true
+          target=this
+          on-toggle="toggleAutosave"
+        }}
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="slide-toggle-example-2.hbs"}}
+      </div>
+  </div>
+
+
+</section>

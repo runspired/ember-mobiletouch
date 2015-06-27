@@ -1,0 +1,113 @@
+<section class="container-fluid">
+
+  <h2>Action Area Component</h2>
+
+  <h3>Basic</h3>
+  <p>
+    The `action-area` component helps you build interactive regions quickly.
+  </p>
+  <p>
+      <strong>{{currentUserAction}}</strong>
+  </p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET action-area-example-1 }}
+        {{#action-area
+          class="actionable-example"
+          on-pan-right="showRight"
+          on-pan-left="showLeft"
+          on-pan-end="endPan"
+          on-tap="showTap"
+          on-press="showPress"
+          on-press-up="endPress"
+        }}
+          <h3>Interact with me!</h3>
+          <p>Pan, tap, or press me to see how I behave.</p>
+        {{/action-area}}
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="action-area-example-1.hbs"}}
+      </div>
+  </div>
+
+  <h3>Targeting</h3>
+  <p>
+      The `action-area` component and it's descendants (`context-area` and `async-area`)
+      can utilize the `target` property just like normal actions.
+  </p>
+  <p>
+      <strong>{{currentUserAction}}</strong>
+  </p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET action-area-example-2 }}
+        {{#with this as |controller|}}
+          {{#action-area class="actionable-example" on-tap="showTap" target=controller}}
+              <h3>Tap Me!</h3>
+          {{/action-area}}
+        {{/with}}
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="action-area-example-2.hbs"}}
+      </div>
+  </div>
+
+  <h3>Anonymous Parameters</h3>
+  <p>
+      The `action-area` component  and it's descendants (`context-area` and `async-area`) allow
+      you to pass in flexible parameters that will be included when an action is sent.
+  </p>
+  <p>
+      <strong>{{currentUserAction}}</strong>
+  </p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET action-area-example-3 }}
+        {{#action-area fooProp barProp class="actionable-example" on-tap="showTap"}}
+            <h3>Tap Me!</h3>
+            <p>I'll deliver fooProp and barProp to the action handler.</p>
+        {{/action-area}}
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="action-area-example-3.hbs"}}
+      </div>
+  </div>
+
+  <h3>Vertical, Rotate and Pinch Recognizers</h3>
+  <p>
+      The `action-area` component and it's descendants (`context-area` and `async-area`)
+      automatically add recognizers for vertical gestures, pinch, and rotate if a handler
+      for the event is present.
+  </p>
+  <p>
+      Not on mobile? Rotate and pinch currently only work on touch enabled devices.
+      Shift-key based multi-touch is coming to ember-gestures before 2.0!
+  </p>
+  <p>
+      <strong>{{currentUserAction}}</strong>
+  </p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET action-area-example-4 }}
+        {{#action-area
+        class="actionable-example"
+        on-pinch="showPinch"
+        on-rotate="showRotate"
+        on-pan-up="showPanUp"
+        on-pan-down="showPanDown"
+        on-pan-end="endPan"
+        }}
+            <h3>Interact with me!</h3>
+            <p>Pinch, Rotate, or Pan to see how I behave.</p>
+        {{/action-area}}
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="action-area-example-4.hbs"}}
+      </div>
+  </div>
+
+</section>

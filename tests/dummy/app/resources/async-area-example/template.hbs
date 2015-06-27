@@ -1,0 +1,35 @@
+<section class="container-fluid">
+
+  <h2>Async Area Component</h2>
+
+  <h3>Basic</h3>
+  <p>
+    The `async-area` component is an abstract version of an async-button.  Actions
+    triggered within the component pass a callback as their first param which expects
+    a promise.  You can use it to build a gesture rich area whose state is based on
+    the result of the promise given to the callback.
+  </p>
+  <p>
+      The area's state is one of `default`, `pending`, `fulfilled`, and `rejected` and
+      is bound as a class name you can use to style the area and it's contents.
+  </p>
+  <p>
+      <strong>{{currentUserAction}}</strong>
+  </p>
+  <div class="row">
+      <div class="col-sm-4">
+        {{!- BEGIN-SNIPPET async-area-example-1 }}
+        {{#async-area
+          class="actionable-example"
+          on-tap="showTap"
+        }}
+          <h3>Is there a pot of gold at the end of this rainbow?</h3>
+        {{/async-area}}
+        {{!- END-SNIPPET }}
+      </div>
+      <div class="col-sm-8">
+        {{code-snippet name="async-area-example-1.hbs"}}
+      </div>
+  </div>
+
+</section>
