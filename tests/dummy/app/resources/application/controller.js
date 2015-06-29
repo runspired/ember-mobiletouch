@@ -1,33 +1,41 @@
 import Ember from "ember";
 
 export default Ember.Controller.extend({
-  actions : {
-    alert : function () {
+
+  showMenu: false,
+
+  actions: {
+    alert: function () {
       Ember.Logger.debug('The alert triggered!');
     },
-    panning : function () {
+    panning: function () {
       Ember.Logger.debug('panning!');
     },
-    panningLeft : function () {
+    panningLeft: function () {
       Ember.Logger.debug('panningLeft!');
     },
-    panningRight : function () {
+    panningRight: function () {
       Ember.Logger.debug('panningRight!');
     },
-    swiping : function () {
+    swiping: function () {
       Ember.Logger.debug('swiping!');
     },
-    swipingLeft : function () {
+    swipingLeft: function () {
       Ember.Logger.debug('swipingLeft!');
     },
-    swipingRight : function () {
+    swipingRight: function () {
       Ember.Logger.debug('swipingRight!');
     },
-    swipingUp : function () {
+    swipingUp: function () {
       Ember.Logger.debug('swipingUp!');
     },
-    swipingDown : function () {
+    swipingDown: function () {
       Ember.Logger.debug('swipingDown!');
+    },
+    toggleMenu: function() {
+      this.toggleProperty('showMenu');
+      return false;
     }
+
   }
 });

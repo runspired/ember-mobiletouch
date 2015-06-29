@@ -1,20 +1,56 @@
-<header class="row">
-  <div class="logo col-md-4">
-      <h1>Ember MobileTouch</h1>
-  </div>
-  <div class="title col-md-offset-4 col-md-4">
-      <h2>Tests</h2>
-      <ul>
-        <li>{{#link-to "inputs"}}Input tests{{/link-to}}</li>
-        <li>{{#link-to "checkboxes"}}Checkbox tests{{/link-to}}</li>
-        <li>{{#link-to "forms"}}Form tests{{/link-to}}</li>
-      </ul>
-  </div>
-</header>
+<div class="container-fluid">
+    <header class="row ui-header">
+        <div class="logo col-sm-4">
+          {{#link-to "index" tagName="h1"}}Ember Gestures{{/link-to}}
+        </div>
+        <div class="col-sm-8">
+            <h3>Ambitious Interfaces for Ambitious Applications.</h3>
+        </div>
+    </header>
+</div>
 
-<section class="row">
-    <div class="col-xs-12">
-      <h3>Test interface</h3>
-      {{outlet}}
+<div class="container-fluid">
+    <div class="row ui-body">
+      {{#if showMenu}}
+          <aside class="ui-menu col-sm-3" {{action "toggleMenu"}}>
+
+            {{#link-to "index" tagName="h2"}}Overview{{/link-to}}
+              <h2>Primitives</h2>
+              <ul>
+                  <li>{{#link-to "link-example"}}link-to{{/link-to}}</li>
+                  <li>{{#link-to "action-example"}}action{{/link-to}}</li>
+                  <li>{{#link-to "input-example"}}inputs{{/link-to}}</li>
+                  <li>{{#link-to "action-area-example"}}action area{{/link-to}}</li>
+                  <li>{{#link-to "async-area-example"}}async area{{/link-to}}</li>
+                  <li>{{#link-to "context-area-example"}}context area{{/link-to}}</li>
+                  <li>{{#link-to "gesture-mixin-example"}}Filter Gesture Mixin{{/link-to}}</li>
+              </ul>
+
+              <h2>Docs</h2>
+              <ul>
+                  <li>{{#link-to "customization-docs"}}Customizing{{/link-to}}</li>
+              </ul>
+
+              <h2>Examples</h2>
+              <ul>
+                  <li>{{#link-to "slide-toggle-example"}}Slide Toggle{{/link-to}}</li>
+                  <li>{{#link-to "svg-example"}}SVG{{/link-to}}</li>
+              </ul>
+
+              <h2>Tests</h2>
+              <ul>
+                  <li>{{#link-to "inputs"}}Input tests{{/link-to}}</li>
+              </ul>
+          </aside>
+      {{else}}
+        <aside class="col-xs-12">
+            <h2 {{action "toggleMenu"}}><i class="glyphicon glyphicon-menu-hamburger"></i></h2>
+        </aside>
+      {{/if}}
+        <section class="ui-body {{if showMenu 'col-sm-9' 'col-xs-12'}}">
+          {{liquid-outlet "main"}}
+        </section>
+
     </div>
-</section>
+</div>
+
