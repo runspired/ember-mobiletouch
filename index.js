@@ -16,5 +16,10 @@ module.exports = {
       name: "default-action-to-tap",
       plugin: DefaultActionToTap
     });
+  },
+
+  isDevelopingAddon: function() {
+    return false;
   }
+
 };
