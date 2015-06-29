@@ -65,9 +65,12 @@ export default Ember.Component.extend(verticalPan, verticalSwipe, rotate, pinch,
     this._super();
 
     var v;
-    for (var key in this) {
-      if (this.hasOwnProperty(key)) {
-        v = this[key];
+    var attrs = this.get('attrs') || this;
+
+    for (var key in attrs) {
+
+      if (attrs.hasOwnProperty(key)) {
+        v = attrs[key];
         if (v === 'toString') {
           continue;
         } // ignore useless items
@@ -78,7 +81,7 @@ export default Ember.Component.extend(verticalPan, verticalSwipe, rotate, pinch,
         //setup listener for key
         if (key.indexOf('on-') === 0) {
           let event = toCamel(key.substr(3));
-          let action = this[key];
+          let action = attrs[key];
 
           this.set(event + 'Action', action);
 

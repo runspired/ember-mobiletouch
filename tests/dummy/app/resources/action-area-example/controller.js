@@ -30,7 +30,6 @@ export default Ember.Controller.extend({
       this.set('currentUserAction', "You are currently rotating.");
     },
     showTap: function () {
-      Ember.Logger.debug('arguments!', arguments);
       if (arguments.length) {
         let i;
         let str = "";

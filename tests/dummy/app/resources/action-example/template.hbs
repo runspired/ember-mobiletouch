@@ -42,24 +42,4 @@
       </div>
   </div>
 
-  <h3>Using Multiple Gestures to trigger a single action</h3>
-  <p>
-      Separate multiple gestures or events within `on` to specify which to use.
-      This example triggers on tap, press, or when a `pan` sequence ends.
-  </p>
-  <p>You have triggered "addCount" {{counter}} times.</p>
-  <div class="row">
-      <div class="col-sm-4">
-        {{!- BEGIN-SNIPPET action-example-3 }}
-          <button {{action "addCount" on="tap press panEnd"}}>
-              <i class="glyphicon glyphicon-plus"></i>
-              <span class="link-text">Increment</span>
-          </button>
-        {{!- END-SNIPPET }}
-      </div>
-      <div class="col-sm-8">
-        {{code-snippet name="action-example-3.hbs"}}
-      </div>
-  </div>
-
 </section>

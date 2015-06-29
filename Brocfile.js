@@ -12,8 +12,8 @@ var app = new EmberAddon({
   snippetSearchPaths: ['app', 'tests/dummy/app', 'addon']
 });
 
-app.import('vendor/ember-mobiletouch/structure.css');
-app.import('vendor/ember-mobiletouch/theme.css');
+app.import('vendor/ember-gestures/structure.css');
+app.import('vendor/ember-gestures/theme.css');
 
 // Use `app.import` to add additional libraries to the generated
 // output files.
