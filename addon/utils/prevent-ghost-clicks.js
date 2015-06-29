@@ -90,8 +90,13 @@ function makeGhostBuster() {
     add : Ember.run.bind(this, function ($element) {
       $element.on("touchstart.ghost-click-buster", resetCoordinates);
       $element.on("touchend.ghost-click-buster", registerCoordinates);
-      $element.on("click.ghost-click-buster", preventGhostClick);
-      $element.on("click.ghost-click-buster", '.ember-view', preventGhostClick);
+
+      // register the click buster on with the selector, '*', which will
+      // cause it to fire on the first element that gets clicked on so that
+      // if this is a ghost click it will get killed immediately.
+      $element.on("click.ghost-click-buster", '*', preventGhostClick);
+      // $element.on("click.ghost-click-buster", preventGhostClick);
+      // $element.on("click.ghost-click-buster", '.ember-view', preventGhostClick);
     }),
     remove : Ember.run.bind(this, function ($element) {
       $element.off('.ghost-click-buster');
