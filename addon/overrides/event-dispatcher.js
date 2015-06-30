@@ -155,13 +155,12 @@ export default Ember.EventDispatcher.reopen({
           Implements fastclick and fastfocus mechanisms on mobile web/Cordova
        */
       if (mobileDetection.is()) {
-        var $element = Ember.$(e.currentTarget);
-        var $target = Ember.$(e.target);
+        var $element = jQuery(e.currentTarget);
+        var $target = jQuery(e.target);
 
         /*
          If the click was on an input element that needs to be able to focus, recast
          the click as a "focus" event.
-
          This fixes tap events on mobile where keyboardShrinksView or similar is true.
          Such devices depend on the ghost click to trigger focus, but the ghost click
          will never reach the element.
@@ -169,18 +168,16 @@ export default Ember.EventDispatcher.reopen({
         var notFocusableTypes = ['submit', 'button', 'hidden', 'reset', 'range', 'radio', 'image', 'checkbox'];
 
         //fastfocus
-        if ($element.is('input') && notFocusableTypes.indexOf($element.attr('type')) === -1) {
-          console.log('fastfocus');
+        if ($element.is('textarea') || ($element.is('input') && notFocusableTypes.indexOf($element.attr('type')) === -1)) {
           $element.focus();
 
-        } else if ($target.is('input') && notFocusableTypes.indexOf($target.attr('type')) === -1) {
-          console.log('fastfocus');
+        } else if ($target.is('textarea') || ($target.is('input') && notFocusableTypes.indexOf($target.attr('type')) === -1)) {
           $target.focus();
 
-        //fastclick
+          //fastclick
         } else {
 
-          var click = Ember.$.Event('click');
+          var click = jQuery.Event('click');
 
           //set the fastclick flag so that we can filter this from
           // Ember's eventing later
