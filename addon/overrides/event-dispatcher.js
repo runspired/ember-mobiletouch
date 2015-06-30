@@ -112,6 +112,7 @@ export default Ember.EventDispatcher.reopen({
 
     //delegate native click to internalClick
     $root.on('click.ember-mobiletouch', '.ember-view', function(evt, triggeringManager) {
+      console.log('click.ember-mobiletouch', '.ember-view');
 
       if (!evt.fastclick) {
         var view = viewRegistry[this.id];
@@ -149,6 +150,7 @@ export default Ember.EventDispatcher.reopen({
     });
 
     $root.on('tap.ember-mobiletouch press.ember-mobiletouch', function (e) {
+      console.log('tap.ember-mobiletouch press.ember-mobiletouch');
       /*
           Implements fastclick and fastfocus mechanisms on mobile web/Cordova
        */
@@ -168,9 +170,11 @@ export default Ember.EventDispatcher.reopen({
 
         //fastfocus
         if ($element.is('input') && notFocusableTypes.indexOf($element.attr('type')) === -1) {
+          console.log('fastfocus');
           $element.focus();
 
         } else if ($target.is('input') && notFocusableTypes.indexOf($target.attr('type')) === -1) {
+          console.log('fastfocus');
           $target.focus();
 
         //fastclick

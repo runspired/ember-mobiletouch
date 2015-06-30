@@ -30,9 +30,13 @@ function makeGhostBuster() {
    */
   function preventGhostClick(event) {
 
+    console.log('prevent ghost click');
+
     var ev = event.originalEvent || event;
     //don't prevent fastclicks
     if (ev.fastclick) { return true; }
+
+    console.log('preventing');
 
     for (var i = 0; i < coordinates.length; i++) {
       var x = coordinates[i][0];
@@ -40,6 +44,8 @@ function makeGhostBuster() {
 
       // within the range, so prevent the click
       if (Math.abs(ev.clientX - x) < threshold && Math.abs(ev.clientY - y) < threshold) {
+
+        console.log('prevented');
         event.stopPropagation();
         event.stopImmediatePropagation();
         event.preventDefault();
@@ -70,6 +76,13 @@ function makeGhostBuster() {
   function registerCoordinates(event) {
     var ev = event.originalEvent || event;
 
+    // It seems that touchend is the cause for derived events like 'change' for
+    // checkboxes. Since we're creating fastclicks, which will also cause 'change'
+    // events to fire, we need to prevent default on touchend events, which has
+    // the effect of not causing these derived events to be created. I am not
+    // sure if this has any other negative consequences.
+    ev.preventDefault();
+
     // touchend is triggered on every releasing finger
     // changed touches always contain the removed touches on a touchend
     // the touches object might contain these also at some browsers (firefox os)
@@ -95,8 +108,8 @@ function makeGhostBuster() {
       // cause it to fire on the first element that gets clicked on so that
       // if this is a ghost click it will get killed immediately.
       $element.on("click.ghost-click-buster", '*', preventGhostClick);
-      // $element.on("click.ghost-click-buster", preventGhostClick);
-      // $element.on("click.ghost-click-buster", '.ember-view', preventGhostClick);
+      //$element.on("click.ghost-click-buster", preventGhostClick);
+      //$element.on("click.ghost-click-buster", '.ember-view', preventGhostClick);
     }),
     remove : Ember.run.bind(this, function ($element) {
       $element.off('.ghost-click-buster');
