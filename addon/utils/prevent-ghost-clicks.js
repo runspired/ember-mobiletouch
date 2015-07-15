@@ -30,13 +30,13 @@ function makeGhostBuster() {
    */
   function preventGhostClick(event) {
 
-    console.log('prevent ghost click');
+    // console.log('prevent ghost click');
 
     var ev = event.originalEvent || event;
     //don't prevent fastclicks
     if (ev.fastclick) { return true; }
 
-    console.log('preventing');
+    // console.log('preventing');
 
     for (var i = 0; i < coordinates.length; i++) {
       var x = coordinates[i][0];
@@ -45,7 +45,7 @@ function makeGhostBuster() {
       // within the range, so prevent the click
       if (Math.abs(ev.clientX - x) < threshold && Math.abs(ev.clientY - y) < threshold) {
 
-        console.log('prevented');
+        // console.log('prevented');
         event.stopPropagation();
         event.stopImmediatePropagation();
         event.preventDefault();

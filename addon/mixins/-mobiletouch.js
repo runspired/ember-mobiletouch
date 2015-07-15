@@ -2,7 +2,6 @@ import Ember from 'ember';
 import jQuery from 'jquery';
 
 const {
-  on,
   deprecate,
   assert,
   Mixin
