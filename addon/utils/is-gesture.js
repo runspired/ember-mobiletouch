@@ -3,7 +3,7 @@ import hammerEvents from "./hammer-events";
 
 var Gestures = {};
 
-var gestureGroups = Ember.keys(hammerEvents), i;
+var gestureGroups = Object.keys(hammerEvents), i;
 for (i = 0; i < gestureGroups.length; i++) {
   Ember.merge(Gestures, hammerEvents[gestureGroups[i]]);
 }

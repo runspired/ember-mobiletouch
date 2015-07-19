@@ -23,7 +23,7 @@ export default Ember.Mixin.create({
   _hammerOptions : null,
 
 
-  __setupHammer : function () {
+  __setupHammer : Ember.on('didInsertElement', function () {
 
     var element = this.$()[0];
     var instance = this.get('_hammerInstance');
@@ -48,18 +48,18 @@ export default Ember.Mixin.create({
 
     }
 
-  }.on('didInsertElement'),
+  }),
 
 
   /**!
    * Destroy the localized instance when the view/component is destroyed
    */
-  __teardownHammer : function () {
+  __teardownHammer : Ember.on('willDestroyElement', function () {
     var hammer = this.get('_hammerInstance');
     if (hammer) {
       hammer.destroy();
       this.set('_hammerInstance', null);
     }
-  }.on('willDestroyElement')
+  })
 
 });
