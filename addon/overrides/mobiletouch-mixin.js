@@ -61,7 +61,7 @@ export default Ember.Mixin.create({
   /**!
    *
    */
-  __setupGestures : function () {
+  __setupGestures : Ember.on('init', function () {
 
     var EventManager = this.get('eventManager') || this;
     var events;
@@ -124,5 +124,5 @@ export default Ember.Mixin.create({
 
     }
 
-  }.on('init')
+  })
 });
