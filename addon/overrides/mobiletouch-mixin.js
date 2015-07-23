@@ -102,12 +102,7 @@ export default Ember.Mixin.create({
     }
 
 
-    //warn if click is present
     if (EventManager.get('click')) {
-      Ember.Logger.warn(
-        '[DEPRECATED] Use of click is deprecated in favor of `tap`, Only Tap will trigger and' +
-        ' the click handler will overwrite `tap` and then be removed.');
-
       EventManager.set('tap', EventManager.get('click'));
       delete EventManager['click'];
     }
