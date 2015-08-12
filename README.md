@@ -1,17 +1,20 @@
-[![Stories in Ready](https://badge.waffle.io/runspired/ember-mobiletouch.png?label=ready&title=Ready)](https://waffle.io/runspired/ember-mobiletouch)
+# !!!DEPRECATED!!!
+
+This project has been deprecated in favor of [Ember Gestures](https://github.com/runspired/ember-gestures), which offers a better solution for fastclick via touch-action (and touch-action polyfill), much faster eventing, and a better ability to keep in step with both HammerJS (also maintained by this addon's author) and Ember.
+
+A migration guide will be coming soon.  Join #ember-mobile in the ember-community slack for answers to migration questions.  Bugfix releases will continue here for the near future, but migration is encouraged.
+
+
 # Ember-mobiletouch
 
 [![npm version](https://badge.fury.io/js/ember-mobiletouch.svg)](http://badge.fury.io/js/ember-mobiletouch)
 [![Build Status](https://travis-ci.org/runspired/ember-mobiletouch.svg?branch=master)](https://travis-ci.org/runspired/ember-mobiletouch)
 [![Ember Observer Score](http://emberobserver.com/badges/ember-mobiletouch.svg)](http://emberobserver.com/addons/ember-mobiletouch)
-[![Circle CI](https://circleci.com/gh/runspired/ember-mobiletouch/tree/master.svg?style=svg)](https://circleci.com/gh/runspired/ember-mobiletouch/tree/master)
 
 Ember addon for touch and gesture support in ember based mobile apps and websites.
 
 
 ###[Changelog](./CHANGELOG.md)
-
-###[Roadmap](./ROADMAP.md)
 
 
 [![dependencies](https://david-dm.org/runspired/ember-mobiletouch.svg)](https://david-dm.org/runspired/ember-mobiletouch)
