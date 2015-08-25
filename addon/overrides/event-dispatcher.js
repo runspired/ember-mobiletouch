@@ -153,8 +153,8 @@ export default Ember.EventDispatcher.reopen({
           Implements fastclick and fastfocus mechanisms on mobile web/Cordova
        */
       if (mobileDetection.is()) {
-        var $element = Ember.$(e.currentTarget);
-        var $target = Ember.$(e.target);
+        let $element = Ember.$(e.currentTarget);
+        let $target = Ember.$(e.target);
 
         /*
          If the click was on an input element that needs to be able to focus, recast
@@ -164,14 +164,15 @@ export default Ember.EventDispatcher.reopen({
          Such devices depend on the ghost click to trigger focus, but the ghost click
          will never reach the element.
          */
-        var notFocusableTypes = ['submit', 'button', 'hidden', 'reset', 'range', 'radio', 'image', 'checkbox'];
+        let notFocusableTypes = ['submit', 'file', 'button', 'hidden', 'reset', 'range', 'radio', 'image', 'checkbox'];
 
         //fastfocus
-        if ($element.is('input') && notFocusableTypes.indexOf($element.attr('type')) === -1) {
+        if ($element.is('textarea') || ($element.is('input') && notFocusableTypes.indexOf($element.attr('type')) === -1)) {
           $element.focus();
 
-        } else if ($target.is('input') && notFocusableTypes.indexOf($target.attr('type')) === -1) {
+        } else if ($target.is('textarea') || ($target.is('input') && notFocusableTypes.indexOf($target.attr('type')) === -1)) {
           $target.focus();
+        }
 
         //fastclick
         } else {
