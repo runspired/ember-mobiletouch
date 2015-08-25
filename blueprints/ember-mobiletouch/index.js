@@ -5,15 +5,11 @@ module.exports = {
   normalizeEntityName: function() {},
 
   afterInstall: function() {
-    var success = true,
-      bowerPackages = [
-        { name : 'hammerjs', version : '2.0.4' }
+    var bowerPackages = [
+        { name: 'hammerjs', target: '2.0.4' }
       ];
 
-    success = this.addBowerPackagesToProject(bowerPackages);
-
-    return success;
-
+    return this.addBowerPackagesToProject(bowerPackages);
   }
 
 
