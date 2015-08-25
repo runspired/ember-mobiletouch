@@ -8,7 +8,6 @@ dist/
 .editorconfig
 .ember-cli
 .travis.yml
-circle.yml
 .npmignore
 **/.gitkeep
 bower.json

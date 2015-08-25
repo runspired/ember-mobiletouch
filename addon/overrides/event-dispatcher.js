@@ -1,13 +1,14 @@
-import Ember from "ember";
-import preventGhostClicks from "../utils/prevent-ghost-clicks";
-import capitalizeWord from "../utils/capitalize-word";
-//import isCustomProtocol from "../utils/is-custom-protocol";
-import isGesture from "../utils/is-gesture";
-import defaultConfiguration from "../default-config";
-import hammerEvents from "../utils/hammer-events";
-import RecognizerInterface from "../recognizers";
-import removeEventsPatch from "../utils/determine-remove-events-patch";
-import mobileDetection from "../utils/is-mobile";
+import Ember from 'ember';
+import preventGhostClicks from '../utils/prevent-ghost-clicks';
+import capitalizeWord from '../utils/capitalize-word';
+//import isCustomProtocol from '../utils/is-custom-protocol';
+import isGesture from '../utils/is-gesture';
+import defaultConfiguration from '../default-config';
+import hammerEvents from '../utils/hammer-events';
+import RecognizerInterface from '../recognizers';
+import removeEventsPatch from '../utils/determine-remove-events-patch';
+import mobileDetection from '../utils/is-mobile';
+import jQuery from 'jquery';
 
 export default Ember.EventDispatcher.reopen({
 
@@ -40,7 +41,7 @@ export default Ember.EventDispatcher.reopen({
    */
   _initializeHammer: function (rootElement) {
 
-    var $root = Ember.$(rootElement);
+    var $root = jQuery(rootElement);
     var element = $root[0];
     var self = this;
     var viewRegistry = this.container.lookup('-view-registry:main') || Ember.View.views;
@@ -72,7 +73,7 @@ export default Ember.EventDispatcher.reopen({
      this allows mobile keyboard submit button and return key based submit to work
      */
     $root.on('click.ember-mobiletouch', 'input[type="submit"], button[type="submit"]', function (e) {
-      var $target = Ember.$(e.target);
+      var $target = jQuery(e.target);
       if (!e.fastclick) {
         $target.closest('form').trigger('submit');
       }
@@ -86,7 +87,7 @@ export default Ember.EventDispatcher.reopen({
 
     $root.on('click.ember-mobiletouch', '[data-ember-action]', function (e) {
 
-      var $currentTarget = Ember.$(e.currentTarget);
+      var $currentTarget = jQuery(e.currentTarget);
 
       // cancel the click only if there is an ember action defined and
       // it does not have the allow-click or needsclick class
@@ -153,8 +154,8 @@ export default Ember.EventDispatcher.reopen({
           Implements fastclick and fastfocus mechanisms on mobile web/Cordova
        */
       if (mobileDetection.is()) {
-        let $element = Ember.$(e.currentTarget);
-        let $target = Ember.$(e.target);
+        let $element = jQuery(e.currentTarget);
+        let $target = jQuery(e.target);
 
         /*
          If the click was on an input element that needs to be able to focus, recast
@@ -172,12 +173,11 @@ export default Ember.EventDispatcher.reopen({
 
         } else if ($target.is('textarea') || ($target.is('input') && notFocusableTypes.indexOf($target.attr('type')) === -1)) {
           $target.focus();
-        }
 
         //fastclick
         } else {
 
-          var click = Ember.$.Event('click');
+          var click = jQuery.Event('click');
 
           //set the fastclick flag so that we can filter this from
           // Ember's eventing later
@@ -411,7 +411,7 @@ export default Ember.EventDispatcher.reopen({
   destroy: function () {
 
     var hammer = this.get('_hammerInstance');
-    var $element = Ember.$(this.get('rootElement'));
+    var $element = jQuery(this.get('rootElement'));
 
     // Clean up edge case handlers
     $element.off('tap press click');
