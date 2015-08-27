@@ -1,6 +1,6 @@
 {
   "name": "ember-mobiletouch",
-  "version": "1.4.11",
+  "version": "1.4.12",
   "description": "[DEPRECATED] Gesture support for Ember Apps",
   "directories": {
     "doc": "doc",
