@@ -6,7 +6,7 @@ module.exports = {
   name: 'ember-mobiletouch',
 
   included: function(app) {
-    app.import(app.bowerDirectory + '/hammerjs/hammer.js');
+    app.import(app.bowerDirectory + '/hammer.js/hammer.js');
   },
 
   isDevelopingAddon: function() {
