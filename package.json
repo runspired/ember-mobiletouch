@@ -1,6 +1,7 @@
 {
   "name": "ember-mobiletouch",
   "version": "1.4.11",
+  "description": "[DEPRECATED] Gesture support for Ember Apps",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -8,15 +9,14 @@
   "scripts": {
     "start": "ember server",
     "build": "ember build",
-    "test": "ember test",
-    "try:testall": "ember try:testall"
+    "test": "ember try:testall"
   },
-  "homepage": "https://github.com/runspired/ember-mobiletouch",
-  "bugs": "https://github.com/runspired/ember-mobiletouch/issues",
   "repository": {
     "type": "git",
     "url": "git@github.com:runspired/ember-mobiletouch.git"
   },
+  "homepage": "https://github.com/runspired/ember-mobiletouch",
+  "bugs": "https://github.com/runspired/ember-mobiletouch/issues",
   "engines": {
     "node": ">= 0.12.0"
   },
@@ -26,30 +26,33 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "broccoli-asset-rev": "^2.0.2",
-    "ember-cli": "0.2.5",
+    "broccoli-asset-rev": "2.0.2",
+    "ember-cli": "1.13.8",
     "ember-cli-app-version": "0.3.3",
-    "ember-cli-babel": "^5.0.0",
     "ember-cli-content-security-policy": "0.4.0",
-    "ember-cli-dependency-checker": "^1.0.0",
-    "ember-cli-htmlbars": "0.7.4",
+    "ember-cli-dependency-checker": "1.0.0",
+    "ember-cli-htmlbars": "0.7.6",
     "ember-cli-ic-ajax": "0.1.1",
-    "ember-cli-inject-live-reload": "^1.3.0",
+    "ember-cli-inject-live-reload": "1.3.0",
     "ember-cli-qunit": "0.3.13",
     "ember-cli-uglify": "1.0.1",
-    "ember-data": "1.0.0-beta.16.1",
-    "ember-export-application-global": "^1.0.2",
-    "ember-try": "0.0.7",
-    "grunt": "^0.4.5",
+    "ember-data": "1.0.0-beta.17",
+    "ember-disable-proxy-controllers": "0.7.0",
+    "ember-export-application-global": "1.0.2",
+    "ember-disable-prototype-extensions": "1.0.0",
+    "grunt": "0.4.5",
     "grunt-bump": "0.0.16",
-    "grunt-cli": "^0.1.13",
-    "jit-grunt": "^0.9.0",
-    "time-grunt": "^1.0.0"
+    "grunt-cli": "0.1.13",
+    "jit-grunt": "0.9.0",
+    "time-grunt": "1.0.0",
+    "ember-try": "0.0.4"
   },
-  "description": "Touch and gesture support in Ember based mobile apps and websites.",
   "keywords": [
     "ember-addon"
   ],
+  "dependencies": {
+    "ember-cli-babel": "5.1.3"
+  },
   "ember-addon": {
     "configPath": "tests/dummy/config"
   }
