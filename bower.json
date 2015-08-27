@@ -11,7 +11,9 @@
     "ember-resolver": "~0.1.15",
     "jquery": "^1.11.1",
     "loader.js": "ember-cli/loader.js#3.2.0",
-    "hammer.js": "2.0.4",
     "qunit": "~1.17.1"
+  },
+  "devDependencies": {
+    "hammer.js": "~2.0.4"
   }
 }

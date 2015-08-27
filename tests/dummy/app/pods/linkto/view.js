@@ -1,10 +1,16 @@
-import Ember from "ember";
+import Ember from 'ember';
+import jQuery from 'jquery';
 
-export default Ember.View.extend({
+const {
+  on,
+  View
+  } = Ember;
 
-  buster : null,
+export default View.extend({
 
-  observeClicks : function () {
+  buster: null,
+
+  observeClicks: on('didInsertElement', function() {
 
     var bustDefaultBehavior = function (e) {
       e.preventDefault();
@@ -14,13 +20,13 @@ export default Ember.View.extend({
     };
 
     this.set('buster', bustDefaultBehavior);
-    Ember.$('body').on('click', 'a[href]', bustDefaultBehavior);
+    jQuery('body').on('click', 'a[href]', bustDefaultBehavior);
 
-  }.on('didInsertElement'),
+  }),
 
-  removeObserver : function () {
+  removeObserver: on('willDestroyElement', function() {
     this.set('observer', null);
-    Ember.$('body').off('click', this.get('buster'));
-  }.on('willDestroyElement')
+    jQuery('body').off('click', this.get('buster'));
+  })
 
 });

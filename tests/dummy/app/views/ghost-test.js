@@ -1,32 +1,37 @@
-import Ember from "ember";
+import Ember from 'ember';
 
-export default Ember.TextField.extend({
+const {
+  TextField,
+  on
+  } = Ember;
 
-  tagName : 'input',
-  type : 'text',
+export default TextField.extend({
 
-  focuses : 0,
-  blurs : 0,
+  tagName: 'input',
+  type: 'text',
+
+  focuses: 0,
+  blurs: 0,
   submits: 0,
   submitEvents: 0,
-  fastClicks : 0,
-  internalClicks : 0,
-  preventedClicks : 0,
-  taps : 0,
+  fastClicks: 0,
+  internalClicks: 0,
+  preventedClicks: 0,
+  taps: 0,
   clicks: 0,
 
-  focusIn : function () {
+  focusIn() {
     this.incrementProperty('focuses');
   },
-  focusOut : function () {
+  focusOut() {
     this.incrementProperty('blurs');
   },
 
-  tap : function () {
+  tap() {
     this.incrementProperty('taps');
   },
 
-  internalClick : function (e) {
+  internalClick(e) {
     this.incrementProperty('internalClicks');
     if (e.isDefaultPrevented()) {
       this.incrementProperty('preventedClicks');
@@ -40,7 +45,7 @@ export default Ember.TextField.extend({
 
   observer: null,
 
-  observeClicks : function () {
+  observeClicks: on('didInsertElement', function() {
     var view = this;
     var observer = function (e) {
       if (e.fastclick) {
@@ -51,11 +56,11 @@ export default Ember.TextField.extend({
     this.set('controller.isInserted', true);
     this.$().on('click', observer);
     this.set('observer', observer);
-  }.on('didInsertElement'),
+  }),
 
-  removeObserver : function () {
+  removeObserver: on('willDestroyElement', function () {
     this.$().off('click', this.get('observer'));
     this.set('observer', null);
-  }.on('willDestroyElement')
+  })
 
 });

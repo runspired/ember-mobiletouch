@@ -1,16 +1,21 @@
-import Ember from "ember";
+import Ember from 'ember';
 
-export default Ember.View.extend({
+const {
+  on,
+  View
+  } = Ember;
 
-  tap : function () {
+export default View.extend({
+
+  tap() {
     this.incrementProperty('controller.taps');
   },
 
-  submit : function () {
+  submit() {
     this.incrementProperty('controller.submitEvents');
   },
 
-  internalClick : function (e) {
+  internalClick(e) {
     this.incrementProperty('controller.internalClicks');
     e.preventDefault();
     return false;
@@ -18,7 +23,7 @@ export default Ember.View.extend({
 
   observer: null,
 
-  observeClicks : function () {
+  observeClicks: on('didInsertElement', function() {
     this.incrementProperty('controller.fired');
     var view = this;
     var observer = function (e) {
@@ -30,11 +35,11 @@ export default Ember.View.extend({
     this.set('controller.isInserted', true);
     this.$().on('click', observer);
     this.set('observer', observer);
-  }.on('didInsertElement'),
+  }),
 
-  removeObserver : function () {
+  removeObserver: on('willDestroyElement', function() {
     this.$().off('click', this.get('observer'));
     this.set('observer', null);
-  }.on('willDestroyElement')
+  })
 
 });

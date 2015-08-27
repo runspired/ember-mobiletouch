@@ -1,21 +1,27 @@
-import Ember from "ember";
+import Ember from 'ember';
+import jQuery from 'jquery';
 
-export default Ember.View.extend({
+const {
+  on,
+  View
+  } = Ember;
 
-  tap : function () {
+export default View.extend({
+
+  tap() {
     this.incrementProperty('controller.taps');
   },
 
-  internalClick : function (e) {
+  internalClick(e) {
     this.incrementProperty('controller.internalClicks');
   },
 
   observer: null,
 
-  observeClicks : function () {
+  observeClicks: on('didInsertElement', function() {
     var view = this;
 
-    var observer = function (e) {
+    var observer = function(e) {
       if (e.fastclick) {
         view.incrementProperty('controller.fastClicks');
       }
@@ -30,20 +36,18 @@ export default Ember.View.extend({
     };
 
     this.set('buster', bustDefaultBehavior);
-    Ember.$('body').on('click', 'a[href]', bustDefaultBehavior);
+    jQuery('body').on('click', 'a[href]', bustDefaultBehavior);
 
     this.set('controller.isInserted', true);
     this.$().on('click', observer);
     this.set('observer', observer);
+  }),
 
-  }.on('didInsertElement'),
-
-  removeObserver : function () {
+  removeObserver: on('willDestroyElement', function() {
     this.$().off('click', this.get('observer'));
     this.set('observer', null);
 
-    Ember.$('body').off('click', this.get('buster'));
-
-  }.on('willDestroyElement')
+    jQuery('body').off('click', this.get('buster'));
+  })
 
 });

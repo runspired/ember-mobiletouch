@@ -23,7 +23,7 @@ test("Action triggers on `Tap` by default", function(assert) {
 
   var controller = getController('actions');
 
-  andThen(function () {
+  andThen(function() {
 
     triggerEvent('#genericAction', 'tap');
     andThen(function() {
