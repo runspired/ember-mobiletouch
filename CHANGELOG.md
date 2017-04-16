@@ -1,6 +1,6 @@
-#Changelog
+# Changelog
 
-##1.4.1
+## 1.4.1
 
 - [FIX] fixes the ability for swipe to be recognized along with pan (#8)
 

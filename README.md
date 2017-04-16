@@ -14,14 +14,14 @@ A migration guide will be coming soon.  Join #ember-mobile in the ember-communit
 Ember addon for touch and gesture support in ember based mobile apps and websites.
 
 
-###[Changelog](./CHANGELOG.md)
+### [Changelog](./CHANGELOG.md)
 
 
 [![dependencies](https://david-dm.org/runspired/ember-mobiletouch.svg)](https://david-dm.org/runspired/ember-mobiletouch)
 [![devDependency Status](https://david-dm.org/runspired/ember-mobiletouch/dev-status.svg)](https://david-dm.org/runspired/ember-mobiletouch#info=devDependencies)
 
 
-##Installation
+## Installation
 
 `npm install ember-mobiletouch`
 
@@ -32,7 +32,7 @@ Ember addon for touch and gesture support in ember based mobile apps and website
 `ember install:addon ember-mobiletouch`
 
 
-##What's Included
+## What's Included
 
 This addon installs [HammerJS 2.0.4](https://github.com/hammerjs/hammer.js) and wires it into
 your app as a global (Hammer).
@@ -41,7 +41,7 @@ It then sets up a single Hammer instance to manage gestures, and pushes the gest
 through Ember's eventing system.  For a full feature list and configuration, continue reading.
 
 
-##Usage
+## Usage
 
 ```
 Ember.View.extend({
@@ -57,13 +57,13 @@ Ember.View.extend({
 })
 ```
 
-###gestureAllow
+### gestureAllow
 
 Optionally specify jQuery selectors for children of the View that can
 trigger the defined gestures.
 
 
-###gestureExclude
+### gestureExclude
 
 Optionally specify child elements of the View which should never
 trigger the defined gestures.
@@ -72,7 +72,7 @@ trigger the defined gestures.
 **filters are not applied to non-gestures (e.g. events defined in defaultConfig.events)**
 
 
-###Action helper
+### Action helper
 
 This triggers `myAction` on `tap`
 
@@ -82,7 +82,7 @@ This triggers `myAction` on `press`
 
 `<div {{action "myAction" on="press"}}></div>`
 
-###Link-to helper
+### Link-to helper
 
 Links trigger on `tap`.
 
@@ -98,21 +98,21 @@ And this would trigger on `swipeRight`
 
 
 
-##Mobile FastFocus
+## Mobile FastFocus
 
 text/password and similar input types on Mobile and Cordova are focused
 on tap, press.  Focus's dependency on `click` and the keyboard opening
 on mobile devices otherwise leads to the focus getting lost.
 
 
-##Mobile Keyboard based submit
+## Mobile Keyboard based submit
 
 On mobile / cordova, the iOS keyboard triggers a 'click' on a form's submit input/button.
 `ember-mobiletouch` captures this click, and triggers a `submit` event, allowing action handlers
 to work.
 
 
-##Custom Recognizers
+## Custom Recognizers
 
 You can define custom recognizers by adding them in `app/recognizers.js`.  (See the example)[https://github.com/runspired/ember-mobiletouch/blob/master/app/recognizers.js].
 
@@ -147,7 +147,7 @@ Be forewarned, this example implementation will still also trigger two taps alon
 
 
 
-##Vertical Swipe/Pan without breaking scroll
+## Vertical Swipe/Pan without breaking scroll
 
 `ember-mobileTouch` now comes with two mixins you can use to add localized hammer instances when you need to
 add vertical swipe / pan functionality without breaking the ability to scroll on mobile devices.
@@ -168,7 +168,7 @@ properties respectively.
 
 
 
-##Configuration
+## Configuration
 
 The following settings can be configured in `config/environment.js`.  They are shown below with their defaults.
 You can read more by reading the documentation comments in [addon/default-config.js](https://github.com/runspired/ember-mobiletouch/blob/master/addon/default-config.js)
@@ -225,7 +225,7 @@ ENV.mobileTouch = {
 };
 ```
 
-##touchZone
+## touchZone
 
 Sometimes smaller buttons or critical buttons need a larger capture area than their visible area.
 You can increase the area that recognizes touch events for a specific button
@@ -233,7 +233,7 @@ https://gist.github.com/runspired/506f39a4abb2be48d63f
 
 
 
-##Testing
+## Testing
 
 When using ember-mobiletouch, actions etc. are no longer triggered by clicks, but by taps.
 This can break some of your apps existing tests.
@@ -249,7 +249,7 @@ of `click('#some-selector')`
 
 
 
-#Click
+# Click
 ==================================================
 
 **Q:** Where did click go?  Why not just alias tap/touchStart/touchEnd to click?
