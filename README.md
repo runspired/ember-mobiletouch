@@ -2,9 +2,6 @@
 
 This project has been deprecated in favor of [Ember Gestures](https://github.com/runspired/ember-gestures), which offers a better solution for fastclick via touch-action (and touch-action polyfill), much faster eventing, and a better ability to keep in step with both HammerJS (also maintained by this addon's author) and Ember.
 
-A migration guide will be coming soon.  Join #ember-mobile in the ember-community slack for answers to migration questions.  Bugfix releases will continue here for the near future, but migration is encouraged.
-
-
 # Ember-mobiletouch
 
 [![npm version](https://badge.fury.io/js/ember-mobiletouch.svg)](http://badge.fury.io/js/ember-mobiletouch)
